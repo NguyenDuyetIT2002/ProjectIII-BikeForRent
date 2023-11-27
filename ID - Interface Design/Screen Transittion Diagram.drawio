@@ -1,0 +1,145 @@
+<mxfile host="app.diagrams.net" modified="2023-11-27T07:46:21.834Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36" etag="jTYtzANdD9gVfnjiMTJX" version="22.1.4" type="device">
+  <diagram name="Trang-1" id="OFahH-BdN_pAcbRq5fgI">
+    <mxGraphModel dx="1050" dy="1737" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="kaAPiCLC1IEkNfMPnjVA-27" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="kaAPiCLC1IEkNfMPnjVA-1" target="kaAPiCLC1IEkNfMPnjVA-2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="kaAPiCLC1IEkNfMPnjVA-29" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="kaAPiCLC1IEkNfMPnjVA-1" target="kaAPiCLC1IEkNfMPnjVA-9">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="kaAPiCLC1IEkNfMPnjVA-31" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="kaAPiCLC1IEkNfMPnjVA-1" target="kaAPiCLC1IEkNfMPnjVA-6">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="310" y="40" />
+              <mxPoint x="310" y="90" />
+              <mxPoint x="170" y="90" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="kaAPiCLC1IEkNfMPnjVA-32" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="kaAPiCLC1IEkNfMPnjVA-1" target="kaAPiCLC1IEkNfMPnjVA-8">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="400" y="70" />
+              <mxPoint x="330" y="70" />
+              <mxPoint x="330" y="220" />
+              <mxPoint x="560" y="220" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="kaAPiCLC1IEkNfMPnjVA-1" value="Splash Page" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="340" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="kaAPiCLC1IEkNfMPnjVA-28" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;dashed=1;dashPattern=8 8;" edge="1" parent="1" source="kaAPiCLC1IEkNfMPnjVA-2" target="kaAPiCLC1IEkNfMPnjVA-3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="kaAPiCLC1IEkNfMPnjVA-2" value="Sign Up Page" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="30" y="-3" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="kaAPiCLC1IEkNfMPnjVA-3" value="Store Manager Sign Up Page" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="30" y="90" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="kaAPiCLC1IEkNfMPnjVA-34" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="kaAPiCLC1IEkNfMPnjVA-6" target="kaAPiCLC1IEkNfMPnjVA-20">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="kaAPiCLC1IEkNfMPnjVA-35" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.25;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="kaAPiCLC1IEkNfMPnjVA-6" target="kaAPiCLC1IEkNfMPnjVA-11">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="kaAPiCLC1IEkNfMPnjVA-6" value="User Home Page" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="80" y="240" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="kaAPiCLC1IEkNfMPnjVA-41" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="kaAPiCLC1IEkNfMPnjVA-8" target="kaAPiCLC1IEkNfMPnjVA-18">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="kaAPiCLC1IEkNfMPnjVA-43" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="kaAPiCLC1IEkNfMPnjVA-8" target="kaAPiCLC1IEkNfMPnjVA-19">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="kaAPiCLC1IEkNfMPnjVA-8" value="Store Manager Home Page&lt;br&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="500" y="240" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="kaAPiCLC1IEkNfMPnjVA-44" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="kaAPiCLC1IEkNfMPnjVA-9" target="kaAPiCLC1IEkNfMPnjVA-25">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="kaAPiCLC1IEkNfMPnjVA-48" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=0.75;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="kaAPiCLC1IEkNfMPnjVA-9" target="kaAPiCLC1IEkNfMPnjVA-23">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="kaAPiCLC1IEkNfMPnjVA-9" value="Admin Home Page&lt;br&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="540" y="50" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="kaAPiCLC1IEkNfMPnjVA-37" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="kaAPiCLC1IEkNfMPnjVA-10" target="kaAPiCLC1IEkNfMPnjVA-13">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="kaAPiCLC1IEkNfMPnjVA-10" value="List Bike Page" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry y="340" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="kaAPiCLC1IEkNfMPnjVA-39" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="kaAPiCLC1IEkNfMPnjVA-11" target="kaAPiCLC1IEkNfMPnjVA-12">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="kaAPiCLC1IEkNfMPnjVA-11" value="All Rented Bike Page(UserID)" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="130" y="340" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="kaAPiCLC1IEkNfMPnjVA-12" value="Request Banning Bike Page&lt;br&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="130" y="430" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="kaAPiCLC1IEkNfMPnjVA-38" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="kaAPiCLC1IEkNfMPnjVA-13" target="kaAPiCLC1IEkNfMPnjVA-14">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="kaAPiCLC1IEkNfMPnjVA-13" value="Rent Bike Page&lt;br&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry y="430" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="kaAPiCLC1IEkNfMPnjVA-14" value="Invoice Page" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry y="510" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="kaAPiCLC1IEkNfMPnjVA-40" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="kaAPiCLC1IEkNfMPnjVA-16" target="kaAPiCLC1IEkNfMPnjVA-17">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="kaAPiCLC1IEkNfMPnjVA-16" value="All Rented Bike Page(ManagerID)" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="520" y="430" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="kaAPiCLC1IEkNfMPnjVA-17" value="Request Banning User Page" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="330" y="430" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="kaAPiCLC1IEkNfMPnjVA-42" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="kaAPiCLC1IEkNfMPnjVA-18" target="kaAPiCLC1IEkNfMPnjVA-16">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="kaAPiCLC1IEkNfMPnjVA-18" value="Add Bike Page" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="510" y="340" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="kaAPiCLC1IEkNfMPnjVA-19" value="Update Bike Information" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="670" y="240" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="kaAPiCLC1IEkNfMPnjVA-20" value="Account Update Page" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="300" y="240" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="kaAPiCLC1IEkNfMPnjVA-22" value="Accept Banning Bike Request" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="350" y="130" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="kaAPiCLC1IEkNfMPnjVA-23" value="Accept Banning User Request Page" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="480" y="130" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="kaAPiCLC1IEkNfMPnjVA-24" value="Delete Account" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="610" y="130" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="kaAPiCLC1IEkNfMPnjVA-25" value="Accept Store Manager Sign Up Request" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="700" y="50" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="kaAPiCLC1IEkNfMPnjVA-33" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.37;entryY=0.043;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="kaAPiCLC1IEkNfMPnjVA-6" target="kaAPiCLC1IEkNfMPnjVA-10">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="100" y="320" />
+              <mxPoint x="44" y="320" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="kaAPiCLC1IEkNfMPnjVA-45" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.447;entryY=-0.003;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="kaAPiCLC1IEkNfMPnjVA-9" target="kaAPiCLC1IEkNfMPnjVA-22">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="kaAPiCLC1IEkNfMPnjVA-49" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.75;exitY=1;exitDx=0;exitDy=0;entryX=0.32;entryY=0.01;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="kaAPiCLC1IEkNfMPnjVA-9" target="kaAPiCLC1IEkNfMPnjVA-24">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
