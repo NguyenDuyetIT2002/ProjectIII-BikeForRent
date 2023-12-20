@@ -1,0 +1,11 @@
+POST http://localhost:3000/api/customers/createCurstomer
+Content-Type: application/json
+
+{
+  "userName": "joh1n_doe",
+  "passWord": "secure_password",
+  "address": "123 Main St",
+  "phone": "0234567890",
+  "status": "active"
+}
+
