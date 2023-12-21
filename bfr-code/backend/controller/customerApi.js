@@ -30,3 +30,20 @@ export const getAllCustomers = async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
+
+//ban user
+export const banCustomer = async (req, res) => {
+  const { customerId } = req.body;
+  try {
+    const customer = await customerModel.findById(customerId);
+
+    if (!customer) {
+      return res.status(404).json({ error: "Không tìm thấy khách hàng này" });
+    }
+    await customerModel.findByIdAndUpdate(customerId, { status: "ban" });
+    res.status(200).json({ message: "Khóa tài khoản thành công" });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
