@@ -1,13 +1,11 @@
 import React from "react";
 
-class ManagerNavbar extends React.Component{
-    render(){
-        return (
-            <div>
-                <button>Bike list</button>
-            </div>
-        );
-    }
-}
+const ManagerNavbar = () => {
+  return (
+    <div>
+      <button>Bike list</button>
+    </div>
+  );
+};
 
-export default ManagerNavbar
+export default ManagerNavbar;
