@@ -1,14 +1,14 @@
+import ManagerHeaderbar from "../components/ManagerHeaderbar"
 import ManagerNavbar from "../components/ManagerNavbar"
-import React from "react"
+import React from 'react'
 
-class ManagerHomepage extends React.Component {
-    render(){
-        return (
-            <>
-                <ManagerNavbar/>
-            </>
-        )
-    }
+const ManagerHomepage = () => {
+  return (
+    <>
+        <ManagerHeaderbar/>
+        <ManagerNavbar/>
+    </>
+  )
 }
 
 export default ManagerHomepage

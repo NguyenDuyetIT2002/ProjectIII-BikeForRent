@@ -9,7 +9,7 @@ import {
   Route,
   RouterProvider,
 } from "react-router-dom";
-import ManagerHomepage from './pages/manager/homepage/ManagerHomepage';
+import ManagerHomepage from './pages/manager/homepage/ManagerHomepage.js';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
