@@ -33,12 +33,10 @@ function HomePageAdmin() {
         <div className="flex justify-center">
           {/* Admin Usecase Navigation Buttons */}
           <div className="flex flex-col space-y-4">
-            <button onClick={() => handleUseCaseClick('Use Case 1')} className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded">Use Case 1</button>
-            <button onClick={() => handleUseCaseClick('Use Case 2')} className="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded">Use Case 2</button>
-            <button onClick={() => handleUseCaseClick('Use Case 3')} className="bg-yellow-500 hover:bg-yellow-600 text-white py-2 px-4 rounded">Use Case 3</button>
-            <button onClick={() => handleUseCaseClick('Use Case 1')} className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded">Use Case 4</button>
-            <button onClick={() => handleUseCaseClick('Use Case 2')} className="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded">Use Case 5</button>
-            <button onClick={() => handleUseCaseClick('Use Case 3')} className="bg-yellow-500 hover:bg-yellow-600 text-white py-2 px-4 rounded">Use Case 6</button>
+            <button onClick={() => handleUseCaseClick('Use Case 1')} className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded">Delete Account</button>
+            <button onClick={() => handleUseCaseClick('Use Case 2')} className="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded">Accept Store Manager Sign Up Request</button>
+            <button onClick={() => handleUseCaseClick('Use Case 3')} className="bg-yellow-500 hover:bg-yellow-600 text-white py-2 px-4 rounded">Accept Banning User Request</button>
+            <button onClick={() => handleUseCaseClick('Use Case 4')} className="bg-red-500 hover:bg-blue-600 text-white py-2 px-4 rounded">Accept Banning Bike Request</button>
             {/* ...Thêm các button cho các usecase khác */}
           </div>
           
