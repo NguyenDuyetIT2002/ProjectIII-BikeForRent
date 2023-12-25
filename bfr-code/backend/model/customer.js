@@ -6,12 +6,16 @@ const customerSchema = mongoose.Schema({
     type: String,
   },
   passWord: String,
+  name: String,
   address: String,
   phone: {
     unique: true,
     type: String,
   },
-  status: String,
+  status: {
+    type: String,
+    default: "active",
+  },
 });
 
 const customerModel = mongoose.model("customer", customerSchema);
