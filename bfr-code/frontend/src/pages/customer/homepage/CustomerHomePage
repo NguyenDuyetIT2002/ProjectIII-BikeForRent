@@ -1,8 +1,15 @@
-import React from "react";
-import CustomerNavbar from "../components/ManagerNavbar";
+import React from 'react';
+import CustomerNavbar from '../components/CustomerNavbar';
+import CustomerPageWithDropdown from '../components/CustomerPageWithDropdown';
 
-const CustomerHomePage = () => {
-  return <ManagerNavbar />;
-};
+function CustomerHomePage() {
+  return (
+    <div>
+      <CustomerNavbar />
+
+      <CustomerPageWithDropdown />
+    </div>
+  );
+}
 
 export default CustomerHomePage;
