@@ -1,0 +1,8 @@
+import React from "react";
+import CustomerNavbar from "../components/ManagerNavbar";
+
+const CustomerHomePage = () => {
+  return <ManagerNavbar />;
+};
+
+export default CustomerHomePage;
