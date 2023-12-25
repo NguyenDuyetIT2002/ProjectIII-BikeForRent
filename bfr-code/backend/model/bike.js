@@ -9,7 +9,7 @@ const bikeSchema = mongoose.Schema({
     type: String,
     default: "active",
   },
-  owner_Id: {
+  owner_id: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "manager",
   },

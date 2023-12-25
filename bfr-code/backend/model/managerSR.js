@@ -4,12 +4,29 @@ const managerSRSchema = mongoose.Schema({
   userName: {
     unique: true,
     type: String,
+    required: true,
   },
-  passWord: String,
+  passWord: {
+    type: String,
+    required: true,
+  },
   address: String,
-  phone: String,
-  license: String,
-  identify_code: String,
+  phone: {
+    unique: true,
+    type: String,
+    required: true,
+  },
+  license: {
+    unique: true,
+    type: String,
+    required: true,
+  },
+  identify_code: {
+    unique: true,
+    type: String,
+    required: true,
+  },
+  name: String,
 });
 
 export const managerSRModel = mongoose.model("managerSR", managerSRSchema);
