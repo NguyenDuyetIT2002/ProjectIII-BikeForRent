@@ -177,3 +177,51 @@ export const rentBike = async (req, res) => {
     });
   }
 };
+
+// Send Ban Bike Request
+export const sendBanBikeRequest = async (req, res) => {
+  try {
+    const { bikeId, customerId } = req.body;
+
+    // Find the bike by _id
+    const foundBike = await bikeModel.findById(bikeId);
+
+    // Check if the bike exists
+    if (!foundBike) {
+      return res.status(404).json({
+        code: 404,
+        message: "Bike not found",
+        data: null,
+      });
+    }
+
+    // Check if the customer has already sent a ban request for this bike
+    if (foundBike.report_By.includes(customerId)) {
+      return res.status(400).json({
+        code: 400,
+        message: "You have already sent a ban request for this bike",
+        data: null,
+      });
+    }
+
+    // Update banRequestAmount and add customerId to report_By
+    foundBike.banRequestAmount += 1;
+    foundBike.report_By.push(customerId);
+
+    // Save the updated bike
+    const updatedBike = await foundBike.save();
+
+    res.status(200).json({
+      code: 200,
+      message: "Ban request sent successfully",
+      data: updatedBike,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      code: 500,
+      message: "Internal Server Error",
+      data: null,
+    });
+  }
+};

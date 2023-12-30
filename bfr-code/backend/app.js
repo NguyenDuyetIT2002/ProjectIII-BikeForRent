@@ -5,7 +5,7 @@ import customerRouter from "./routes/customerRoute.js";
 import managerRouter from "./routes/managerRoute.js";
 
 const app = express();
-const port = 3000;
+const port = 8080;
 handleConnectDB();
 
 // Cấu hình Body Parser Middleware

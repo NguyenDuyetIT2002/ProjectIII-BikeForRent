@@ -317,3 +317,37 @@ export const acceptOrder = async (req, res) => {
     });
   }
 };
+
+export const deleteBike = async (req, res) => {
+  try {
+    const { bikeId } = req.body;
+
+    // Find the bike by _id
+    const foundBike = await bikeModel.findById(bikeId);
+
+    // Check if the bike exists
+    if (!foundBike) {
+      return res.status(404).json({
+        code: 404,
+        message: "Bike not found",
+        data: null,
+      });
+    }
+
+    // Delete the bike
+    await bikeModel.findByIdAndDelete(bikeId);
+
+    res.status(200).json({
+      code: 200,
+      message: "Bike deleted successfully",
+      data: null,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      code: 500,
+      message: "Internal Server Error",
+      data: null,
+    });
+  }
+};
