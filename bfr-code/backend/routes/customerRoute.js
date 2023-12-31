@@ -3,7 +3,6 @@ import {
   createCustomer,
   getAllCustomers,
   banCustomer,
-  customerLogin,
   rentBike,
   updateCustomerInfo,
   sendBanBikeRequest,
@@ -14,7 +13,6 @@ const customerRouter = express.Router();
 customerRouter.post("/createCustomer", createCustomer);
 customerRouter.get("/getAllCustomers", getAllCustomers);
 customerRouter.post("/banCustomer", banCustomer); // admin route - change later
-customerRouter.post("/login", customerLogin);
 customerRouter.post("/rentBike", rentBike);
 customerRouter.post("/updateInfo", updateCustomerInfo);
 customerRouter.post("requestBanBike", sendBanBikeRequest);

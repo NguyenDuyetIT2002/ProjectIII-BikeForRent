@@ -1,32 +1,29 @@
+// customerApi.js
 import customerModel from "../model/customer.js";
+import {
+  handleNotFound,
+  handleServerError,
+  handleSuccess,
+  handleDuplicateField,
+  handleBadRequest,
+} from "../utils/handleResponse.js";
+import { checkDuplicateField } from "../utils/checkDuplicatedField.js";
+import { bikeModel } from "../model/bike.js";
+import { orderModel } from "../model/order.js";
 
 // create
 export const createCustomer = async (req, res) => {
   try {
-    const { userName, passWord, address, phone, status, name } = req.body;
-
-    // Helper function to check for duplicate values
-    const checkDuplicate = async (field, value) => {
-      const existingCustomer = await customerModel.findOne({ [field]: value });
-      return existingCustomer !== null;
-    };
+    const { userName, passWord, address, phone, name } = req.body;
 
     // Check for duplicate username
-    if (await checkDuplicate("userName", userName)) {
-      return res.status(400).json({
-        code: 400,
-        message: "Username already exists",
-        data: null,
-      });
+    if (await checkDuplicateField(customerModel, "userName", userName)) {
+      return handleDuplicateField(res, "Username already exists");
     }
 
     // Check for duplicate phone number
-    if (await checkDuplicate("phone", phone)) {
-      return res.status(400).json({
-        code: 400,
-        message: "Phone number already exists",
-        data: null,
-      });
+    if (await checkDuplicateField(customerModel, "phone", phone)) {
+      return handleDuplicateField(res, "Phone number already exists");
     }
 
     // If no duplicates, proceed with creating the user
@@ -36,23 +33,14 @@ export const createCustomer = async (req, res) => {
       name,
       address,
       phone,
-      status,
     });
 
     const savingCustomer = await newCustomer.save();
 
-    res.status(201).json({
-      code: 201,
-      message: "Customer created successfully",
-      data: savingCustomer,
-    });
+    return handleSuccess(res, "Customer created successfully", savingCustomer);
   } catch (error) {
     console.error(error);
-    res.status(500).json({
-      code: 500,
-      message: "Internal Server Error",
-      data: null,
-    });
+    return handleServerError(res);
   }
 };
 
@@ -60,35 +48,37 @@ export const createCustomer = async (req, res) => {
 export const getAllCustomers = async (req, res) => {
   try {
     const customers = await customerModel.find();
-    res.status(200).json(customers);
+    return handleSuccess(res, "Get all customers successfully", customers);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Internal Server Error" });
+    return handleServerError(res);
   }
 };
 
-//ban user
+// ban user
 export const banCustomer = async (req, res) => {
   const { customerId } = req.body;
   try {
     const customer = await customerModel.findById(customerId);
 
     if (!customer) {
-      return res.status(404).json({ error: "Không tìm thấy khách hàng này" });
+      return handleNotFound(res, "Customer");
     }
+
     await customerModel.findByIdAndUpdate(customerId, { status: "ban" });
-    res.status(200).json({ message: "Khóa tài khoản thành công" });
+
+    return handleSuccess(res, "Customer account successfully banned");
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ error: "Internal Server Error" });
+    console.error(error);
+    return handleServerError(res);
   }
 };
 
 export const updateCustomerInfo = async (req, res) => {
-  const { customerId, name, phone, address } = req.body;
+  const { customer_id, name, phone, address } = req.body;
   try {
     const updatedCustomer = await customerModel.findByIdAndUpdate(
-      customerId,
+      customer_id,
       {
         $set: {
           name: name || undefined,
@@ -98,59 +88,36 @@ export const updateCustomerInfo = async (req, res) => {
       },
       { new: true }
     );
+
     if (!updatedCustomer) {
-      return res.status(404).json({ error: "Không tìm thấy khách hàng này" });
+      return handleNotFound(res, "Customer");
     }
-    res.status(200).json(updatedCustomer);
+
+    return handleSuccess(
+      res,
+      "Customer information updated successfully",
+      updatedCustomer
+    );
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Internal Server Error" });
+    return handleServerError(res);
   }
 };
 
-export const customerLogin = async (req, res) => {
-  try {
-    const { userName, passWord } = req.body;
-
-    const customer = await customerModel.findOne({ userName: userName });
-    // console.log(customer);
-
-    if (!customer) {
-      return res.status(401).json({ error: "Tài khoản không tồn tại" });
-    }
-
-    if (customer.passWord !== passWord) {
-      return res.status(401).json({ error: "Sai mật khẩu" });
-    }
-
-    res.status(200).json({ message: "Đăng nhập thành công" });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Internal Server Error" });
-  }
-};
-
-//rent bike
-import { bikeModel } from "../model/bike.js";
-import { orderModel } from "../model/order.js";
-
-// Rent Bike
+// rent bike
 export const rentBike = async (req, res) => {
   try {
     const { bike_id, price, startTime, endTime, customer_id, orderTime } =
       req.body;
 
-    // Kiểm tra xem bike có tồn tại không
     const bikeExists = await bikeModel.exists({ _id: bike_id });
+
     if (!bikeExists) {
-      return res.status(404).json({
-        code: 404,
-        message: "Bike not found",
-        data: null,
-      });
+      return handleNotFound(res, "Bike");
     }
 
-    // Tạo một đối tượng Order mới
+    await bikeModel.findByIdAndUpdate(bike_id, { status: "pending" });
+
     const newOrder = new orderModel({
       bike_id: bike_id,
       price,
@@ -160,68 +127,41 @@ export const rentBike = async (req, res) => {
       orderTime,
     });
 
-    // Lưu đối tượng Order vào cơ sở dữ liệu
     const savedOrder = await newOrder.save();
 
-    res.status(201).json({
-      code: 201,
-      message: "Create Order Successfully",
-      data: savedOrder,
-    });
+    return handleSuccess(res, "Order created successfully", savedOrder);
   } catch (error) {
     console.error(error);
-    res.status(500).json({
-      code: 500,
-      message: "Internal Server Error",
-      data: null,
-    });
+    return handleServerError(res);
   }
 };
 
-// Send Ban Bike Request
+// send ban bike request
 export const sendBanBikeRequest = async (req, res) => {
   try {
     const { bikeId, customerId } = req.body;
 
-    // Find the bike by _id
     const foundBike = await bikeModel.findById(bikeId);
 
-    // Check if the bike exists
     if (!foundBike) {
-      return res.status(404).json({
-        code: 404,
-        message: "Bike not found",
-        data: null,
-      });
+      return handleNotFound(res, "Bike");
     }
 
-    // Check if the customer has already sent a ban request for this bike
     if (foundBike.report_By.includes(customerId)) {
-      return res.status(400).json({
-        code: 400,
-        message: "You have already sent a ban request for this bike",
-        data: null,
-      });
+      return handleBadRequest(
+        res,
+        "You have already sent a ban request for this bike"
+      );
     }
 
-    // Update banRequestAmount and add customerId to report_By
     foundBike.banRequestAmount += 1;
     foundBike.report_By.push(customerId);
 
-    // Save the updated bike
     const updatedBike = await foundBike.save();
 
-    res.status(200).json({
-      code: 200,
-      message: "Ban request sent successfully",
-      data: updatedBike,
-    });
+    return handleSuccess(res, "Ban request sent successfully", updatedBike);
   } catch (error) {
     console.error(error);
-    res.status(500).json({
-      code: 500,
-      message: "Internal Server Error",
-      data: null,
-    });
+    return handleServerError(res);
   }
 };

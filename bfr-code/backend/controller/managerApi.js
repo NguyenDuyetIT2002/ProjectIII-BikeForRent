@@ -2,142 +2,27 @@ import { managerModel } from "../model/manager.js";
 import { managerSRModel } from "../model/managerSR.js";
 import { bikeModel } from "../model/bike.js";
 import { orderModel } from "../model/order.js";
-
-const checkDuplicateField = async (model, field, value) => {
-  const existingDocument = await model.findOne({ [field]: value });
-  return existingDocument !== null;
-};
-
-// Create Manager
-export const createManager = async (req, res) => {
-  try {
-    const { userName, passWord, address, phone, identify_code, license, _id } =
-      req.body;
-
-    // Check for duplicate userName, phone, and license
-    const isDuplicateUserName = await checkDuplicateField(
-      managerModel,
-      "userName",
-      userName
-    );
-    const isDuplicatePhone = await checkDuplicateField(
-      managerModel,
-      "phone",
-      phone
-    );
-    const isDuplicateLicense = await checkDuplicateField(
-      managerModel,
-      "license",
-      license
-    );
-
-    if (isDuplicateUserName || isDuplicatePhone || isDuplicateLicense) {
-      return res.status(400).json({
-        code: 400,
-        message: "Duplicate field found",
-        data: null,
-      });
-    }
-
-    const newManager = new managerModel({
-      userName,
-      passWord,
-      address,
-      phone,
-      identify_code,
-      license,
-    });
-
-    const savingManager = await newManager.save();
-
-    // Delete corresponding managerSR
-    const deleteManagerSR = await managerSRModel.findByIdAndDelete(_id);
-
-    res.status(201).json({
-      code: 201,
-      message: "Manager created successfully",
-      data: savingManager,
-    });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({
-      code: 500,
-      message: "Internal Server Error",
-      data: null,
-    });
-  }
-};
-
-// Create Bike
-export const createBike = async (req, res) => {
-  try {
-    const { name, type, price, owner_id, image, description } = req.body;
-
-    // Check if owner_id exists in the "manager" collection
-    const ownerExists = await managerModel.exists({ _id: owner_id });
-    if (!ownerExists) {
-      return res.status(400).json({
-        code: 400,
-        message: "Owner not found",
-        data: null,
-      });
-    }
-
-    const newBike = new bikeModel({
-      name,
-      type,
-      price,
-      owner_id,
-      image,
-      description,
-    });
-
-    const savingBike = await newBike.save();
-
-    res.status(201).json({
-      code: 201,
-      message: "Bike created successfully",
-      data: savingBike,
-    });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({
-      code: 500,
-      message: "Internal Server Error",
-      data: null,
-    });
-  }
-};
-
+import {
+  handleDuplicateField,
+  handleServerError,
+  handleSuccess,
+  handleNotFound,
+} from "../utils/handleResponse.js";
+import { checkDuplicateField } from "../utils/checkDuplicatedField.js";
 // Create ManagerSR
 export const createManagerSR = async (req, res) => {
   try {
     const { userName, passWord, address, phone, identify_code, license } =
       req.body;
 
-    // Check for duplicate userName, phone, and license
-    const isDuplicateUserName = await checkDuplicateField(
-      managerSRModel,
-      "userName",
-      userName
-    );
-    const isDuplicatePhone = await checkDuplicateField(
-      managerSRModel,
-      "phone",
-      phone
-    );
-    const isDuplicateLicense = await checkDuplicateField(
-      managerSRModel,
-      "license",
-      license
-    );
+    const duplicateFields = await Promise.all([
+      checkDuplicateField(managerSRModel, "userName", userName),
+      checkDuplicateField(managerSRModel, "phone", phone),
+      checkDuplicateField(managerSRModel, "license", license),
+    ]);
 
-    if (isDuplicateUserName || isDuplicatePhone || isDuplicateLicense) {
-      return res.status(400).json({
-        code: 400,
-        message: "Duplicate field found",
-        data: null,
-      });
+    if (duplicateFields.some((field) => field)) {
+      return handleDuplicateField(res, duplicateFields);
     }
 
     const newManagerSR = new managerSRModel({
@@ -151,18 +36,42 @@ export const createManagerSR = async (req, res) => {
 
     const savingManagerSR = await newManagerSR.save();
 
-    res.status(201).json({
-      code: 201,
-      message: "ManagerSR created successfully",
-      data: savingManagerSR,
-    });
+    return handleSuccess(
+      res,
+      "ManagerSR created successfully",
+      savingManagerSR
+    );
   } catch (error) {
     console.error(error);
-    res.status(500).json({
-      code: 500,
-      message: "Internal Server Error",
-      data: null,
+    return handleServerError(res);
+  }
+};
+
+// Create Bike
+export const createBike = async (req, res) => {
+  try {
+    const { name, type, price, owner_id, image, description } = req.body;
+
+    const ownerExists = await managerModel.exists({ _id: owner_id });
+    if (!ownerExists) {
+      return handleNotFound(res, "Owner");
+    }
+
+    const newBike = new bikeModel({
+      name,
+      type,
+      price,
+      owner_id,
+      image,
+      description,
     });
+
+    const savingBike = await newBike.save();
+
+    return handleSuccess(res, "Bike created successfully", savingBike);
+  } catch (error) {
+    console.error(error);
+    return handleServerError(res);
   }
 };
 
@@ -170,30 +79,16 @@ export const getAllBike = async (req, res) => {
   try {
     const { owner_id } = req.body;
 
-    // Kiểm tra xem owner_id có được truyền vào không
     if (!owner_id) {
-      return res.status(400).json({
-        code: 400,
-        message: "Owner ID is required",
-        data: null,
-      });
+      return handleNotFound(res, "Owner ID is required");
     }
 
-    // Tìm tất cả các xe với owner_id tương ứng
     const bikes = await bikeModel.find({ owner_id });
 
-    res.status(200).json({
-      code: 200,
-      message: "Get all bikes successfully",
-      data: bikes,
-    });
+    return handleSuccess(res, "Get all bikes successfully", bikes);
   } catch (error) {
     console.error(error);
-    res.status(500).json({
-      code: 500,
-      message: "Internal Server Error",
-      data: null,
-    });
+    return handleServerError(res);
   }
 };
 
@@ -202,41 +97,43 @@ export const updateBikeInformation = async (req, res) => {
   try {
     const { id, name, type, price, image, description } = req.body;
 
-    // Kiểm tra xem bike có tồn tại không
     const bikeExists = await bikeModel.exists({ _id: id });
     if (!bikeExists) {
-      return res.status(404).json({
-        code: 404,
-        message: "Bike not found",
-        data: null,
-      });
+      return handleNotFound(res, "Bike");
     }
 
-    // Tạo một đối tượng mới chỉ chứa các trường cần cập nhật
-    const updatedFields = {};
-    if (name) updatedFields.name = name;
-    if (type) updatedFields.type = type;
-    if (price) updatedFields.price = price;
-    if (image) updatedFields.image = image;
-    if (description) updatedFields.description = description;
-
-    // Cập nhật thông tin của bike
+    const updatedFields = { name, type, price, image, description };
     const updatedBike = await bikeModel.findByIdAndUpdate(id, updatedFields, {
       new: true,
     });
 
-    res.status(200).json({
-      code: 200,
-      message: "Bike information updated successfully",
-      data: updatedBike,
-    });
+    return handleSuccess(
+      res,
+      "Bike information updated successfully",
+      updatedBike
+    );
   } catch (error) {
     console.error(error);
-    res.status(500).json({
-      code: 500,
-      message: "Internal Server Error",
-      data: null,
-    });
+    return handleServerError(res);
+  }
+};
+
+export const deleteBike = async (req, res) => {
+  try {
+    const { bikeId } = req.body;
+
+    const foundBike = await bikeModel.findById(bikeId);
+
+    if (!foundBike) {
+      return handleNotFound(res, "Bike");
+    }
+
+    await bikeModel.findByIdAndDelete(bikeId);
+
+    return handleSuccess(res, "Bike deleted successfully");
+  } catch (error) {
+    console.error(error);
+    return handleServerError(res);
   }
 };
 
@@ -252,18 +149,34 @@ export const getAllOrdersByManagerId = async (req, res) => {
 
     console.log("Orders:", orders);
 
-    res.status(200).json({
-      code: 200,
-      message: "Get all orders successfully",
-      data: orders,
-    });
+    return handleSuccess(res, "Get all orders successfully", orders);
   } catch (error) {
     console.error(error);
-    res.status(500).json({
-      code: 500,
-      message: "Internal Server Error",
-      data: null,
+    return handleServerError(res);
+  }
+};
+
+export const getAllPendingOrdersByManagerId = async (req, res) => {
+  try {
+    const { managerId } = req.body;
+
+    console.log("Manager ID:", managerId);
+
+    const pendingOrders = await orderModel.find({
+      "bike_id.owner_id": managerId,
+      status: "pending",
     });
+
+    console.log("Pending Orders:", pendingOrders);
+
+    return handleSuccess(
+      res,
+      "Get all pending orders successfully",
+      pendingOrders
+    );
+  } catch (error) {
+    console.error(error);
+    return handleServerError(res);
   }
 };
 
@@ -271,83 +184,53 @@ export const acceptOrder = async (req, res) => {
   try {
     const { orderId } = req.body;
 
-    // Find the order by _id
     const foundOrder = await orderModel.findById(orderId);
 
-    // Check if the order exists
     if (!foundOrder) {
-      return res.status(404).json({
-        code: 404,
-        message: "Order not found",
-        data: null,
-      });
+      return handleNotFound(res, "Order");
     }
 
-    // Check if the order is in "pending" status
-    if (foundOrder.status !== "pending") {
-      return res.status(400).json({
-        code: 400,
-        message: "Order is not in pending status",
-        data: null,
-      });
-    }
-
-    // Update the status of the order to "success"
     foundOrder.status = "success";
     const updatedOrder = await foundOrder.save();
 
-    // Update rentedBy of the corresponding bike
     const bikeId = foundOrder.bike_id;
     const customer_id = foundOrder.customer_id;
 
-    // Update the bike model with the rentedBy information
-    await bikeModel.findByIdAndUpdate(bikeId, { rented_By: customer_id });
-
-    res.status(200).json({
-      code: 200,
-      message: "Order accepted successfully",
-      data: updatedOrder,
+    await bikeModel.findByIdAndUpdate(bikeId, {
+      rented_By: customer_id,
+      status: "rented",
     });
+
+    return handleSuccess(res, "Order accepted successfully", updatedOrder);
   } catch (error) {
     console.error(error);
-    res.status(500).json({
-      code: 500,
-      message: "Internal Server Error",
-      data: null,
-    });
+    return handleServerError(res);
   }
 };
 
-export const deleteBike = async (req, res) => {
+// Complete Order Process
+export const completeOrderProcess = async (req, res) => {
   try {
-    const { bikeId } = req.body;
+    const { order_id } = req.body;
 
-    // Find the bike by _id
-    const foundBike = await bikeModel.findById(bikeId);
+    const foundOrder = await orderModel.findById(order_id);
 
-    // Check if the bike exists
-    if (!foundBike) {
-      return res.status(404).json({
-        code: 404,
-        message: "Bike not found",
-        data: null,
-      });
+    if (!foundOrder) {
+      return handleNotFound(res, "Order");
     }
 
-    // Delete the bike
-    await bikeModel.findByIdAndDelete(bikeId);
+    const bike_id = foundOrder.bike_id;
+    const updatedBike = await bikeModel.findByIdAndUpdate(
+      bike_id,
+      { rented_By: null, status: "active" },
+      { new: true }
+    );
 
-    res.status(200).json({
-      code: 200,
-      message: "Bike deleted successfully",
-      data: null,
-    });
+    await orderModel.findByIdAndDelete(order_id);
+
+    return handleSuccess(res, "Order process completed successfully");
   } catch (error) {
     console.error(error);
-    res.status(500).json({
-      code: 500,
-      message: "Internal Server Error",
-      data: null,
-    });
+    return handleServerError(res);
   }
 };
