@@ -1,26 +1,42 @@
 import express from "express";
 import {
-  createManagerSR,
   createBike,
   getAllBike,
   updateBikeInformation,
-  acceptOrder,
   deleteBike,
-  getAllPendingOrdersByManagerId,
   getAllOrdersByManagerId,
+  getAllPendingOrdersByManagerId,
+  acceptOrder,
   completeOrderProcess,
 } from "../controller/managerApi.js";
 
 const managerRouter = express.Router();
 
-managerRouter.post("/createManagerSR", createManagerSR);
+// Create Bike
 managerRouter.post("/createBike", createBike);
-managerRouter.post("/getAllBike", getAllBike);
-managerRouter.post("/updateBikeInformation", updateBikeInformation);
-managerRouter.post("/getAllPendingOrder", getAllPendingOrdersByManagerId);
-managerRouter.post("getAllOrder", getAllOrdersByManagerId);
-managerRouter.post("/acceptOrder", acceptOrder);
-managerRouter.post("/deteleBike", deleteBike);
-managerRouter.post("/acceptOrder", acceptOrder);
-managerRouter.post("/completeOrder", completeOrderProcess);
+
+// Get All Bikes
+managerRouter.get("/getBikes/:id", getAllBike);
+
+// Update Bike Information
+managerRouter.put("/updateBikeInfo/:id", updateBikeInformation);
+
+// Delete Bike
+managerRouter.delete("/deleteBike/:id", deleteBike);
+
+// Get All Orders by Manager ID
+managerRouter.get("/getOrdersBy/:manager_id", getAllOrdersByManagerId);
+
+// Get All Pending Orders by Manager ID
+managerRouter.get(
+  "/getPendingOrdersBy/:manager_id",
+  getAllPendingOrdersByManagerId
+);
+
+// Accept Order
+managerRouter.post("/acceptOrder/:id", acceptOrder);
+
+// Complete Order Process
+managerRouter.post("/completeOrder/:id", completeOrderProcess);
+
 export default managerRouter;

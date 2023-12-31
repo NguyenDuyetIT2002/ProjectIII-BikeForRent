@@ -10,6 +10,7 @@ const managerSchema = mongoose.Schema({
     type: String,
     required: true,
   },
+  province: String,
   address: String,
   phone: {
     unique: true,

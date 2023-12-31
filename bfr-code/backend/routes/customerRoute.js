@@ -1,8 +1,6 @@
 import express from "express";
 import {
-  createCustomer,
   getAllCustomers,
-  banCustomer,
   rentBike,
   updateCustomerInfo,
   sendBanBikeRequest,
@@ -10,10 +8,8 @@ import {
 
 const customerRouter = express.Router();
 
-customerRouter.post("/createCustomer", createCustomer);
 customerRouter.get("/getAllCustomers", getAllCustomers);
-customerRouter.post("/banCustomer", banCustomer); // admin route - change later
 customerRouter.post("/rentBike", rentBike);
 customerRouter.post("/updateInfo", updateCustomerInfo);
-customerRouter.post("requestBanBike", sendBanBikeRequest);
+customerRouter.post("/requestBanBike", sendBanBikeRequest);
 export default customerRouter;
