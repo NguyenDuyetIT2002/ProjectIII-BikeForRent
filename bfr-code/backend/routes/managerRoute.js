@@ -8,6 +8,7 @@ import {
   getAllPendingOrdersByManagerId,
   acceptOrder,
   completeOrderProcess,
+  getAllAcceptedOrdersByManagerId,
 } from "../controller/managerApi.js";
 
 const managerRouter = express.Router();
@@ -35,6 +36,11 @@ managerRouter.get(
 
 // Accept Order
 managerRouter.post("/acceptOrder/:id", acceptOrder);
+
+managerRouter.get(
+  "/getAcceptedOrdersBy/:manager_id",
+  getAllAcceptedOrdersByManagerId
+);
 
 // Complete Order Process
 managerRouter.post("/completeOrder/:id", completeOrderProcess);

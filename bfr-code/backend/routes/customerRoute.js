@@ -10,6 +10,6 @@ const customerRouter = express.Router();
 
 customerRouter.get("/getAllCustomers", getAllCustomers);
 customerRouter.post("/rentBike", rentBike);
-customerRouter.post("/updateInfo", updateCustomerInfo);
+customerRouter.put("/updateInfo/:id", updateCustomerInfo);
 customerRouter.post("/requestBanBike", sendBanBikeRequest);
 export default customerRouter;
