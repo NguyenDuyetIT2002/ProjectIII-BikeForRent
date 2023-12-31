@@ -55,25 +55,6 @@ export const getAllCustomers = async (req, res) => {
   }
 };
 
-// ban user
-export const banCustomer = async (req, res) => {
-  const { customerId } = req.body;
-  try {
-    const customer = await customerModel.findById(customerId);
-
-    if (!customer) {
-      return handleNotFound(res, "Customer");
-    }
-
-    await customerModel.findByIdAndUpdate(customerId, { status: "ban" });
-
-    return handleSuccess(res, "Customer account successfully banned");
-  } catch (error) {
-    console.error(error);
-    return handleServerError(res);
-  }
-};
-
 export const updateCustomerInfo = async (req, res) => {
   const { customer_id, name, phone, address } = req.body;
   try {
@@ -110,6 +91,16 @@ export const rentBike = async (req, res) => {
     const { bike_id, price, startTime, endTime, customer_id, orderTime } =
       req.body;
 
+    // Check if the customer has already rented a bike
+    const customer = await customerModel.findById(customer_id);
+    if (customer.did_rented) {
+      return handleBadRequest(
+        res,
+        "You have ordered another bike, please complete the order first"
+      );
+    }
+
+    // Continue with the existing logic to check bike existence and create an order
     const bikeExists = await bikeModel.exists({ _id: bike_id });
 
     if (!bikeExists) {
@@ -128,6 +119,9 @@ export const rentBike = async (req, res) => {
     });
 
     const savedOrder = await newOrder.save();
+
+    // Update the did_rented field for the customer
+    await customerModel.findByIdAndUpdate(customer_id, { did_rented: true });
 
     return handleSuccess(res, "Order created successfully", savedOrder);
   } catch (error) {

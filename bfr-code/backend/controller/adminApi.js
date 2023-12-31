@@ -1,5 +1,6 @@
 import { managerModel } from "../model/manager.js";
 import { managerSRModel } from "../model/managerSR.js";
+import customerModel from "../model/customer.js";
 import {
   handleServerError,
   handleSuccess,
@@ -22,6 +23,7 @@ export const createManager = async (req, res) => {
     const newManager = new managerModel({
       userName: managerSR.userName,
       passWord: managerSR.passWord,
+      province: managerSR.province,
       address: managerSR.address,
       phone: managerSR.phone,
       identify_code: managerSR.identify_code,
@@ -35,6 +37,24 @@ export const createManager = async (req, res) => {
     await managerSRModel.findByIdAndDelete(request_id);
 
     return handleSuccess(res, "Manager created successfully", savingManager);
+  } catch (error) {
+    console.error(error);
+    return handleServerError(res);
+  }
+};
+
+export const banCustomer = async (req, res) => {
+  const { customerId } = req.body;
+  try {
+    const customer = await customerModel.findById(customerId);
+
+    if (!customer) {
+      return handleNotFound(res, "Customer");
+    }
+
+    await customerModel.findByIdAndUpdate(customerId, { status: "ban" });
+
+    return handleSuccess(res, "Customer account successfully banned");
   } catch (error) {
     console.error(error);
     return handleServerError(res);

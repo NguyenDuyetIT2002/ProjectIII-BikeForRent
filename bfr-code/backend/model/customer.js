@@ -16,6 +16,10 @@ const customerSchema = mongoose.Schema({
     type: String,
     default: "active",
   },
+  did_rented: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 const customerModel = mongoose.model("customer", customerSchema);
