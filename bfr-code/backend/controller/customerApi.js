@@ -11,39 +11,6 @@ import { checkDuplicateField } from "../utils/checkDuplicatedField.js";
 import { bikeModel } from "../model/bike.js";
 import { orderModel } from "../model/order.js";
 
-// create
-export const createCustomer = async (req, res) => {
-  try {
-    const { userName, passWord, address, phone, name } = req.body;
-
-    // Check for duplicate username
-    if (await checkDuplicateField(customerModel, "userName", userName)) {
-      return handleDuplicateField(res, "Username already exists");
-    }
-
-    // Check for duplicate phone number
-    if (await checkDuplicateField(customerModel, "phone", phone)) {
-      return handleDuplicateField(res, "Phone number already exists");
-    }
-
-    // If no duplicates, proceed with creating the user
-    const newCustomer = new customerModel({
-      userName,
-      passWord,
-      name,
-      address,
-      phone,
-    });
-
-    const savingCustomer = await newCustomer.save();
-
-    return handleSuccess(res, "Customer created successfully", savingCustomer);
-  } catch (error) {
-    console.error(error);
-    return handleServerError(res);
-  }
-};
-
 // get
 export const getAllCustomers = async (req, res) => {
   try {
@@ -56,10 +23,11 @@ export const getAllCustomers = async (req, res) => {
 };
 
 export const updateCustomerInfo = async (req, res) => {
-  const { customer_id, name, phone, address } = req.body;
+  const { id } = req.params;
+  const { name, phone, address } = req.body;
   try {
     const updatedCustomer = await customerModel.findByIdAndUpdate(
-      customer_id,
+      id,
       {
         $set: {
           name: name || undefined,

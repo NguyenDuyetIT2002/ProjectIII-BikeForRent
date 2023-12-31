@@ -1,0 +1,498 @@
+{
+	"info": {
+		"_postman_id": "fb10ea94-0ef4-4295-8518-05a5633f0623",
+		"name": "BFR-System",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "31988316"
+	},
+	"item": [
+		{
+			"name": "customer",
+			"item": [
+				{
+					"name": "getAllCustomer",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NTkxMjRjNjU5ODhhNGY1MThiZjY5NTUiLCJpYXQiOjE3MDQwMTA5NjcsImV4cCI6MTcwNDAxNDU2N30.Ngo5RmimASD3P71lOvEs_1oRb4NBiZkH7vw-SbWNkZE",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/customer/getAllCustomers",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"customer",
+								"getAllCustomers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateInfo",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NTkxMmY5OGQ0ODk5NzgxYjQ4ODMyMjgiLCJpYXQiOjE3MDQwMTc1ODIsImV4cCI6MTcwNDAyMTE4Mn0.9_gg6rdUws5FHXDdc7Uq-zHakQb3zRrWpy6mXKS6VU4",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Duyệt\",\r\n    \"phone\": \"0122345678\",\r\n    \"address\": \"Số 2 Hải Phòng\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/customer/updateInfo/65912f98d4899781b4883228",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"customer",
+								"updateInfo",
+								"65912f98d4899781b4883228"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "rentBike",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NTkxMmY5OGQ0ODk5NzgxYjQ4ODMyMjgiLCJpYXQiOjE3MDQwMTc1ODIsImV4cCI6MTcwNDAyMTE4Mn0.9_gg6rdUws5FHXDdc7Uq-zHakQb3zRrWpy6mXKS6VU4",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"bike_id\": \"65912a4fbbc8a3e73ebdff56\",\r\n  \"price\": 100, // Assuming the rental price is 100 (change as needed)\r\n  \"startTime\": \"2023-12-31T10:00:00.000Z\", // Set to the desired start time\r\n  \"endTime\": \"2024-01-01T10:00:00.000Z\", // Set to the desired end time\r\n  \"customer_id\": \"65912f98d4899781b4883228\",\r\n  \"orderTime\": \"2023-12-31T09:30:00.000Z\" // Set to the order creation time\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/customer/rentBike",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"customer",
+								"rentBike"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "manager",
+			"item": [
+				{
+					"name": "createBike",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NTkxMjVmMzVhNTJhMzg1MzdjMmM5OTgiLCJpYXQiOjE3MDQwMTIyNDYsImV4cCI6MTcwNDAxNTg0Nn0.LrGCkceZrGQwCBqXMyNrlFQQvlxIt9u0fFSYH5tGNLM",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Mountain Bike\",\r\n  \"type\": \"Off-Road\",\r\n  \"price\": 500,\r\n  \"owner_id\": \"659125f35a52a38537c2c998\",\r\n  \"image\": \"bike_image_url\",\r\n  \"description\": \"A great bike for off-road adventures.\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/manager/createBike",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"manager",
+								"createBike"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getBikes",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"description": "##### Nhớ cho id manager cần lấy tất cả xe ra, ví dụ:\n\n[http://localhost:8080/manager/getBikes/659125f35a52a38537c2c998](http://localhost:8080/manager/getBikes/659125f35a52a38537c2c998)\n\n##### Ở đây \"659125f35a52a38537c2c998\" chính là manager_id"
+					},
+					"response": []
+				},
+				{
+					"name": "updateBikeInfo",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NTkxMjVmMzVhNTJhMzg1MzdjMmM5OTgiLCJpYXQiOjE3MDQwMTU5MjMsImV4cCI6MTcwNDAxOTUyM30.t_rKxbRS7pqaERgGFfno9FaBFMx4e8n2Bg_CNlIryD0",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"New Bike Name\",\r\n    \"type\": \"Mountain\",\r\n    \"price\": 150,\r\n    \"image\": \"image_url_here\",\r\n    \"description\": \"Updated description here\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/manager/updateBikeInfo/65912a4fbbc8a3e73ebdff56",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"manager",
+								"updateBikeInfo",
+								"65912a4fbbc8a3e73ebdff56"
+							]
+						},
+						"description": "##### Nhớ cho id của bike cần update thông tin, ví dụ:\n\n[http://localhost:8080/manager/updateBikeInfo/65912a4fbbc8a3e73ebdff56<br>](http://localhost:8080/manager/getBikes/659125f35a52a38537c2c998)\n\n##### Ở đây \"[65912a4fbbc8a3e73ebdff56](http://localhost:8080/manager/getBikes/659125f35a52a38537c2c998)\" chính là bike_id"
+					},
+					"response": []
+				},
+				{
+					"name": "New Request",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NTkxMjVmMzVhNTJhMzg1MzdjMmM5OTgiLCJpYXQiOjE3MDQwMTU5MjMsImV4cCI6MTcwNDAxOTUyM30.t_rKxbRS7pqaERgGFfno9FaBFMx4e8n2Bg_CNlIryD0",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/manager/deleteBike/659130b849935125d7f263d3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"manager",
+								"deleteBike",
+								"659130b849935125d7f263d3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getOrders",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NTkxMjVmMzVhNTJhMzg1MzdjMmM5OTgiLCJpYXQiOjE3MDQwMTU5MjMsImV4cCI6MTcwNDAxOTUyM30.t_rKxbRS7pqaERgGFfno9FaBFMx4e8n2Bg_CNlIryD0",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/manager/getOrdersBy/659125f35a52a38537c2c998",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"manager",
+								"getOrdersBy",
+								"659125f35a52a38537c2c998"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getPendingOrders",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "New Request",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NTkxMjVmMzVhNTJhMzg1MzdjMmM5OTgiLCJpYXQiOjE3MDQwMTU5MjMsImV4cCI6MTcwNDAxOTUyM30.t_rKxbRS7pqaERgGFfno9FaBFMx4e8n2Bg_CNlIryD0",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/manager/acceptOrder/65913f9d74b733fd3bc8f8d6",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"manager",
+								"acceptOrder",
+								"65913f9d74b733fd3bc8f8d6"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getAcceptedOrders",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "completeOrder",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				}
+			],
+			"description": "- Test for api related to manager\n- Note for param in url will include model_id for example : [http://localhost:8080/manager/getBikes/659125f35a52a38537c2c998](http://localhost:8080/manager/getBikes/659125f35a52a38537c2c998)"
+		},
+		{
+			"name": "admin",
+			"item": [
+				{
+					"name": "createManager",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"request_id\": \"659125e25a52a38537c2c995\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/admin/createManager",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"admin",
+								"createManager"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "auth",
+			"item": [
+				{
+					"name": "customerLogin",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userName\": \"test1\",\r\n    \"passWord\": \"123456\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/auth/customerLogin",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"auth",
+								"customerLogin"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "customerSignup",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userName\": \"test1\",\r\n    \"passWord\": \"123456\",\r\n    \"address\" : \"Số 1 Hải Phòng\",\r\n    \"phone\": \"0123456789\",\r\n    \"name\": \"Test001\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/auth/customerSignup",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"auth",
+								"customerSignup"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "managerSignup",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userName\": \"manager3\",\r\n    \"passWord\": \"123456\",\r\n    \"province\": \"Phương Mai\",\r\n    \"address\": \"Số 3 Phương Mai, Đống Đa, Hà Nội\",\r\n    \"phone\": \"0124522219\",\r\n    \"identify_code\":\"identfy_coe\",\r\n    \"license\": \"lice1nse\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/auth/managerSignup",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"auth",
+								"managerSignup"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "managerLogin",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userName\": \"manager3\",\r\n    \"passWord\": \"123456\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/auth/managerLogin",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"auth",
+								"managerLogin"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "api liên quan đến xác thực phân quyền, ví dụ đăng ký, đăng nhập lấy token. Lấy được token thì ở các request của các actor tương ứng, chỗ request chọn vào Authorization, chỗ type chọn Bearer Token gán vô không là lỗi"
+		}
+	]
+}

@@ -1,5 +1,5 @@
 import { managerModel } from "../model/manager.js";
-import { managerSRModel } from "../model/managerSR.js";
+import customerModel from "../model/customer.js";
 import { bikeModel } from "../model/bike.js";
 import { orderModel } from "../model/order.js";
 import {
@@ -93,7 +93,7 @@ export const deleteBike = async (req, res) => {
       return handleNotFound(res, "Bike not found");
     }
 
-    await bikeModel.findByIdAndDelete(bikeId);
+    await bikeModel.findByIdAndDelete(id);
     return handleSuccess(res, "Bike deleted successfully");
   } catch (error) {
     console.error(error);
@@ -106,7 +106,15 @@ export const getAllOrdersByManagerId = async (req, res) => {
   try {
     const { manager_id } = req.params;
 
-    const orders = await orderModel.find({ "bike_id.owner_id": manager_id });
+    // Find all bikes owned by the manager
+    const bikes = await bikeModel.find({ owner_id: manager_id });
+
+    // Extract bike IDs
+    const bikeIds = bikes.map((bike) => bike._id);
+
+    // Find orders with these bike IDs
+    const orders = await orderModel.find({ bike_id: { $in: bikeIds } });
+
     return handleSuccess(res, "Orders retrieved successfully", orders);
   } catch (error) {
     console.error(error);
@@ -119,8 +127,15 @@ export const getAllPendingOrdersByManagerId = async (req, res) => {
   try {
     const { manager_id } = req.params;
 
+    // Find all bike IDs owned by the manager
+    const bikes = await bikeModel.find({ owner_id: manager_id });
+
+    // Extract bike IDs
+    const bikeIds = bikes.map((bike) => bike._id);
+
+    // Find pending orders for these bike IDs
     const pendingOrders = await orderModel.find({
-      "bike_id.owner_id": manager_id,
+      bike_id: { $in: bikeIds },
       status: "pending",
     });
 
@@ -134,7 +149,6 @@ export const getAllPendingOrdersByManagerId = async (req, res) => {
     return handleServerError(res);
   }
 };
-
 // Accept Order
 export const acceptOrder = async (req, res) => {
   try {
@@ -154,6 +168,33 @@ export const acceptOrder = async (req, res) => {
     });
 
     return handleSuccess(res, "Order accepted successfully", updatedOrder);
+  } catch (error) {
+    console.error(error);
+    return handleServerError(res);
+  }
+};
+
+export const getAllAcceptedOrdersByManagerId = async (req, res) => {
+  try {
+    const { manager_id } = req.params;
+
+    // Find all bike IDs owned by the manager
+    const bikes = await bikeModel.find({ owner_id: manager_id });
+
+    // Extract bike IDs
+    const bikeIds = bikes.map((bike) => bike._id);
+
+    // Find pending orders for these bike IDs
+    const pendingOrders = await orderModel.find({
+      bike_id: { $in: bikeIds },
+      status: "accepted",
+    });
+
+    return handleSuccess(
+      res,
+      "Accepted orders retrieved successfully",
+      pendingOrders
+    );
   } catch (error) {
     console.error(error);
     return handleServerError(res);
