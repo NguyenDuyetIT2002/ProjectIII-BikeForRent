@@ -2,6 +2,7 @@
 	"info": {
 		"_postman_id": "fb10ea94-0ef4-4295-8518-05a5633f0623",
 		"name": "BFR-System",
+		"description": "Luồng chính:\n\n\\+ customerSignup => customerLogin(get token) => customer api\n\n\\+ managerSignup => createManager => managerLogin(get token) => manager api\n\n\\+ rentBike(if bikes is null, createBike) => getPendingOrders => acceptOrder => getAcceptedOrders => completeOrder",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "31988316"
 	},
@@ -219,7 +220,7 @@
 					"response": []
 				},
 				{
-					"name": "New Request",
+					"name": "deleteBike",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -234,7 +235,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/manager/deleteBike/659130b849935125d7f263d3",
+							"raw": "http://localhost:8080/manager/deleteBike/65913e249f1736e061e0c95b",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -243,7 +244,7 @@
 							"path": [
 								"manager",
 								"deleteBike",
-								"659130b849935125d7f263d3"
+								"65913e249f1736e061e0c95b"
 							]
 						}
 					},
@@ -289,7 +290,7 @@
 					"response": []
 				},
 				{
-					"name": "New Request",
+					"name": "acceptOrder",
 					"request": {
 						"auth": {
 							"type": "bearer",
