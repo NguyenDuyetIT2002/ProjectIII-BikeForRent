@@ -10,12 +10,19 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import ManagerHomepage from "./pages/manager/homepage/ManagerHomepage.js";
+import CustomerHomePage from "./pages/customer/homepage/homepage.js";
+import CustomerProfile from "./pages/customer/profile/profile.js";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />}>
-      <Route path="managerhomepage" element={<ManagerHomepage />} />
-      <Route path="managerhomepage" element={<ManagerHomepage />} />
+      <Route path="manager">
+        <Route path="homepage" element={<ManagerHomepage />} />
+      </Route>
+      <Route path="customer">
+        <Route path="homepage" element={<CustomerHomePage />} />
+        <Route path="profile" element={<CustomerProfile />} />
+      </Route>
     </Route>
   )
 );
