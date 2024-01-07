@@ -9,15 +9,54 @@ import {
   Route,
   RouterProvider,
 } from "react-router-dom";
-import HomePageAdmin from "./pages/admin/homepage/homepage";
+import List from "./pages/admin/pages/list/List";
+import Single from "./pages/admin/pages/single/Single";
+import New from "./pages/admin/pages/new/New";
+import { userInputs } from "./pages/admin/formSource.js";
+import HomePageAdmin from "./pages/admin/pages/home/Home.jsx"
 import ManagerHomepage from "./pages/manager/homepage/ManagerHomepage.js";
+import ListBanningBike from "./pages/admin/pages/list/ListBanningBike.jsx";
+import ListBanningUsers from "./pages/admin/pages/list/ListBanningUsers.jsx";
+import ListOpenningBike from "./pages/admin/pages/list/ListOpenningBike.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />}>
-      <Route path="admin">
-        <Route path="homepage" element={<HomePageAdmin />} />
-      </Route>
+      <Route path="/admin">
+            <Route path="homepage" element={<HomePageAdmin />} />
+            <Route path="acceptmanager">
+              <Route index element={<List />} />
+              <Route path=":userId" element={<Single />} />
+              <Route
+                path="new"
+                element={<New inputs={userInputs} title="Accept Manager Account" />}
+              />
+            </Route>
+            <Route path="banningbike">
+              <Route index element={<ListBanningBike />} />
+              <Route path=":userId" element={<Single />} />
+              <Route
+                path="new"
+                element={<New inputs={userInputs} title="Banning Bike" />}
+              />
+            </Route>
+            <Route path="banningusers">
+              <Route index element={<ListBanningUsers />} />
+              <Route path=":userId" element={<Single />} />
+              <Route
+                path="new"
+                element={<New inputs={userInputs} title="Banning Users" />}
+              />
+            </Route>
+            <Route path="openningbike">
+              <Route index element={<ListOpenningBike />} />
+              <Route path=":userId" element={<Single />} />
+              <Route
+                path="new"
+                element={<New inputs={userInputs} title="Openning Bike" />}
+              />
+            </Route>
+          </Route>
       <Route path="manager">
         <Route path="homepage" element={<ManagerHomepage />} />
       </Route>
