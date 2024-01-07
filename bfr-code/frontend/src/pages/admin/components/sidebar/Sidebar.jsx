@@ -3,6 +3,7 @@ import DashboardIcon from "@mui/icons-material/Dashboard";
 import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
 import PersonAddDisabledIcon from '@mui/icons-material/PersonAddDisabled';
 import TwoWheelerOutlinedIcon from '@mui/icons-material/TwoWheelerOutlined';
+import DirectionsBikeIcon from '@mui/icons-material/DirectionsBike';
 import BlockIcon from '@mui/icons-material/Block';
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
@@ -47,7 +48,7 @@ const Sidebar = () => {
           </Link>
           <Link to="/admin/openningbike" style={{ textDecoration: "none" }}>
             <li>
-              <TwoWheelerOutlinedIcon className="icon" />
+              <DirectionsBikeIcon className="icon" />
               <span>Opnening Bike</span>
             </li>
           </Link>
