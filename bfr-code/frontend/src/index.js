@@ -15,13 +15,19 @@ import New from "./pages/admin/pages/new/New";
 import { userInputs } from "./pages/admin/formSource.js";
 import HomePageAdmin from "./pages/admin/pages/home/Home.jsx"
 import ManagerHomepage from "./pages/manager/homepage/ManagerHomepage.js";
+
 import ListBanningBike from "./pages/admin/pages/list/ListBanningBike.jsx";
 import ListBanningUsers from "./pages/admin/pages/list/ListBanningUsers.jsx";
 import ListOpenningBike from "./pages/admin/pages/list/ListOpenningBike.jsx";
+=======
+import CustomerHomePage from "./pages/customer/homepage/homepage.js";
+import CustomerProfile from "./pages/customer/profile/profile.js";
+
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />}>
+
       <Route path="/admin">
             <Route path="homepage" element={<HomePageAdmin />} />
             <Route path="acceptmanager">
@@ -57,9 +63,15 @@ const router = createBrowserRouter(
               />
             </Route>
           </Route>
+
       <Route path="manager">
         <Route path="homepage" element={<ManagerHomepage />} />
       </Route>
+      <Route path="customer">
+        <Route path="homepage" element={<CustomerHomePage />} />
+        <Route path="profile" element={<CustomerProfile />} />
+      </Route>
+
     </Route>
   )
 );

@@ -1,0 +1,8 @@
+/* Trong file CSS hoặc SCSS của bạn */
+.flex.justify-end button {
+    margin-top: 1rem; /* Thêm margin trên nút */
+    margin-right: 3rem; /* Thêm margin bên phải nút */
+    padding: 1rem 2rem; /* Tăng giá trị padding */
+    font-size: 1.2rem; /* Tăng kích thước font */
+  }
+  
