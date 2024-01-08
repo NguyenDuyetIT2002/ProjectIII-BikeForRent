@@ -1,14 +1,13 @@
 import express from "express";
-import { createCustomer, getAllCustomers } from "./controller/customerApi.js";
-import { handleConnectDB } from "./controller/dbController.js";
-import { customerLogin } from "./controller/loginApi.js";
-import { banCustomer } from "./controller/customerApi.js";
-import { createManager } from "./controller/managerApi.js";
-import { createBike } from "./controller/bikeApi.js";
-import { createManagerSR } from "./controller/managerSRApi.js";
+import { handleConnectDB } from "./config/mongoConfig.js";
+import customerRouter from "./routes/customerRoute.js";
+import managerRouter from "./routes/managerRoute.js";
+import adminRouter from "./routes/adminRoute.js";
+import authRouter from "./routes/authRoute.js";
+import { verifyToken } from "./middleware/authMiddleware.js";
 
 const app = express();
-const port = 3000;
+const port = 8080;
 handleConnectDB();
 
 // Cấu hình Body Parser Middleware
@@ -19,20 +18,16 @@ app.get("/", (req, res) => {
   res.send("Hello World!");
 });
 
-// customer endpoint
-app.post("/api/customer/createCustomer", createCustomer);
-app.get("/api/customer/getAllCustomers", getAllCustomers);
-app.post("/api/customer/banCustomer", banCustomer);
+// Use customer routes
+app.use("/customer", verifyToken, customerRouter);
 
-//use login api endpoint
-app.post("/api/login/customer", customerLogin);
+// Use manager routes
+app.use("/manager", verifyToken, managerRouter);
 
-//manager api endpoint
-app.post("/api/manager/createManager", createManager);
-app.post("/api/manager/createmanagerSR", createManagerSR);
+// user admin routes
+app.use("/admin", adminRouter);
 
-//bike api endpoint
-app.post("/api/bike/createBike", createBike);
+app.use("/auth", authRouter);
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
