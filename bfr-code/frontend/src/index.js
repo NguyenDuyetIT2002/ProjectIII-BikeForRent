@@ -19,7 +19,7 @@ import ManagerHomepage from "./pages/manager/homepage/ManagerHomepage.js";
 import ListBanningBike from "./pages/admin/pages/list/ListBanningBike.jsx";
 import ListBanningUsers from "./pages/admin/pages/list/ListBanningUsers.jsx";
 import ListOpenningBike from "./pages/admin/pages/list/ListOpenningBike.jsx";
-=======
+
 import CustomerHomePage from "./pages/customer/homepage/homepage.js";
 import CustomerProfile from "./pages/customer/profile/profile.js";
 
