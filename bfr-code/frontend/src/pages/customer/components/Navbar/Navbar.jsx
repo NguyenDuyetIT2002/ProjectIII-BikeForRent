@@ -21,11 +21,9 @@ const Navbar = () => {
         />
         {isDropdownOpen && (
           <div className="dropdown">
-            <Link to="/customer/profile" style={{ textDecoration: "none" }}>
+            <Link to="/customer/features" style={{ textDecoration: "none" }}>
                 <div className="dropdown-item">Thông tin cá nhân</div>
             </Link>
-            <div className="dropdown-item">Xem danh sách xe đã thuê</div>
-            <div className="dropdown-item">Tố cáo xe đã thuê</div>
             <div className="divider"></div>
             <div className="dropdown-item">Log out</div>
           </div>
