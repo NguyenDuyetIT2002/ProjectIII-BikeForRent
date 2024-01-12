@@ -20,6 +20,7 @@
     "react-scripts": "^5.0.1",
     "recharts": "^2.10.3",
     "simplebar-react": "^3.2.4",
+    "styled-components": "^6.1.8",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
