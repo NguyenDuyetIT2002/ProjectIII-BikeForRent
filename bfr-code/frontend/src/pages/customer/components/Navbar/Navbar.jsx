@@ -22,7 +22,7 @@ const Navbar = () => {
         {isDropdownOpen && (
           <div className="dropdown">
             <Link to="/customer/features" style={{ textDecoration: "none" }}>
-                <div className="dropdown-item">Thông tin cá nhân</div>
+                <div className="dropdown-item">Tính năng</div>
             </Link>
             <div className="divider"></div>
             <div className="dropdown-item">Log out</div>
