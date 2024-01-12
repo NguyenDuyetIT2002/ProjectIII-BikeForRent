@@ -13,14 +13,19 @@ import List from "./pages/admin/pages/list/List";
 import Single from "./pages/admin/pages/single/Single";
 import New from "./pages/admin/pages/new/New";
 import { userInputs } from "./pages/admin/formSource.js";
+
 import HomePageAdmin from "./pages/admin/pages/home/Home.jsx";
-import ManagerHomepage from "./pages/manager/homepage/ManagerHomepage.js";
+
+import ManagerHomepage from "./pages/manager/homepage/Homepage.js";
+import ManagerAddbike from "./pages/manager/addbike/Addbike.js";
 
 import ListBanningBike from "./pages/admin/pages/list/ListBanningBike.jsx";
 import ListBanningUsers from "./pages/admin/pages/list/ListBanningUsers.jsx";
 import ListOpenningBike from "./pages/admin/pages/list/ListOpenningBike.jsx";
-import CustomerHomePage from "./pages/customer/homepage/homepage.js";
-import CustomerProfile from "./pages/customer/profile/profile.js";
+
+import HomePageCustomer from "./pages/customer/pages/homepage/home.jsx";
+import CustomerProfile from "./pages/customer/pages/profile/profile.jsx";
+import ChooseLocation from "./pages/customer/pages/ChooseLocation/ChooseLocation.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -63,10 +68,12 @@ const router = createBrowserRouter(
 
       <Route path="manager">
         <Route path="homepage" element={<ManagerHomepage />} />
+        <Route path="addbike" element={<ManagerAddbike />} />
       </Route>
       <Route path="customer">
-        <Route path="homepage" element={<CustomerHomePage />} />
+        <Route path="homepage" element={<HomePageCustomer />} />
         <Route path="profile" element={<CustomerProfile />} />
+        <Route path="chooselocation" element={<ChooseLocation />} />
       </Route>
     </Route>
   )
@@ -74,9 +81,9 @@ const router = createBrowserRouter(
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <React.StrictMode>
-    <RouterProvider router={router} />
-  </React.StrictMode>
+  // <React.StrictMode>
+  <RouterProvider router={router} />
+  // </React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function

@@ -1,4 +1,5 @@
 import express from "express";
+import cors from "cors";
 import { handleConnectDB } from "./config/mongoConfig.js";
 import customerRouter from "./routes/customerRoute.js";
 import managerRouter from "./routes/managerRoute.js";
@@ -11,6 +12,7 @@ const port = 8080;
 handleConnectDB();
 
 // Cấu hình Body Parser Middleware
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
