@@ -1,0 +1,39 @@
+/* ChooseLocation.css */
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 90vh;
+  }
+  
+  .dropdown-group {
+    display: flex; /* Hiển thị các thành phần bên trong theo chiều ngang */
+    margin-bottom: 20px;
+  }
+  
+  select {
+    padding: 10px;
+    margin: 5px;
+    border-radius: 5px;
+  }
+  
+  .next-button {
+    background-color: #000;
+    color: #fff;
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    position: absolute;
+    top: 75%;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  
+  .next-button:hover {
+    background-color: #333;
+  }
+  

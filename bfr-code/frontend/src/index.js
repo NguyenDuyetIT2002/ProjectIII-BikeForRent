@@ -22,8 +22,9 @@ import ListBanningBike from "./pages/admin/pages/list/ListBanningBike.jsx";
 import ListBanningUsers from "./pages/admin/pages/list/ListBanningUsers.jsx";
 import ListOpenningBike from "./pages/admin/pages/list/ListOpenningBike.jsx";
 
-import CustomerHomePage from "./pages/customer/homepage/homepage.js";
-import CustomerProfile from "./pages/customer/profile/profile.js";
+import HomePageCustomer from "./pages/customer/pages/homepage/home.jsx";
+import CustomerProfile from "./pages/customer/pages/profile/profile.jsx";
+import ChooseLocation from "./pages/customer/pages/ChooseLocation/ChooseLocation.jsx";
 
 
 const router = createBrowserRouter(
@@ -72,8 +73,9 @@ const router = createBrowserRouter(
 
       </Route>
       <Route path="customer">
-        <Route path="homepage" element={<CustomerHomePage />} />
+        <Route path="homepage" element={<HomePageCustomer />} />
         <Route path="profile" element={<CustomerProfile />} />
+        <Route path="chooselocation" element={<ChooseLocation/>} />
       </Route>
 
     </Route>
