@@ -23,6 +23,7 @@ import ListOpenningBike from "./pages/admin/pages/list/ListOpenningBike.jsx";
 import HomePageCustomer from "./pages/customer/pages/homepage/home.jsx";
 import CustomerProfile from "./pages/customer/pages/profile/profile.jsx";
 import ChooseLocation from "./pages/customer/pages/ChooseLocation/ChooseLocation.jsx";
+import FeaturesCustomer from "./pages/customer/pages/Features/Features.jsx";
 
 
 const router = createBrowserRouter(
@@ -72,6 +73,7 @@ const router = createBrowserRouter(
         <Route path="homepage" element={<HomePageCustomer />} />
         <Route path="profile" element={<CustomerProfile />} />
         <Route path="chooselocation" element={<ChooseLocation/>} />
+        <Route path="features" element={<FeaturesCustomer />} />
       </Route>
 
     </Route>
