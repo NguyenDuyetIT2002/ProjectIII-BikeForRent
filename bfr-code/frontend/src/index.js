@@ -14,7 +14,9 @@ import Single from "./pages/admin/pages/single/Single";
 import New from "./pages/admin/pages/new/New";
 import { userInputs } from "./pages/admin/formSource.js";
 import HomePageAdmin from "./pages/admin/pages/home/Home.jsx"
-import ManagerHomepage from "./pages/manager/homepage/ManagerHomepage.js";
+
+import ManagerHomepage from "./pages/manager/homepage/Homepage.js";
+import ManagerAddbike from "./pages/manager/addbike/Addbike.js";
 
 import ListBanningBike from "./pages/admin/pages/list/ListBanningBike.jsx";
 import ListBanningUsers from "./pages/admin/pages/list/ListBanningUsers.jsx";
@@ -66,6 +68,8 @@ const router = createBrowserRouter(
 
       <Route path="manager">
         <Route path="homepage" element={<ManagerHomepage />} />
+        <Route path="addbike" element={<ManagerAddbike />} />
+
       </Route>
       <Route path="customer">
         <Route path="homepage" element={<CustomerHomePage />} />
@@ -78,9 +82,9 @@ const router = createBrowserRouter(
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <React.StrictMode>
+  // <React.StrictMode>
     <RouterProvider router={router} />
-  </React.StrictMode>
+  // </React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function
