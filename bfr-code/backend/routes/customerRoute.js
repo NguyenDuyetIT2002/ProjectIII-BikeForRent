@@ -4,6 +4,9 @@ import {
   rentBike,
   updateCustomerInfo,
   sendBanBikeRequest,
+  getYourRentedBike,
+  getAllBike,
+  getStoreByProvince,
 } from "../controller/customerApi.js";
 
 const customerRouter = express.Router();
@@ -11,5 +14,11 @@ const customerRouter = express.Router();
 customerRouter.get("/getAllCustomers", getAllCustomers);
 customerRouter.post("/rentBike", rentBike);
 customerRouter.put("/updateInfo/:id", updateCustomerInfo);
-customerRouter.post("/requestBanBike", sendBanBikeRequest);
+customerRouter.get("/getYourRentedBike/:customer_id", getYourRentedBike);
+customerRouter.post(
+  "/requestBanBike/:customer_id/:bike_id",
+  sendBanBikeRequest
+);
+customerRouter.get("/getStoreByProvince/:province", getStoreByProvince);
+customerRouter.get("/getBikes/:id", getAllBike);
 export default customerRouter;

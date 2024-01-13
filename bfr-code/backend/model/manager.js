@@ -28,6 +28,10 @@ const managerSchema = mongoose.Schema({
     required: true,
   },
   name: String,
+  gmail: {
+    type: String,
+    required: true,
+  },
 });
 
 export const managerModel = mongoose.model("manager", managerSchema);

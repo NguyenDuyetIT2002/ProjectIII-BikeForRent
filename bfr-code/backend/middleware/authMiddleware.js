@@ -1,5 +1,6 @@
 import customerModel from "../model/customer.js";
 import { managerModel } from "../model/manager.js";
+import { adminModel } from "../model/admin.js";
 import jwt from "jsonwebtoken";
 
 export const verifyToken = async (req, res, next) => {
@@ -10,15 +11,14 @@ export const verifyToken = async (req, res, next) => {
     // Tìm kiếm người dùng trong các model
     const customer = await customerModel.findById(decoded.userId);
     const manager = await managerModel.findById(decoded.userId);
-    // Tìm kiếm trong adminModel nếu cần
+    const admin = await adminModel.findById(decoded.userId);
 
-    if (!customer && !manager) {
-      // Và kiểm tra admin nếu cần
+    if (!customer && !manager && !admin) {
       return res.status(401).json({ message: "Invalid Token" });
     }
 
     // Kiểm tra vai trò
-    const role = customer ? "customer" : "manager"; // Thêm 'admin' nếu cần
+    const role = customer ? "customer" : manager ? "manager" : "admin";
     req.user = {
       id: decoded.userId,
       role,

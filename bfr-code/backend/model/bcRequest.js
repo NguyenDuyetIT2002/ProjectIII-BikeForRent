@@ -8,4 +8,4 @@ const bcRequestSchema = mongoose.Schema({
   time: Date,
 });
 
-export const bcRequestModel = mongoose.model("bcrequest", bcRequestModel);
+export const bcRequestModel = mongoose.model("bcrequest", bcRequestSchema);

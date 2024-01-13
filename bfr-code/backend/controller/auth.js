@@ -6,11 +6,12 @@ import {
   handleNotFound,
   handleServerError,
   handleDuplicateField,
+  handleBannedCustomer,
 } from "../utils/handleResponse.js";
 import { checkDuplicateField } from "../utils/checkDuplicatedField.js";
 import { managerSRModel } from "../model/managerSR.js";
 import { managerModel } from "../model/manager.js";
-
+import { adminModel } from "../model/admin.js";
 dotenv.config();
 const { JWT_SECRETKEY } = process.env;
 
@@ -25,7 +26,7 @@ export const customerSignup = async (req, res) => {
     ]);
 
     if (duplicateFields.some((field) => field)) {
-      return handleDuplicateField(res, duplicateFields);
+      return handleDuplicateField(res, "Duplicate fields found");
     }
 
     // If no duplicates, proceed with creating the user
@@ -54,6 +55,10 @@ export const customerLogin = async (req, res) => {
       return handleNotFound(res, "Customer");
     }
 
+    if (customer.status === "ban") {
+      return handleBannedCustomer(res, "Customer account is banned");
+    }
+
     if (passWord != customer.passWord) {
       return handleNotFound(res, "Invalid credentials");
     }
@@ -78,16 +83,22 @@ export const managerSignup = async (req, res) => {
       phone,
       identify_code,
       license,
+      gmail,
     } = req.body;
 
     const duplicateFields = await Promise.all([
-      checkDuplicateField(managerSRModel, "userName", userName),
       checkDuplicateField(managerSRModel, "phone", phone),
+      checkDuplicateField(managerModel, "phone", phone),
       checkDuplicateField(managerSRModel, "license", license),
+      checkDuplicateField(managerModel, "license", license),
+      checkDuplicateField(managerSRModel, "gmail", gmail),
+      checkDuplicateField(managerModel, "gmail", gmail),
+      checkDuplicateField(managerSRModel, "identify_code", identify_code),
+      checkDuplicateField(managerModel, "identify_code", identify_code),
     ]);
 
     if (duplicateFields.some((field) => field)) {
-      return handleDuplicateField(res, duplicateFields);
+      return handleDuplicateField(res, "Duplicate fields found");
     }
 
     const newManagerSR = new managerSRModel({
@@ -98,6 +109,7 @@ export const managerSignup = async (req, res) => {
       phone,
       identify_code,
       license,
+      gmail,
     });
 
     const savingManagerSR = await newManagerSR.save();
@@ -129,6 +141,30 @@ export const managerLogin = async (req, res) => {
       expiresIn: "1h",
     });
     return handleSuccess(res, "Login succesfully", { token });
+  } catch (error) {
+    console.log(error);
+    return handleServerError(res);
+  }
+};
+
+export const adminLogin = async (req, res) => {
+  try {
+    const { gmail, password } = req.body;
+    const admin = await adminModel.findOne({ gmail });
+
+    if (!admin) {
+      return handleNotFound(res, "Admin");
+    }
+
+    if (password !== admin.password) {
+      return handleNotFound(res, "Invalid credentials");
+    }
+
+    const token = jwt.sign({ userId: admin._id }, JWT_SECRETKEY, {
+      expiresIn: "1h",
+    });
+
+    return handleSuccess(res, "Login successfully", { token });
   } catch (error) {
     console.log(error);
     return handleServerError(res);

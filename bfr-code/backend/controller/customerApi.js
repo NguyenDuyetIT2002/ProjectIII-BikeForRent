@@ -4,13 +4,11 @@ import {
   handleNotFound,
   handleServerError,
   handleSuccess,
-  handleDuplicateField,
   handleBadRequest,
 } from "../utils/handleResponse.js";
-import { checkDuplicateField } from "../utils/checkDuplicatedField.js";
 import { bikeModel } from "../model/bike.js";
 import { orderModel } from "../model/order.js";
-
+import { managerModel } from "../model/manager.js";
 // get
 export const getAllCustomers = async (req, res) => {
   try {
@@ -56,8 +54,7 @@ export const updateCustomerInfo = async (req, res) => {
 // rent bike
 export const rentBike = async (req, res) => {
   try {
-    const { bike_id, price, startTime, endTime, customer_id, orderTime } =
-      req.body;
+    const { bike_id, price, startTime, endTime, customer_id } = req.body;
 
     // Check if the customer has already rented a bike
     const customer = await customerModel.findById(customer_id);
@@ -83,7 +80,7 @@ export const rentBike = async (req, res) => {
       startTime,
       endTime,
       customer_id: customer_id,
-      orderTime,
+      orderTime: new Date(),
     });
 
     const savedOrder = await newOrder.save();
@@ -98,18 +95,32 @@ export const rentBike = async (req, res) => {
   }
 };
 
+// get your rented bike
+export const getYourRentedBike = async (req, res) => {
+  try {
+    const { customer_id } = req.params;
+
+    const rentedBike = await orderModel.find({ customer_id });
+
+    return handleSuccess(res, "Rented bike found successfully", rentedBike);
+  } catch (error) {
+    console.error(error);
+    return handleServerError(res);
+  }
+};
+
 // send ban bike request
 export const sendBanBikeRequest = async (req, res) => {
   try {
-    const { bikeId, customerId } = req.body;
+    const { customer_id, bike_id } = req.params;
 
-    const foundBike = await bikeModel.findById(bikeId);
+    const foundBike = await bikeModel.findById(bike_id);
 
     if (!foundBike) {
       return handleNotFound(res, "Bike");
     }
 
-    if (foundBike.report_By.includes(customerId)) {
+    if (foundBike.report_By.includes(customer_id)) {
       return handleBadRequest(
         res,
         "You have already sent a ban request for this bike"
@@ -117,11 +128,48 @@ export const sendBanBikeRequest = async (req, res) => {
     }
 
     foundBike.banRequestAmount += 1;
-    foundBike.report_By.push(customerId);
+    foundBike.report_By.push(customer_id);
 
     const updatedBike = await foundBike.save();
 
     return handleSuccess(res, "Ban request sent successfully", updatedBike);
+  } catch (error) {
+    console.error(error);
+    return handleServerError(res);
+  }
+};
+
+// get manager by province
+export const getStoreByProvince = async (req, res) => {
+  try {
+    const { province } = req.params;
+
+    const managers = await managerModel.find({ province });
+
+    return handleSuccess(res, "Managers retrieved successfully", managers);
+  } catch (error) {
+    console.error(error);
+    return handleServerError(res);
+  }
+};
+
+export const getAllBike = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    if (!id) {
+      return handleNotFound(res, "Owner ID is required");
+    }
+
+    const bikes = await bikeModel.find({
+      owner_id: id,
+      status: { $ne: "block" },
+    }); // Correct the query
+    if (bikes == null || bikes.length === 0) {
+      return handleNotFound(res, "No bikes found for the provided ID");
+    }
+
+    return handleSuccess(res, "Bikes retrieved successfully", bikes);
   } catch (error) {
     console.error(error);
     return handleServerError(res);
