@@ -2,7 +2,6 @@ import "./sidebar.scss";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
 import PersonAddDisabledIcon from '@mui/icons-material/PersonAddDisabled';
-import TwoWheelerOutlinedIcon from '@mui/icons-material/TwoWheelerOutlined';
 import DirectionsBikeIcon from '@mui/icons-material/DirectionsBike';
 import BlockIcon from '@mui/icons-material/Block';
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
@@ -14,14 +13,13 @@ const Sidebar = () => {
   return (
     <div className="sidebar">
       <div className="top">
-        <Link to="/" style={{ textDecoration: "none" }}>
+        <Link to="/admin/homepage" style={{ textDecoration: "none" }}>
           <span className="logo">Bike For Rent</span>
         </Link>
       </div>
       <hr />
       <div className="center">
         <ul>
-          <p className="title">MAIN</p>
           <Link to="/admin/homepage" style={{ textDecoration: "none" }}>
             <li>
               <DashboardIcon className="icon" />
@@ -49,7 +47,7 @@ const Sidebar = () => {
           <Link to="/admin/openningbike" style={{ textDecoration: "none" }}>
             <li>
               <DirectionsBikeIcon className="icon" />
-              <span>Opnening Bike</span>
+              <span>Openning Bike</span>
             </li>
           </Link>
           <li>
