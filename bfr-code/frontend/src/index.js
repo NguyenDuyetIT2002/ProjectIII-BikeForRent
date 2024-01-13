@@ -23,8 +23,8 @@ import ListBanningBike from "./pages/admin/pages/list/ListBanningBike.jsx";
 import ListBanningUsers from "./pages/admin/pages/list/ListBanningUsers.jsx";
 import ListOpenningBike from "./pages/admin/pages/list/ListOpenningBike.jsx";
 
-import HomePageCustomer from "./pages/customer/pages/homepage/home.jsx";
-import CustomerProfile from "./pages/customer/pages/profile/profile.jsx";
+import HomePageCustomer from "./pages/customer/pages/Homepage/home.jsx";
+import CustomerProfile from "./pages/customer/pages/Profile/profile.jsx";
 import ChooseLocation from "./pages/customer/pages/ChooseLocation/ChooseLocation.jsx";
 
 const router = createBrowserRouter(

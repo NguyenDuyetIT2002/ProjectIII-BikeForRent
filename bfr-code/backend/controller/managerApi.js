@@ -2,13 +2,12 @@ import { managerModel } from "../model/manager.js";
 import customerModel from "../model/customer.js";
 import { bikeModel } from "../model/bike.js";
 import { orderModel } from "../model/order.js";
+import { bcRequestModel } from "../model/bcRequest.js";
 import {
-  handleDuplicateField,
   handleServerError,
   handleSuccess,
   handleNotFound,
 } from "../utils/handleResponse.js";
-import { checkDuplicateField } from "../utils/checkDuplicatedField.js";
 
 // Create Bike
 export const createBike = async (req, res) => {
@@ -46,7 +45,10 @@ export const getAllBike = async (req, res) => {
       return handleNotFound(res, "Owner ID is required");
     }
 
-    const bikes = await bikeModel.find({ owner_id: id }); // Correct the query
+    const bikes = await bikeModel.find({
+      owner_id: id,
+      status: { $ne: "block" },
+    }); // Add status condition
     if (bikes == null || bikes.length === 0) {
       return handleNotFound(res, "No bikes found for the provided ID");
     }
@@ -58,7 +60,6 @@ export const getAllBike = async (req, res) => {
   }
 };
 
-// Update Bike Information
 // Update Bike Information
 export const updateBikeInformation = async (req, res) => {
   try {
@@ -221,6 +222,53 @@ export const completeOrderProcess = async (req, res) => {
     await orderModel.findByIdAndDelete(id);
 
     return handleSuccess(res, "Order process completed successfully");
+  } catch (error) {
+    console.error(error);
+    return handleServerError(res);
+  }
+};
+
+// Get All Latest Incomplete Orders
+export const getAllLatestIncompleteOrders = async (req, res) => {
+  try {
+    const { managerId } = req.params; // Assuming managerId is passed as a parameter
+
+    const serverTime = new Date();
+    const endTimeThreshold = new Date(
+      serverTime.getTime() - 3 * 60 * 60 * 1000
+    );
+
+    const orders = await orderModel.find({
+      endTime: { $lt: endTimeThreshold },
+      status: "accepted",
+      manager_id: managerId, // Add manager_id field to filter by manager ID
+    });
+
+    return handleSuccess(
+      res,
+      "Successfully retrieved latest incomplete orders",
+      orders
+    );
+  } catch (error) {
+    console.error(error);
+    return handleServerError(res);
+  }
+};
+
+// Create Ban Customer Request
+export const requestBanCustomer = async (req, res) => {
+  try {
+    const { customer_id } = req.params;
+    const bcRequest = await bcRequestModel.create({
+      customer_id: customer_id,
+      time: new Date(),
+    });
+
+    return handleSuccess(
+      res,
+      "Ban customer request created successfully",
+      bcRequest
+    );
   } catch (error) {
     console.error(error);
     return handleServerError(res);

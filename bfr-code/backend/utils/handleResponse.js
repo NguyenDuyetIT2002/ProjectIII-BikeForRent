@@ -1,6 +1,6 @@
 export const handleDuplicateField = (res, message) => {
-  return res.status(400).json({
-    code: 400,
+  return res.status(409).json({
+    code: 409,
     message: message,
     data: null,
   });
@@ -33,6 +33,14 @@ export const handleSuccess = (res, message, data) => {
 export const handleBadRequest = (res, message) => {
   return res.status(400).json({
     code: 400,
+    message,
+    data: null,
+  });
+};
+
+export const handleBannedCustomer = (res, message) => {
+  return res.status(403).json({
+    code: 403,
     message,
     data: null,
   });

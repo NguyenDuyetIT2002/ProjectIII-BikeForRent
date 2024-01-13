@@ -9,6 +9,8 @@ import {
   acceptOrder,
   completeOrderProcess,
   getAllAcceptedOrdersByManagerId,
+  getAllLatestIncompleteOrders,
+  requestBanCustomer,
 } from "../controller/managerApi.js";
 
 const managerRouter = express.Router();
@@ -44,5 +46,13 @@ managerRouter.get(
 
 // Complete Order Process
 managerRouter.post("/completeOrder/:id", completeOrderProcess);
+
+// Get All Lated Incomplete Orders by Manager ID
+managerRouter.get(
+  "/getAllLatestIncompleteOrdersBy/:manager_id",
+  getAllLatestIncompleteOrders
+);
+
+managerRouter.post("/requestBanCustomer/:customer_id", requestBanCustomer);
 
 export default managerRouter;

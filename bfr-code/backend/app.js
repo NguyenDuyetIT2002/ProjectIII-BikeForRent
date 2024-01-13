@@ -26,8 +26,7 @@ app.use("/customer", verifyToken, customerRouter);
 // Use manager routes
 app.use("/manager", verifyToken, managerRouter);
 
-// user admin routes
-app.use("/admin", adminRouter);
+app.use("/admin", verifyToken, adminRouter);
 
 app.use("/auth", authRouter);
 
