@@ -13,8 +13,16 @@ import List from "./pages/admin/pages/list/List";
 import Single from "./pages/admin/pages/single/Single";
 import New from "./pages/admin/pages/new/New";
 import { userInputs } from "./pages/admin/formSource.js";
+import Homepage from "./pages/Homepage.jsx";
 
 import HomePageAdmin from "./pages/admin/pages/home/Home.jsx";
+import Login from "./pages/auth/Login/Login.jsx";
+import CustomerLogin from "./pages/auth/Login/CustomerLogin.jsx";
+import AdminLogin from "./pages/auth/Login/AdminLogin.jsx";
+import ManagerLogin from "./pages/auth/Login/ManagerLogin.jsx";
+import Signup from "./pages/auth/Signup/Signup.jsx";
+import CustomerSignup from "./pages/auth/Signup/CustomerSignup";
+import ManagerSignup from "./pages/auth/Signup/ManagerSignup";
 
 import ManagerHomepage from "./pages/manager/homepage/Homepage.js";
 import ManagerAddbike from "./pages/manager/addbike/Addbike.js";
@@ -31,6 +39,18 @@ import FeaturesCustomer from "./pages/customer/pages/Features/Features.jsx";
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />}>
+      <Route index element={<Homepage />} />
+      <Route path="/auth/login">
+        <Route index element={<Login />} />
+        <Route path="customer" element={<CustomerLogin />} />
+        <Route path="admin" element={<AdminLogin />} />
+        <Route path="manager" element={<ManagerLogin />} />
+      </Route>
+      <Route path="/auth/signup">
+        <Route index element={<Signup />} />
+        <Route path="customer" element={<CustomerSignup />} />
+        <Route path="manager" element={<ManagerSignup />} />
+      </Route>
       <Route path="/admin">
         <Route path="homepage" element={<HomePageAdmin />} />
         <Route path="acceptmanager">
@@ -74,9 +94,8 @@ const router = createBrowserRouter(
       <Route path="customer">
         <Route path="homepage" element={<HomePageCustomer />} />
         <Route path="profile" element={<CustomerProfile />} />
-        <Route path="chooselocation" element={<ChooseLocation/>} />
+        <Route path="chooselocation" element={<ChooseLocation />} />
         <Route path="features" element={<FeaturesCustomer />} />
-
       </Route>
     </Route>
   )
