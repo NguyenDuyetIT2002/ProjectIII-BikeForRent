@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { clearManagerToken } from "../utils/localStorage";
 
 const initialState = {
-  managerInfo: null,
+  managerInfo: '',
 };
 
 export const managerSlice = createSlice({

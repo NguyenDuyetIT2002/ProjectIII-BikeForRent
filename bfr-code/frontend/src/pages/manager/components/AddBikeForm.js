@@ -4,8 +4,6 @@ import { useNavigate } from 'react-router-dom';
 import { ImagetoBase64 } from "../ultility/ImagetoBase64";
 import axiosConfig from '../axiosConfig';
 
-
-
 function AddBikeForm() {
     const [inputs, setInputs] = useState({
         bikeName: "",
