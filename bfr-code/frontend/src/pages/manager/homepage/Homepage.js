@@ -26,7 +26,8 @@ const Homepage = () => {
   const deleteBike = async (bikeID) => {
     try {
       const response = await axiosConfig.delete(`/deleteBike/${bikeID}`);
-      console.log(response.data);
+      console.log('Delete bike success');
+      setBikesList(bikesList.filter(item => item._id !== bikeID));
     } catch (error) {
         console.log("Delete bike failed: ", error);
     }
@@ -47,7 +48,8 @@ const Homepage = () => {
           <div>
           {
             bikesList.map((bike) => (
-              BikeInfoContainer(bike, deleteBike)
+              //BikeInfoContainer(bike, deleteBike)
+              <BikeInfoContainer bikeInfo={bike} deleteBike={deleteBike}></BikeInfoContainer>
             ))
           }
           </div>

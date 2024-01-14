@@ -1,22 +1,23 @@
 import React from 'react'
-import { useState } from 'react';
+import { useState, useEffect} from 'react';
 import { ImagetoBase64 } from "../ultility/ImagetoBase64";
 import axiosConfig from '../axiosConfig';
+import { useNavigate } from 'react-router';
 import {useSelector} from 'react-redux';
 
-function AddBikeForm() {
+function EditBikeForm({bikeInfo}) {
     const [inputs, setInputs] = useState({
-        bikeName: "",
-        bikeType: "",
-        bikePrice: "",
-        bikeImage: "",
-        bikeDescription: "",
+        bikeName: '',
+        bikeType: '',
+        bikePrice: '',
+        bikeImage: '',
+        bikeDescription: '',
     });
     const manager_id = useSelector(state => {
         //console.log(state.manager.managerInfo._id);
         return state.manager.managerInfo._id;
-      });
-    //const navigate = useNavigate();
+    });
+    const navigate = useNavigate();
 
     const handleChange = (event) => {
         const name = event.target.name;
@@ -32,8 +33,9 @@ function AddBikeForm() {
       };
 
     const submitForm = async (event)=>{
+        event.preventDefault();
         try {
-            const response = await axiosConfig.post('/createBike', {
+            const response = await axiosConfig.put(`/updateBikeInfo/${bikeInfo._id}`, {
                 name: inputs.bikeName,
                 type: inputs.bikeType,
                 price: inputs.bikePrice,
@@ -41,29 +43,43 @@ function AddBikeForm() {
                 image: inputs.bikeImage,
                 description: inputs.bikeDescription 
             });
-            console.log(response.data)
+            console.log('Before navigate');
+            navigate('/manager/homepage');
+            console.log('After navigate');
         } catch (error) {
-            console.log("Add bikes failed: ", error);
+            console.log("Edit bikes failed: ", error);
         }
-        //navigate('/manager/homepage');
+        
     }
+
+    useEffect( () => {
+        if (bikeInfo) {
+            setInputs({
+                bikeName: bikeInfo.name,
+                bikeType: bikeInfo.type,
+                bikePrice: bikeInfo.price,
+                bikeImage: bikeInfo.image,
+                bikeDescription: bikeInfo.description,
+            });
+        }
+      }, []);
 
     return (
         <div className='w-96'>
             <form className='w-full mx-auto space-y-5' onSubmit={submitForm}>
                 <div>
                     <label htmlFor='bikeName'>Bike name</label>
-                    <input type='text' name='bikeName' className='block w-full p-2 border border-black rounded-lg' onChange={handleChange}/>
+                    <input type='text' name='bikeName' value={inputs.bikeName} className='block w-full p-2 border border-black rounded-lg' onChange={handleChange}/>
                 </div>
 
                 <div>
                     <label htmlFor='bikeType'>Bike type</label>
-                    <input type='text' name='bikeType' className='block w-full p-2 border border-black rounded-lg' onChange={handleChange}/>
+                    <input type='text' name='bikeType' value={inputs.bikeType} className='block w-full p-2 border border-black rounded-lg' onChange={handleChange}/>
                 </div>
 
                 <div>
                     <label htmlFor='bikePrice'>Rent price(VND)</label>
-                    <input type='text' name='bikePrice' className='block w-full p-2 border border-black rounded-lg' onChange={handleChange}/>
+                    <input type='text' name='bikePrice' value={inputs.bikePrice} className='block w-full p-2 border border-black rounded-lg' onChange={handleChange}/>
                 </div>
 
                 <div>
@@ -78,7 +94,7 @@ function AddBikeForm() {
 
                 <div>
                     <label htmlFor='bikeDescription'>Description</label>
-                    <input type='text' name='bikeDescription' className='block w-full p-2 border border-black rounded-lg' onChange={handleChange}/>
+                    <input type='text' name='bikeDescription' value={inputs.bikeDescription} className='block w-full p-2 border border-black rounded-lg' onChange={handleChange}/>
                 </div>
 
                 <button type='submit' className='px-2 py-1 border border-black rounded-lg'>Submit</button>
@@ -87,4 +103,4 @@ function AddBikeForm() {
     )
 }
 
-export default AddBikeForm
+export default EditBikeForm

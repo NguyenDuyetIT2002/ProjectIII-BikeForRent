@@ -29,6 +29,7 @@ import ManagerSignup from "./pages/auth/Signup/ManagerSignup";
 
 import ManagerHomepage from "./pages/manager/homepage/Homepage.js";
 import ManagerAddbike from "./pages/manager/addbike/Addbike.js";
+import ManagerEditbike from "./pages/manager/editbike/Editbike.js";
 
 import ListBanningBike from "./pages/admin/pages/list/ListBanningBike.jsx";
 import ListBanningUsers from "./pages/admin/pages/list/ListBanningUsers.jsx";
@@ -90,6 +91,7 @@ const router = createBrowserRouter(
       <Route path="manager">
         <Route path="homepage" element={<ManagerHomepage />} />
         <Route path="addbike" element={<ManagerAddbike />} />
+        <Route path="editbike" element={<ManagerEditbike />} />
       </Route>
       <Route path="customer">
         <Route path="homepage" element={<HomePageCustomer />} />

@@ -1,6 +1,12 @@
 import React from 'react'
+import { useNavigate } from 'react-router'
 
-const BikeInfoContainer = (bikeInfo, {deleteBike}) => {
+const BikeInfoContainer = ({bikeInfo, deleteBike}) => {
+    const navigate = useNavigate();
+    const handleEditClick = () => {
+        // Navigate to the 'Editbike' route and pass the 'bikeInfo'
+        navigate(`/manager/editbike`, { state: { bikeInfo } });
+    };
 
     return (
         <div className="flex flex-row my-10 p-10 border-2 border-black rounded-lg">
@@ -42,7 +48,7 @@ const BikeInfoContainer = (bikeInfo, {deleteBike}) => {
                         </td>
 
                         <td>
-                            <button className='px-2 py-1 border-2 border-black rounded-lg' onClick={() => { console.log('Edit') }}>
+                            <button className='px-2 py-1 border-2 border-black rounded-lg' onClick={handleEditClick}>
                                 Edit
                             </button>
                         </td>
