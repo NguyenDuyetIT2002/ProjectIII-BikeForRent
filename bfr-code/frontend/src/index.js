@@ -9,17 +9,19 @@ import {
   Route,
   RouterProvider,
 } from "react-router-dom";
+
+import { store } from "./redux/index.js";
+import { Provider } from "react-redux";
+
 import List from "./pages/admin/pages/list/List";
 import Single from "./pages/admin/pages/single/Single";
 import New from "./pages/admin/pages/new/New";
 import { userInputs } from "./pages/admin/formSource.js";
-import Homepage from "./pages/Homepage.jsx";
+import Homepage from "./pages/spalshpage/Homepage.jsx";
 
 import HomePageAdmin from "./pages/admin/pages/home/Home.jsx";
 import Login from "./pages/auth/Login/Login.jsx";
-import CustomerLogin from "./pages/auth/Login/CustomerLogin.jsx";
-import AdminLogin from "./pages/auth/Login/AdminLogin.jsx";
-import ManagerLogin from "./pages/auth/Login/ManagerLogin.jsx";
+
 import Signup from "./pages/auth/Signup/Signup.jsx";
 import CustomerSignup from "./pages/auth/Signup/CustomerSignup";
 import ManagerSignup from "./pages/auth/Signup/ManagerSignup";
@@ -42,9 +44,6 @@ const router = createBrowserRouter(
       <Route index element={<Homepage />} />
       <Route path="/auth/login">
         <Route index element={<Login />} />
-        <Route path="customer" element={<CustomerLogin />} />
-        <Route path="admin" element={<AdminLogin />} />
-        <Route path="manager" element={<ManagerLogin />} />
       </Route>
       <Route path="/auth/signup">
         <Route index element={<Signup />} />
@@ -103,9 +102,9 @@ const router = createBrowserRouter(
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  // <React.StrictMode>
-  <RouterProvider router={router} />
-  // </React.StrictMode>
+  <Provider store={store}>
+    <RouterProvider router={router} />
+  </Provider>
 );
 
 // If you want to start measuring performance in your app, pass a function
