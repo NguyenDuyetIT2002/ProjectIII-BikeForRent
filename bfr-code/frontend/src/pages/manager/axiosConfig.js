@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { getManagerToken } from '../../utils/localStorage';
 
 const instance = axios.create({
     baseURL: 'http://localhost:8080/manager',
@@ -8,7 +9,8 @@ const instance = axios.create({
 });
 
 instance.interceptors.request.use( async (config) => {
-    config.headers.Authorization = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NTkxMjVmMzVhNTJhMzg1MzdjMmM5OTgiLCJpYXQiOjE3MDQ5NTE5MjIsImV4cCI6MTcwNDk1NTUyMn0.Pjiuo6LYkWIikYX174EQ2Vn_mWNX2CFJdQ-Tw8A94To';
+    const token = getManagerToken();
+    config.headers.Authorization = `Bearer ${token}`;
     return config;
 });
 

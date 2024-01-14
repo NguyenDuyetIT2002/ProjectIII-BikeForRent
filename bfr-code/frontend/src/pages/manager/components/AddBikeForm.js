@@ -1,9 +1,17 @@
 import React from 'react'
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { ImagetoBase64 } from "../ultility/ImagetoBase64";
+import axiosConfig from '../axiosConfig';
 
 function AddBikeForm() {
-    const [inputs, setInputs] = useState({});
+    const [inputs, setInputs] = useState({
+        bikeName: "",
+        bikeType: "",
+        bikePrice: "",
+        bikeImage: "",
+        bikeDescription: "",
+    });
     const navigate = useNavigate();
 
     const handleChange = (event) => {
@@ -13,8 +21,26 @@ function AddBikeForm() {
         setInputs(values => ({...values, [name]: value}));
     }
 
-    const submitForm = (event)=>{
-        console.log(inputs);
+    const uploadImage = async (event) => {
+        const data = await ImagetoBase64(event.target.files[0]);
+        setInputs(values => ({...values, bikeImage: data}));
+
+      };
+
+    const submitForm = async (event)=>{
+        try {
+            const response = await axiosConfig.post('/createBike', {
+                name: inputs.bikeName,
+                type: inputs.bikeType,
+                price: inputs.bikePrice,
+                owner_id : '65a27039c089180b474336a4',
+                image: inputs.bikeImage,
+                description: inputs.bikeDescription 
+            });
+            console.log(response.data)
+        } catch (error) {
+            console.log("Add bikes failed: ", error);
+        }
         navigate('/manager/homepage');
     }
 
@@ -38,7 +64,12 @@ function AddBikeForm() {
 
                 <div>
                     <label for='bikeName'>Bike image</label>
-                    <input type='text' name='bikeImage' className='block w-full p-2 border border-black rounded-lg' onChange={handleChange}/>
+                    {inputs.bikeImage ? (
+                        <img src={inputs.bikeImage} alt={"none"} className="h-full" />
+                    ) : (
+                        <span className="text-5xl"></span>
+                    )}
+                    <input type="file" name='bikeImage' /*className='block w-full p-2 border border-black rounded-lg'*/ onChange={uploadImage}/>
                 </div>
 
                 <div>

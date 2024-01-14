@@ -1,6 +1,6 @@
 import React from 'react'
 
-const BikeInfoContainer = (bikeInfo) => {
+const BikeInfoContainer = (bikeInfo, {deleteBike}) => {
 
     return (
         <div className="flex flex-row my-10 p-10 border-2 border-black rounded-lg">
@@ -9,7 +9,7 @@ const BikeInfoContainer = (bikeInfo) => {
                 <tbody>
                     <tr>
                         <td>
-                            <img src={bikeInfo.image}></img>
+                            <img src={bikeInfo.image} alt='Bike image'></img>                            
                         </td>
                     </tr>
                     <tr>
@@ -36,7 +36,7 @@ const BikeInfoContainer = (bikeInfo) => {
                     </tr>
                     <tr>
                         <td>
-                            <button className='px-2 py-1 border-2 border-black rounded-lg' onClick={() => { console.log('Delete') }}>
+                            <button className='px-2 py-1 border-2 border-black rounded-lg' onClick={() => deleteBike(bikeInfo._id)}>
                                 Delete
                             </button>
                         </td>
