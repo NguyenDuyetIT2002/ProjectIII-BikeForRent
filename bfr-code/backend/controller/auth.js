@@ -66,7 +66,7 @@ export const customerLogin = async (req, res) => {
     const token = jwt.sign({ userId: customer._id }, JWT_SECRETKEY, {
       expiresIn: "1h",
     });
-    return handleSuccess(res, "Login succesfully", { token });
+    return handleSuccess(res, "Login succesfully", { customer, token });
   } catch (error) {
     console.log(error);
     return handleServerError(res);
@@ -140,7 +140,7 @@ export const managerLogin = async (req, res) => {
     const token = jwt.sign({ userId: manager._id }, JWT_SECRETKEY, {
       expiresIn: "1h",
     });
-    return handleSuccess(res, "Login succesfully", { token });
+    return handleSuccess(res, "Login succesfully", { manager, token });
   } catch (error) {
     console.log(error);
     return handleServerError(res);

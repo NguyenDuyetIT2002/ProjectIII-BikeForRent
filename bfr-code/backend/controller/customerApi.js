@@ -22,7 +22,7 @@ export const getAllCustomers = async (req, res) => {
 
 export const updateCustomerInfo = async (req, res) => {
   const { id } = req.params;
-  const { name, phone, address } = req.body;
+  const { name, phone, address, passWord } = req.body;
   try {
     const updatedCustomer = await customerModel.findByIdAndUpdate(
       id,
@@ -31,6 +31,7 @@ export const updateCustomerInfo = async (req, res) => {
           name: name || undefined,
           phone: phone || undefined,
           address: address || undefined,
+          passWord: passWord || undefined,
         },
       },
       { new: true }
