@@ -1,6 +1,5 @@
 import React from 'react';
 import SideNavbar from '../components/SideNavbar';
-import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import { useState, useEffect } from 'react';
 import axiosConfig from '../axiosConfig';
@@ -11,7 +10,7 @@ const Homepage = () => {
 
   async function getBikes() {
     try {
-        const response = await axiosConfig.get("/getBikes/659125f35a52a38537c2c998");
+        const response = await axiosConfig.get("/getBikes/65a27039c089180b474336a4");
         console.log(response.data.data);
         setBikesList(response.data.data);
     } catch (error) {
