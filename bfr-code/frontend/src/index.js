@@ -10,8 +10,9 @@ import {
   RouterProvider,
 } from "react-router-dom";
 
-import { store } from "./redux/index.js";
+import { store, persistor } from "./redux/index.js";
 import { Provider } from "react-redux";
+import { PersistGate } from "redux-persist/integration/react";
 
 import List from "./pages/admin/pages/list/List";
 import Single from "./pages/admin/pages/single/Single";
@@ -103,10 +104,11 @@ const router = createBrowserRouter(
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <Provider store={store}>
-    <RouterProvider router={router} />
+    <PersistGate loading={null} persistor={persistor}>
+      <RouterProvider router={router} />
+    </PersistGate>
   </Provider>
 );
-
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
