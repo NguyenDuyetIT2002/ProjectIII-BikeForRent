@@ -12,3 +12,11 @@ export const getManagerToken = () => {
 export const clearManagerToken = () => {
   localStorage.removeItem("manager_token");
 };
+
+export const getAdminToken = () => {
+  return localStorage.getItem("admin_token");
+};
+
+export const clearAdminToken = () => {
+  localStorage.removeItem("admin_token");
+};
