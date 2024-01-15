@@ -74,6 +74,7 @@ export const rentBike = async (req, res) => {
     }
     const startTimeDate = new Date(startTime);
     const endTimeDate = new Date(endTime);
+    console.log(startTimeDate, endTimeDate);
     const durationInMilliseconds = endTimeDate - startTimeDate;
     const durationInHours = Math.ceil(
       durationInMilliseconds / (1000 * 60 * 60)
@@ -91,8 +92,8 @@ export const rentBike = async (req, res) => {
       bike_name: bike.name,
       bike_id: bike_id,
       price,
-      startTime,
-      endTime,
+      startTime: startTimeDate,
+      endTime: endTimeDate,
       customer_id: customer_id,
       orderTime: new Date(),
       customer_name: customer_name,
