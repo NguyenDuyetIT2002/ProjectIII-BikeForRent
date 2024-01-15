@@ -16,7 +16,7 @@ export const createBike = async (req, res) => {
 
     const ownerExists = await managerModel.exists({ _id: owner_id });
     if (!ownerExists) {
-      return handleNotFound(res, "Owner not found");
+      return handleNotFound(res, "Không tìm thấy chủ xe");
     }
 
     const newBike = new bikeModel({
@@ -29,7 +29,7 @@ export const createBike = async (req, res) => {
     });
     const savedBike = await newBike.save();
 
-    return handleSuccess(res, "Bike created successfully", savedBike);
+    return handleSuccess(res, "Thêm xe thành công!", savedBike);
   } catch (error) {
     console.error(error);
     return handleServerError(res);
@@ -42,7 +42,7 @@ export const getAllBike = async (req, res) => {
     const { id } = req.params;
 
     if (!id) {
-      return handleNotFound(res, "Owner ID is required");
+      return handleNotFound(res, "Trường id không được để trống");
     }
 
     const bikes = await bikeModel.find({
@@ -50,10 +50,10 @@ export const getAllBike = async (req, res) => {
       status: { $ne: "block" },
     }); // Add status condition
     if (bikes == null || bikes.length === 0) {
-      return handleNotFound(res, "No bikes found for the provided ID");
+      return handleNotFound(res, "Rất tiếc, bạn chưa có xe nào");
     }
 
-    return handleSuccess(res, "Bikes retrieved successfully", bikes);
+    return handleSuccess(res, "Các xe hiện tại của bạn", bikes);
   } catch (error) {
     console.error(error);
     return handleServerError(res);
@@ -68,7 +68,7 @@ export const updateBikeInformation = async (req, res) => {
 
     const bikeExists = await bikeModel.exists({ _id: id });
     if (!bikeExists) {
-      return handleNotFound(res, "Bike not found");
+      return handleNotFound(res, "Không tìm thấy xe");
     }
 
     const updatedBike = await bikeModel.findByIdAndUpdate(
@@ -77,7 +77,7 @@ export const updateBikeInformation = async (req, res) => {
       { new: true }
     );
 
-    return handleSuccess(res, "Bike updated successfully", updatedBike);
+    return handleSuccess(res, "Cập nhật thông tin xe thành công", updatedBike);
   } catch (error) {
     console.error(error);
     return handleServerError(res);
@@ -91,11 +91,15 @@ export const deleteBike = async (req, res) => {
 
     const bike = await bikeModel.findById(id);
     if (!bike) {
-      return handleNotFound(res, "Bike not found");
+      return handleNotFound(res, "Không tìm thấy xe");
+    }
+
+    if (bike.status !== "active") {
+      return handleBadRequest(res, "Xe này hiện tại không thể xóa");
     }
 
     await bikeModel.findByIdAndDelete(id);
-    return handleSuccess(res, "Bike deleted successfully");
+    return handleSuccess(res, "Xóa xe thành công");
   } catch (error) {
     console.error(error);
     return handleServerError(res);
@@ -116,7 +120,7 @@ export const getAllOrdersByManagerId = async (req, res) => {
     // Find orders with these bike IDs
     const orders = await orderModel.find({ bike_id: { $in: bikeIds } });
 
-    return handleSuccess(res, "Orders retrieved successfully", orders);
+    return handleSuccess(res, "Lấy đơn hàng thành công", orders);
   } catch (error) {
     console.error(error);
     return handleServerError(res);
@@ -142,7 +146,7 @@ export const getAllPendingOrdersByManagerId = async (req, res) => {
 
     return handleSuccess(
       res,
-      "Pending orders retrieved successfully",
+      "Lấy đơn hàng trong trạng thái chờ thành công",
       pendingOrders
     );
   } catch (error) {
@@ -157,7 +161,7 @@ export const acceptOrder = async (req, res) => {
 
     const order = await orderModel.findById(id);
     if (!order) {
-      return handleNotFound(res, "Order not found");
+      return handleNotFound(res, "Không tìm thấy đơn hàng");
     }
 
     order.status = "accepted";
@@ -168,7 +172,11 @@ export const acceptOrder = async (req, res) => {
       status: "rented",
     });
 
-    return handleSuccess(res, "Order accepted successfully", updatedOrder);
+    return handleSuccess(
+      res,
+      "Đã chấp nhận đơn hàng, xin hãy giao xe cho khách của bạn",
+      updatedOrder
+    );
   } catch (error) {
     console.error(error);
     return handleServerError(res);
@@ -193,7 +201,7 @@ export const getAllAcceptedOrdersByManagerId = async (req, res) => {
 
     return handleSuccess(
       res,
-      "Accepted orders retrieved successfully",
+      "Lấy đơn hàng trong trạng thái chấp nhận thành công",
       pendingOrders
     );
   } catch (error) {
@@ -209,7 +217,7 @@ export const completeOrderProcess = async (req, res) => {
 
     const order = await orderModel.findById(id);
     if (!order) {
-      return handleNotFound(res, "Order not found");
+      return handleNotFound(res, "Không tìm thấy đơn hàng");
     }
 
     await customerModel.findByIdAndUpdate(order.customer_id, {
@@ -221,7 +229,10 @@ export const completeOrderProcess = async (req, res) => {
     });
     await orderModel.findByIdAndDelete(id);
 
-    return handleSuccess(res, "Order process completed successfully");
+    return handleSuccess(
+      res,
+      "Hoàn tất đơn hàng thành công, hãy nhận lại xe từ khách của bạn"
+    );
   } catch (error) {
     console.error(error);
     return handleServerError(res);
@@ -244,11 +255,7 @@ export const getAllLatestIncompleteOrders = async (req, res) => {
       manager_id: managerId, // Add manager_id field to filter by manager ID
     });
 
-    return handleSuccess(
-      res,
-      "Successfully retrieved latest incomplete orders",
-      orders
-    );
+    return handleSuccess(res, "Lấy nhưng đơn hàng quá giờ thành công", orders);
   } catch (error) {
     console.error(error);
     return handleServerError(res);
@@ -266,7 +273,7 @@ export const requestBanCustomer = async (req, res) => {
 
     return handleSuccess(
       res,
-      "Ban customer request created successfully",
+      "Đã gửi yêu cầu khóa tài khoản người dùng, hãy đợi quản trị viên xác nhận",
       bcRequest
     );
   } catch (error) {

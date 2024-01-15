@@ -21,7 +21,10 @@ const Login = () => {
   };
 
   return (
-    <div className="flex h-screen  bg-slate-100 ">
+    <div
+      className="flex h-screen "
+      style={{ background: "linear-gradient(to right, #f2e2e2, #f0f0f0)" }}
+    >
       {/* Left Section - Buttons */}
       <div className="w-1/3 justify-center items-center flex shadow-sm">
         <div

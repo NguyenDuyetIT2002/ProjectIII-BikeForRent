@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { login } from "../../../redux/customerSlice";
 import { useDispatch } from "react-redux";
+import { showToast } from "../../../utils/toast";
 
 const CustomerLoginForm = () => {
   const [formData, setFormData] = useState({
@@ -44,28 +44,21 @@ const CustomerLoginForm = () => {
       if (response.ok) {
         dispatch(login(data.data.customer));
         localStorage.setItem("customer_token", data.data.token);
-        toast.success("Đăng nhập thành công, bạn sẽ được chuyển hướng sau 3s", {
-          position: toast.POSITION.TOP_CENTER,
-          autoClose: 2500, // 3 seconds
-        });
+        console.log(data.data.token);
+        showToast("success", data.message);
 
         setTimeout(() => {
           navigate("/customer/homepage");
         }, 3000); // 3-second delay
       } else {
-        toast.error(
-          "Đăng nhập thất bại. Vui lòng kiểm tra tài khoản và mật khẩu."
-        );
+        showToast("error", data.message || "Đăng nhập thất bại!");
       }
-
-      console.log(data);
     } catch (error) {
       // Handle network or other errors
       console.error("Error:", error);
-      toast.error("Có lỗi xảy ra khi kết nối đến máy chủ.");
+      showToast("error", "Có lỗi xảy ra khi kết nối đến máy chủ.");
     }
   };
-
   return (
     <div className="flex justify-center items-center h-screen">
       <div className="w-96">

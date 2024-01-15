@@ -20,6 +20,9 @@ const orderSchema = mongoose.Schema({
     ref: "customer",
     required: true,
   },
+  customer_name: {
+    type: String,
+  },
   status: {
     type: String,
     default: "pending",
