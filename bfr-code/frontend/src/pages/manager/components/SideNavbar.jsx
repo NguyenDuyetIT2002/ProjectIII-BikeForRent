@@ -1,11 +1,13 @@
 import "./sidebar.scss";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
-import AddIcon from '@mui/icons-material/Add';
-import ListAltIcon from '@mui/icons-material/ListAlt';
+import AddIcon from "@mui/icons-material/Add";
+import ListAltIcon from "@mui/icons-material/ListAlt";
 import { Link } from "react-router-dom";
+
 import { useDispatch } from "react-redux";
 import { logout } from "../../../redux/managerSlice"
+
 
 const SideNavbar = () => {
   const dispatch = useDispatch();
