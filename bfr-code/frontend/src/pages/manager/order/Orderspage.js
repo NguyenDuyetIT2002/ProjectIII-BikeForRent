@@ -6,14 +6,19 @@ import { useState, useEffect } from 'react';
 import {useSelector} from 'react-redux';
 import OrderInfoContainer from '../components/OrderInfoContainer';
 import { showToast } from "../../../utils/toast";
+import { useNavigate } from 'react-router-dom';
+import { getManagerToken } from '../../../utils/localStorage';
 
 const Orderspage = () => {
     const [orderList, setOrderList] = useState([]);
     const [orderType, setOrderType] = useState(0);
 
     const manager_id = useSelector(state => {
-        return state.manager.managerInfo._id;
+        if (state.manager.managerInfo)
+            return state.manager.managerInfo._id;
+        return 'none';
     });
+    const navigate = useNavigate();
 
     async function getOrders() {
         try {
@@ -79,6 +84,9 @@ const Orderspage = () => {
     }
 
     useEffect (() => {
+        if (getManagerToken() == null){
+            navigate('/auth/login?form="manager"');
+        }
         getOrders();
     },[])
 

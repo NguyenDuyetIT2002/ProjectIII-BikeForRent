@@ -4,9 +4,16 @@ import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import AddIcon from '@mui/icons-material/Add';
 import ListAltIcon from '@mui/icons-material/ListAlt';
 import { Link } from "react-router-dom";
-
+import { useDispatch } from "react-redux";
+import { logout } from "../../../redux/managerSlice"
 
 const SideNavbar = () => {
+  const dispatch = useDispatch();
+
+  const handleLogout = () => {
+    dispatch(logout());
+  };
+
   return (
     <div className="sidebar">
       <div className="top">
@@ -35,9 +42,9 @@ const SideNavbar = () => {
               <span>Orders</span>
             </li>
           </Link>
-          <Link to="/" style={{ textDecoration: "none" }}>
+          <Link to="/" style={{ textDecoration: "none" }} onClick={handleLogout}>
             <li>
-              <ExitToAppIcon className="icon" />
+              <ExitToAppIcon className="icon"/>
               <span>Logout</span>
             </li>
           </Link>

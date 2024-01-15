@@ -2,8 +2,19 @@ import React from 'react';
 import SideNavbar from '../components/SideNavbar';
 import Box from '@mui/material/Box';
 import AddBikeForm from '../components/AddBikeForm';
+import { useEffect } from 'react';
+import { getManagerToken } from '../../../utils/localStorage';
+import { useNavigate } from 'react-router-dom';
 
 const Addbike = () => {
+  const navigate = useNavigate();
+  
+  useEffect(() => {
+    if (getManagerToken() == null){
+      navigate('/auth/login?form="manager"');
+    }
+  })
+
   return (
     <div>
       <Box sx={{display: "flex"}}>
