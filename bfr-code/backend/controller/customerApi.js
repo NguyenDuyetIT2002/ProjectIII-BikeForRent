@@ -59,7 +59,7 @@ export const rentBike = async (req, res) => {
 
     // Check if the customer has already rented a bike
     const customer = await customerModel.findById(customer_id);
-    const customer_name = customer.customer_name;
+    const customer_name = customer.name;
     if (customer.did_rented) {
       return handleBadRequest(
         res,
