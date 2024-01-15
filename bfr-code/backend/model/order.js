@@ -6,6 +6,10 @@ const orderSchema = mongoose.Schema({
     ref: "bike",
     required: true,
   },
+  bike_name: {
+    type: String,
+    required: true,
+  },
   price: Number, // Changed to Number for numerical operations
   startTime: {
     type: Date,
