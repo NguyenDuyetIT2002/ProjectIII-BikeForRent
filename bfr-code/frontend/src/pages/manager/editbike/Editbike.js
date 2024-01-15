@@ -3,10 +3,21 @@ import SideNavbar from '../components/SideNavbar';
 import Box from '@mui/material/Box';
 import EditBikeForm from '../components/EditBikeForm';
 import { useLocation } from 'react-router';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { getManagerToken } from '../../../utils/localStorage';
 
 const Editbike = () => {
-    const location = useLocation();
+  const location = useLocation();
   const bikeInfo = location.state ? location.state.bikeInfo : null;
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (getManagerToken() == null){
+      navigate('/auth/login?form="manager"');
+    }
+  })
+
   return (
     <div>
       <Box sx={{display: "flex"}}>

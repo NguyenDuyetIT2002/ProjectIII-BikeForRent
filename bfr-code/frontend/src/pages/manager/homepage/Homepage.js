@@ -5,13 +5,19 @@ import { useState, useEffect } from 'react';
 import axiosConfig from '../axiosConfig';
 import BikeInfoContainer from '../components/BikeInfoContainer';
 import {useSelector} from 'react-redux';
+import { getManagerToken } from '../../../utils/localStorage';
+import { useNavigate } from 'react-router-dom';
+import { showToast } from "../../../utils/toast";
 
 const Homepage = () => {
   const [bikesList, setBikesList] = useState([]);
   const manager_id = useSelector(state => {
     //console.log(state.manager.managerInfo._id);
-    return state.manager.managerInfo._id;
+    if (state.manager.managerInfo)
+      return state.manager.managerInfo._id;
+    return 'none';
   });
+  const navigate = useNavigate();
 
   async function getBikes() {
     try {
@@ -26,18 +32,19 @@ const Homepage = () => {
   const deleteBike = async (bikeID) => {
     try {
       const response = await axiosConfig.delete(`/deleteBike/${bikeID}`);
-      console.log('Delete bike success');
       setBikesList(bikesList.filter(item => item._id !== bikeID));
+      showToast("success", "Xóa xe thành công");
     } catch (error) {
-        console.log("Delete bike failed: ", error);
+      showToast("error", "Xóa xe thất bại");
     }
   }
 
   useEffect( () => {
+    if (getManagerToken() == null){
+      navigate('/auth/login?form="manager"');
+    }
     getBikes();
   }, [manager_id]);
-
-
 
   return (
     <div>

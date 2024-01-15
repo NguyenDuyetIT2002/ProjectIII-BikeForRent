@@ -17,7 +17,7 @@ function AddBikeForm() {
     const manager_id = useSelector(state => {
         //console.log(state.manager.managerInfo._id);
         return state.manager.managerInfo._id;
-      });
+    });
     const navigate = useNavigate();
 
     const handleChange = (event) => {
