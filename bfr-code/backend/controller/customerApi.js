@@ -88,6 +88,7 @@ export const rentBike = async (req, res) => {
     await bikeModel.findByIdAndUpdate(bike_id, { status: "pending" });
 
     const newOrder = new orderModel({
+      bike_name: bike.name,
       bike_id: bike_id,
       price,
       startTime,
