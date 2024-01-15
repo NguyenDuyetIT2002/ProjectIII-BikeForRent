@@ -6,10 +6,10 @@ export const handleDuplicateField = (res, message) => {
   });
 };
 
-export const handleNotFound = (res, entityType) => {
+export const handleNotFound = (res, message) => {
   return res.status(404).json({
     code: 404,
-    message: `${entityType} not found`,
+    message: message,
     data: null,
   });
 };

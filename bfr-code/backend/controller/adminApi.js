@@ -34,7 +34,7 @@ export const createManager = async (req, res) => {
 
     // Kiểm tra xem managerSR có tồn tại không
     if (!managerSR) {
-      return handleNotFound(res, "ManagerSR");
+      return handleNotFound(res, "Không tìm thấy đơn đăng ký");
     }
 
     // Tạo một manager mới từ thông tin của managerSR
@@ -55,7 +55,11 @@ export const createManager = async (req, res) => {
     // Xóa managerSR đã được sử dụng để tạo manager mới
     await managerSRModel.findByIdAndDelete(request_id);
 
-    return handleSuccess(res, "Manager created successfully", savingManager);
+    return handleSuccess(
+      res,
+      "Tạo tài khoản chủ cửa hàng thành công",
+      savingManager
+    );
   } catch (error) {
     console.error(error);
     return handleServerError(res);
@@ -68,7 +72,7 @@ export const getAllBCRequest = async (req, res) => {
 
     return handleSuccess(
       res,
-      "Successfully retrieved all BC Requests",
+      "Lấy dữ liệu đơn đăng ký chủ cửa hàng thành công",
       bcRequests
     );
   } catch (error) {
@@ -83,21 +87,24 @@ export const banCustomer = async (req, res) => {
     const bcRequest = await bcRequestModel.findById(bcrequest_id);
 
     if (!bcRequest) {
-      return handleNotFound(res, "BC Request");
+      return handleNotFound(
+        res,
+        "Không tìm thấy yêu cầu khóa tài khoản khách hàng"
+      );
     }
 
     const customer_id = bcRequest.customer_id;
     const customer = await customerModel.findById(customer_id);
 
     if (!customer) {
-      return handleNotFound(res, "Customer");
+      return handleNotFound(res, "Không tìm thấy khách hàng");
     }
 
     await customerModel.findByIdAndUpdate(customer_id, { status: "ban" });
 
     await bcRequestModel.findByIdAndDelete(bcrequest_id);
 
-    return handleSuccess(res, "Customer account successfully banned");
+    return handleSuccess(res, "Khóa tài khoản khách hàng thành công");
   } catch (error) {
     console.error(error);
     return handleServerError(res);
@@ -112,7 +119,7 @@ export const getReportedBikes = async (req, res) => {
 
     return handleSuccess(
       res,
-      "Successfully retrieved reported bikes",
+      "Lấy dữ liệu xe bị report thành công",
       reportedBikes
     );
   } catch (error) {
@@ -132,7 +139,7 @@ export const blockBike = async (req, res) => {
 
     await bikeModel.findByIdAndUpdate(bike_id, { status: "block" });
 
-    return handleSuccess(res, "Bike successfully blocked");
+    return handleSuccess(res, "Đã khóa xe thành công");
   } catch (error) {
     console.error(error);
     return handleServerError(res);

@@ -24,8 +24,6 @@ import HomePageAdmin from "./pages/admin/pages/home/Home.jsx";
 import Login from "./pages/auth/Login/Login.jsx";
 
 import Signup from "./pages/auth/Signup/Signup.jsx";
-import CustomerSignup from "./pages/auth/Signup/CustomerSignup";
-import ManagerSignup from "./pages/auth/Signup/ManagerSignup";
 
 import ManagerHomepage from "./pages/manager/homepage/Homepage.js";
 import ManagerAddbike from "./pages/manager/addbike/Addbike.js";
@@ -49,8 +47,6 @@ const router = createBrowserRouter(
       </Route>
       <Route path="/auth/signup">
         <Route index element={<Signup />} />
-        <Route path="customer" element={<CustomerSignup />} />
-        <Route path="manager" element={<ManagerSignup />} />
       </Route>
       <Route path="/admin">
         <Route path="homepage" element={<HomePageAdmin />} />

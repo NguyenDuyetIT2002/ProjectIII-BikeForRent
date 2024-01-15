@@ -1,13 +1,18 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { showToast } from "../../../utils/toast";
 
 const AdminLoginForm = () => {
   const [formData, setFormData] = useState({
     gmail: "",
     password: "",
   });
+
+  const isEmailValid = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
 
   const navigate = useNavigate();
 
@@ -21,7 +26,10 @@ const AdminLoginForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    if (!isEmailValid(formData.gmail)) {
+      showToast("error", "Định dạng Gmail không hợp lệ.");
+      return;
+    }
     const apiEndpoint = "http://localhost:8080/auth/adminLogin";
 
     try {
@@ -39,20 +47,16 @@ const AdminLoginForm = () => {
       const data = await response.json();
       if (response.ok) {
         localStorage.setItem("admin_token", data.data.token);
-        toast.success("Đăng nhập thành công, bạn sẽ được chuyển hướng sau 3s", {
-          position: toast.POSITION.TOP_CENTER,
-          autoClose: 2500,
-        });
-
+        showToast("success", data.message);
         setTimeout(() => {
           navigate("/admin/homepage");
         }, 3000);
       } else {
-        toast.error("Đăng nhập thất bại. Vui lòng kiểm tra Gmail và mật khẩu.");
+        showToast("error", data.message || "Đăng nhập thất bại!");
       }
     } catch (error) {
       console.error("Error:", error);
-      toast.error("Có lỗi xảy ra khi kết nối đến máy chủ.");
+      showToast("error", "Có lỗi xảy ra khi kết nối đến máy chủ.");
     }
   };
 
@@ -63,13 +67,13 @@ const AdminLoginForm = () => {
           <div className="mb-4">
             <label
               className="block text-gray-700 text-sm font-bold mb-2"
-              htmlFor="username"
+              htmlFor="gmail  "
             >
               Gmail
             </label>
             <input
               className="border rounded-md py-2 px-3 w-full"
-              type="gmail"
+              type="email"
               id="gmail"
               name="gmail"
               placeholder="Nhập tên tài khoản của bạn"
