@@ -4,6 +4,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { login } from "../../../redux/customerSlice";
 import { useDispatch } from "react-redux";
 import { showToast } from "../../../utils/toast";
+import { Link } from "react-router-dom";
 
 const CustomerLoginForm = () => {
   const [formData, setFormData] = useState({
@@ -105,6 +106,16 @@ const CustomerLoginForm = () => {
           >
             Đăng nhập
           </button>
+
+          <p className="text-center mt-4">
+            Chưa có tài khoản?
+            <Link
+              to={"/auth/signup?form=customer"}
+              className="text-blue-600 hover:text-blue-800 ml-1"
+            >
+              Đăng ký
+            </Link>
+          </p>
         </form>
       </div>
     </div>

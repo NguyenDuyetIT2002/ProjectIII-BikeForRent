@@ -3,6 +3,7 @@ import customerModel from "../model/customer.js";
 import { bikeModel } from "../model/bike.js";
 import { orderModel } from "../model/order.js";
 import { bcRequestModel } from "../model/bcRequest.js";
+import { ubRequestModel } from "../model/ubRequest.js";
 import {
   handleServerError,
   handleSuccess,
@@ -278,6 +279,39 @@ export const requestBanCustomer = async (req, res) => {
     );
   } catch (error) {
     console.error(error);
+    return handleServerError(res);
+  }
+};
+
+export const getBlockedBikes = async (req, res) => {
+  try {
+    const { manager_id } = req.params;
+
+    const bikes = await bikeModel.find({
+      owner_id: manager_id,
+      status: "block",
+    });
+
+    return handleSuccess(res, "Lấy danh sách xe bị khóa thành công", bikes);
+  } catch (error) {
+    console.error(error);
+    return handleServerError(res);
+  }
+};
+
+export const sendUBRequest = async (req, res) => {
+  try {
+    const { bike_id, reason, image } = req.body;
+    const ubrequest = await ubRequestModel.create({
+      bike_id,
+      reason,
+      image,
+      time: new Date(),
+    });
+
+    return handleSuccess(res, "Gửi yêu cầu mở khóa xe thành công", ubrequest);
+  } catch (error) {
+    console.log(error);
     return handleServerError(res);
   }
 };
