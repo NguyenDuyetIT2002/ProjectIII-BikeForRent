@@ -55,7 +55,7 @@ export const updateCustomerInfo = async (req, res) => {
 // rent bike
 export const rentBike = async (req, res) => {
   try {
-    const { bike_id, price, startTime, endTime, customer_id } = req.body;
+    const { bike_id, startTime, endTime, customer_id } = req.body;
 
     // Check if the customer has already rented a bike
     const customer = await customerModel.findById(customer_id);
@@ -68,10 +68,21 @@ export const rentBike = async (req, res) => {
     }
 
     // Continue with the existing logic to check bike existence and create an order
-    const bikeExists = await bikeModel.exists({ _id: bike_id });
-
-    if (!bikeExists) {
+    const bike = await bikeModel.findById(bike_id);
+    if (!bike) {
       return handleNotFound(res, "Bike");
+    }
+    const startTimeDate = new Date(startTime);
+    const endTimeDate = new Date(endTime);
+    const durationInMilliseconds = endTimeDate - startTimeDate;
+    const durationInHours = Math.ceil(
+      durationInMilliseconds / (1000 * 60 * 60)
+    );
+    let price = bike.price * durationInHours;
+    console.log(price);
+
+    if (isNaN(price)) {
+      return handleBadRequest(res, "Giá không hợp lệ");
     }
 
     await bikeModel.findByIdAndUpdate(bike_id, { status: "pending" });
@@ -101,7 +112,6 @@ export const rentBike = async (req, res) => {
     return handleServerError(res);
   }
 };
-
 // get your rented bike
 export const getYourRentedBike = async (req, res) => {
   try {

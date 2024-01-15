@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { login } from "../../../redux/managerSlice"; // Đường dẫn tới managerSlice
 import { useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
 
 const ManagerLoginForm = () => {
   const [formData, setFormData] = useState({
@@ -112,6 +113,15 @@ const ManagerLoginForm = () => {
           >
             Đăng nhập
           </button>
+          <p className="text-center mt-4">
+            Chưa có tài khoản?
+            <Link
+              to={"/auth/signup?form=manager"}
+              className="text-blue-600 hover:text-blue-800 ml-1"
+            >
+              Đăng ký
+            </Link>
+          </p>
         </form>
       </div>
     </div>

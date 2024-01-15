@@ -43,9 +43,9 @@ const Login = () => {
             Đăng nhập với quyền khách hàng
           </button>
           <button
-            onClick={() => handleButtonClick("store")}
+            onClick={() => handleButtonClick("manager")}
             className={`bg-white border border-gray-300 text-gray-700 rounded-md py-2 px-4 w-full mb-4 hover:bg-gray-100 transition duration-300 ${
-              activeForm === "store" && "border-green-500"
+              activeForm === "manager" && "border-green-500"
             }`}
           >
             Đăng nhập với quyền chủ cửa hàng
@@ -67,7 +67,7 @@ const Login = () => {
           <>
             {/* Render the corresponding form based on activeForm */}
             {activeForm === "customer" && <CustomerLoginForm />}
-            {activeForm === "store" && <ManagerLoginForm />}
+            {activeForm === "manager" && <ManagerLoginForm />}
             {activeForm === "admin" && <AdminLoginForm />}
           </>
         )}

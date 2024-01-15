@@ -4,7 +4,7 @@ const bikeSchema = mongoose.Schema({
   name: String,
   type: String,
   description: String,
-  price: String,
+  price: Number,
   status: {
     type: String,
     default: "active",
