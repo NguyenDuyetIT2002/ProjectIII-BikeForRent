@@ -4,6 +4,7 @@ import { ImagetoBase64 } from "../ultility/ImagetoBase64";
 import axiosConfig from '../axiosConfig';
 import { useNavigate } from 'react-router';
 import {useSelector} from 'react-redux';
+import { showToast } from "../../../utils/toast";
 
 function EditBikeForm({bikeInfo}) {
     const [inputs, setInputs] = useState({
@@ -43,11 +44,13 @@ function EditBikeForm({bikeInfo}) {
                 image: inputs.bikeImage,
                 description: inputs.bikeDescription 
             });
-            console.log('Before navigate');
-            navigate('/manager/homepage');
-            console.log('After navigate');
+            showToast("success", "Chỉnh sửa thông tin xe thành công");
+            setTimeout(() => {
+                navigate("/manager/homepage");
+            }, 3000);
         } catch (error) {
-            console.log("Edit bikes failed: ", error);
+            //console.log("Edit bikes failed: ", error);
+            showToast("error", "Chỉnh sửa thông tin xe thất bại");
         }
         
     }

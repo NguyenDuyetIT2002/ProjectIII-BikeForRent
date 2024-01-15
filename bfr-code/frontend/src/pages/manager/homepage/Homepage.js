@@ -48,7 +48,6 @@ const Homepage = () => {
           <div>
           {
             bikesList.map((bike) => (
-              //BikeInfoContainer(bike, deleteBike)
               <BikeInfoContainer bikeInfo={bike} deleteBike={deleteBike}></BikeInfoContainer>
             ))
           }

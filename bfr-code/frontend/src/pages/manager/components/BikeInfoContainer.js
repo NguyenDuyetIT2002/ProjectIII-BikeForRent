@@ -10,14 +10,9 @@ const BikeInfoContainer = ({bikeInfo, deleteBike}) => {
 
     return (
         <div className="flex flex-row my-10 p-10 border-2 border-black rounded-lg">
-
-            <table className='table'>
+            <img src={bikeInfo.image} alt='Bike image'></img>   
+            <table className='table ml-10'>
                 <tbody>
-                    <tr>
-                        <td>
-                            <img src={bikeInfo.image} alt='Bike image'></img>                            
-                        </td>
-                    </tr>
                     <tr>
                         <td>{bikeInfo.name}</td>
                     </tr>

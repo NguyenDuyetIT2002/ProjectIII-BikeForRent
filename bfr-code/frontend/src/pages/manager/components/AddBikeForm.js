@@ -3,6 +3,8 @@ import { useState } from 'react';
 import { ImagetoBase64 } from "../ultility/ImagetoBase64";
 import axiosConfig from '../axiosConfig';
 import {useSelector} from 'react-redux';
+import { showToast } from "../../../utils/toast";
+import { useNavigate } from 'react-router-dom';
 
 function AddBikeForm() {
     const [inputs, setInputs] = useState({
@@ -16,7 +18,7 @@ function AddBikeForm() {
         //console.log(state.manager.managerInfo._id);
         return state.manager.managerInfo._id;
       });
-    //const navigate = useNavigate();
+    const navigate = useNavigate();
 
     const handleChange = (event) => {
         const name = event.target.name;
@@ -32,6 +34,7 @@ function AddBikeForm() {
       };
 
     const submitForm = async (event)=>{
+        event.preventDefault();
         try {
             const response = await axiosConfig.post('/createBike', {
                 name: inputs.bikeName,
@@ -41,11 +44,14 @@ function AddBikeForm() {
                 image: inputs.bikeImage,
                 description: inputs.bikeDescription 
             });
-            console.log(response.data)
+            showToast("success", "Thêm xe thành công");
+            setTimeout(() => {
+                navigate("/manager/homepage");
+            }, 3000);
         } catch (error) {
-            console.log("Add bikes failed: ", error);
+            //console.log("Add bikes failed: ", error);
+            showToast("error", "Thêm xe thất bại");
         }
-        //navigate('/manager/homepage');
     }
 
     return (
