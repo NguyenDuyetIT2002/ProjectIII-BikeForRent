@@ -3,6 +3,7 @@ import { useLocation } from "react-router-dom";
 import CustomerLoginForm from "./CustomerLoginForm";
 import ManagerLoginForm from "./ManagerLoginForm";
 import AdminLoginForm from "./AdminLoginForm";
+import Header from "../../spalshpage/Header";
 
 const Login = () => {
   const [activeForm, setActiveForm] = useState(null);
@@ -25,6 +26,7 @@ const Login = () => {
       className="flex h-screen "
       style={{ background: "linear-gradient(to right, #f2e2e2, #f0f0f0)" }}
     >
+      <Header />
       {/* Left Section - Buttons */}
       <div className="w-1/3 justify-center items-center flex shadow-sm">
         <div

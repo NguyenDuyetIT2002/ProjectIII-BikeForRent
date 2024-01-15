@@ -3,6 +3,7 @@ import { managerSRModel } from "../model/managerSR.js";
 import customerModel from "../model/customer.js";
 import { bikeModel } from "../model/bike.js";
 import { bcRequestModel } from "../model/bcRequest.js";
+import { ubRequestModel } from "../model/ubRequest.js";
 
 import {
   handleServerError,
@@ -140,6 +141,48 @@ export const blockBike = async (req, res) => {
     await bikeModel.findByIdAndUpdate(bike_id, { status: "block" });
 
     return handleSuccess(res, "Đã khóa xe thành công");
+  } catch (error) {
+    console.error(error);
+    return handleServerError(res);
+  }
+};
+
+export const getUBRequests = async (req, res) => {
+  try {
+    const ubRequests = await ubRequestModel.find();
+
+    return handleSuccess(
+      res,
+      "Lấy dữ liệu yêu cầu mở khóa xe thành công",
+      ubRequests
+    );
+  } catch (error) {
+    console.error(error);
+    return handleServerError(res);
+  }
+};
+
+export const unlockBike = async (req, res) => {
+  try {
+    const { request_id, bike_id } = req.params;
+    const bike = await bikeModel.findById(bike_id);
+
+    if (!bike) {
+      return handleNotFound(res, "Không tìm thấy xe");
+    }
+    const request = await ubRequestModel.findById(request_id);
+    if (!request) {
+      return handleNotFound(res, "Không tìm thấy yêu cầu mở khóa xe");
+    }
+    await ubRequestModel.findByIdAndDelete(request_id);
+
+    await bikeModel.findByIdAndUpdate(bike_id, {
+      status: "active",
+      banRequestAmount: 0,
+      report_By: [],
+    });
+
+    return handleSuccess(res, "Đã mở khóa xe thành công");
   } catch (error) {
     console.error(error);
     return handleServerError(res);

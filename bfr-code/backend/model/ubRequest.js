@@ -10,4 +10,4 @@ const ubRequestSchema = mongoose.Schema({
   image: String,
 });
 
-export const ubRequestModel = mongoose.model("ubrequest", ubRequestModel);
+export const ubRequestModel = mongoose.model("ubrequest", ubRequestSchema);

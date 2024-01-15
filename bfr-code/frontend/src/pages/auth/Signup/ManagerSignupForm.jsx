@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 import { showToast } from "../../../utils/toast";
 import { ImagetoBase64 } from "../../manager/ultility/ImagetoBase64";
-
+import HanoiProvince from "../../../assets/HaNoiProvince.json";
 const ManagerSignupForm = () => {
   const [formData, setFormData] = useState({
     userName: "",
@@ -170,16 +170,21 @@ const ManagerSignupForm = () => {
               >
                 Quận/Huyện
               </label>
-              <input
-                type="text"
+              <select
                 id="province"
                 name="province"
-                placeholder="Nhập quận/huyện phố của bạn"
                 value={formData.province}
                 onChange={handleChange}
                 required
                 className="border rounded-md py-2 px-3 w-full"
-              />
+              >
+                <option value="">Chọn quận/huyện</option>
+                {HanoiProvince.map((province, index) => (
+                  <option key={index} value={province}>
+                    {province}
+                  </option>
+                ))}
+              </select>
             </div>
 
             <div className="mb-4">

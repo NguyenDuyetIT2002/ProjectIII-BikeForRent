@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import CustomerSignupForm from "./CustomerSignupForm";
 import ManagerSignupForm from "./ManagerSignupForm";
+import Header from "../../spalshpage/Header";
 
 const Signup = () => {
   const [activeForm, setActiveForm] = useState(null);
@@ -24,6 +25,7 @@ const Signup = () => {
       className="flex h-screen "
       style={{ background: "linear-gradient(to right, #f2e2e2, #f0f0f0)" }}
     >
+      <Header />
       {/* Left Section - Buttons */}
       <div className="w-1/3 justify-center items-center flex shadow-sm">
         <div

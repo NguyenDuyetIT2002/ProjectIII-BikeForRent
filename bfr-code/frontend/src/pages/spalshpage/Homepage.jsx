@@ -1,27 +1,12 @@
 import React from "react";
 import splashpage_bg from "../../assets/images/splashpage-bg.jpg";
 import { Link } from "react-router-dom";
+import Header from "./Header";
 
 const Homepage = () => {
   return (
     <div>
-      <header className="fixed  w-full px-2 md:px-4 h-12 bg-white">
-        <div className="flex items-center justify-between h-12 ">
-          <div className="flex items-center h-full">
-            <span className="text-2xl font-bold" style={{ color: "#6439ff" }}>
-              Bike For Rent
-            </span>
-          </div>
-          <div className="flex items-center space-x-4 ">
-            <Link to="auth/signup" className="-ml-2">
-              Đăng ký
-            </Link>
-            <Link to="auth/login" className="-mr-4">
-              Đăng nhập
-            </Link>
-          </div>
-        </div>
-      </header>
+      <Header />
       <div
         className="bg-cover bg-center h-screen"
         style={{
