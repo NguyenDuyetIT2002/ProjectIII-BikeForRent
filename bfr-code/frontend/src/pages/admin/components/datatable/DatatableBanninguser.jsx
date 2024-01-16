@@ -20,13 +20,13 @@ const DatatableBanningUser = () => {
         return (
           <div className="cellAction">
             <Link to="/users/test" style={{ textDecoration: "none" }}>
-              <div className="viewButton">View</div>
+              <div className="viewButton">Decline</div>
             </Link>
             <div
               className="deleteButton"
               onClick={() => handleDelete(params.row.id)}
             >
-              Delete
+              Ban
             </div>
           </div>
         );

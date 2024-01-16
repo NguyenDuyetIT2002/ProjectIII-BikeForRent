@@ -2,7 +2,7 @@ export const userColumns = [
   { field: "id", headerName: "ID", width: 70 },
   {
     field: "user",
-    headerName: "User Name",
+    headerName: "Name",
     width: 230,
     renderCell: (params) => {
       return (
@@ -14,38 +14,37 @@ export const userColumns = [
     },
   },
   {
-    field: "address",
-    headerName: "Address",
+    field: "type",
+    headerName: "Type",
     width: 230,
     renderCell: (params) => {
       return (
-        <div className="address">
-          {params.row.email}
+        <div className="cellWithImg">
+          {params.row.username}
         </div>
       );
     },
   },
-
+{
+    field: "amount_ban",
+    headerName: "Ban Amount",
+    width: 230,
+    renderCell: (params) => {
+      return (
+        <div className="cellWithImg">
+          {params.row.username}
+        </div>
+      );
+    },
+  },
   {
-    field: "phone",
-    headerName: "Phone",
+    field: "price",
+    headerName: "Price",
     width: 100,
     renderCell: (params) => {
       return (
         <div className="phone">
           {params.row.age}
-        </div>
-      );
-    },
-  },
-  {
-    field: "status",
-    headerName: "Status",
-    width: 160,
-    renderCell: (params) => {
-      return (
-        <div className={`cellWithStatus ${params.row.status}`}>
-          {params.row.status}
         </div>
       );
     },
@@ -135,3 +134,25 @@ export const userRows = [
     age: 65,
   },
 ];
+
+const postAPI = 'http://localhost:8080/admin/getAllBCRequest';
+
+// Thay thế 'YOUR_TOKEN_HERE' bằng token thực của bạn
+const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWEyMTQyYjM0M2ZkYTMwYjE5OTc2NjYiLCJpYXQiOjE3MDUyMTY1NTIsImV4cCI6MTcwNTIyMDE1Mn0.go5_p5nCe_LVnU-ch5V_NkTG4RrnTPrnlgtTxwguYoY';
+
+fetch(postAPI, {
+  method: 'GET',  // Hoặc 'POST' hoặc phương thức bạn đang sử dụng
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${token}`,  // Thêm token vào tiêu đề Authorization
+  },
+})
+  .then(function(response){
+    return response.json();
+  })
+  .then(function(post){
+    console.log(post.data.map(item => item.time));
+  })
+  .catch(function(error) {
+    console.error('Error fetching data:', error);
+  });
