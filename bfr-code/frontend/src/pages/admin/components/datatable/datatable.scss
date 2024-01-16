@@ -1,11 +1,14 @@
 .datatable {
   height: 600px;
   padding: 20px;
+  .datagrid{
+    height: 115%;
+  }
   
   .datatableTitle{
     width: 100%;
     font-size: 24px;
-    color: gray;
+    color: rgb(66, 64, 64);
     margin-bottom: 10px;
     display: flex;
     align-items: center;

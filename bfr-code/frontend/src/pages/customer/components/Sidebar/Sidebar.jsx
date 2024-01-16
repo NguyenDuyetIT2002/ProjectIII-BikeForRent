@@ -2,11 +2,11 @@
 import React from "react";
 import "./Sidebar.css";
 import DashboardIcon from "@mui/icons-material/Dashboard";
-import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
-import PersonAddDisabledIcon from '@mui/icons-material/PersonAddDisabled';
-import TwoWheelerOutlinedIcon from '@mui/icons-material/TwoWheelerOutlined';
-import DirectionsBikeIcon from '@mui/icons-material/DirectionsBike';
-import BlockIcon from '@mui/icons-material/Block';
+import PersonAddAltIcon from "@mui/icons-material/PersonAddAlt";
+import PersonAddDisabledIcon from "@mui/icons-material/PersonAddDisabled";
+import TwoWheelerOutlinedIcon from "@mui/icons-material/TwoWheelerOutlined";
+import DirectionsBikeIcon from "@mui/icons-material/DirectionsBike";
+import BlockIcon from "@mui/icons-material/Block";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import { Link } from "react-router-dom";
@@ -22,7 +22,7 @@ const Sidebar = () => {
       <hr />
       <div className="center">
         <ul>
-        <Link to="/customer/homepage" style={{ textDecoration: "none" }}>
+          <Link to="/customer/homepage" style={{ textDecoration: "none" }}>
             <li>
               <DashboardIcon className="icon" />
               <span>Dashboard</span>
@@ -42,8 +42,8 @@ const Sidebar = () => {
           </Link>
           <Link to="/customer/profile" style={{ textDecoration: "none" }}>
             <li>
-                <AccountCircleOutlinedIcon className="icon" />
-                <span>Profile</span>
+              <AccountCircleOutlinedIcon className="icon" />
+              <span>Profile</span>
             </li>
           </Link>
           <li>

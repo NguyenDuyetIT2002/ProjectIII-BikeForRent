@@ -2,7 +2,7 @@
 	"info": {
 		"_postman_id": "fb10ea94-0ef4-4295-8518-05a5633f0623",
 		"name": "BFR-System",
-		"description": "Luồng chính:\n\n\\+ customerSignup => customerLogin(get token) => customer api\n\n\\+ managerSignup => createManager => managerLogin(get token) => manager api\n\n\\+ rentBike(if bikes is null, createBike) => getPendingOrders => acceptOrder => getAcceptedOrders => completeOrder",
+		"description": "Note: Kéo xuống dưới, ở từng thư mục của actor, t có để các endpoint, truyền cho đúng vào, chứ ở chi tiết các api t giải thích cho dễ hiểu thôi. Không đọc note không đọc giải thích k làm được ráng chịu t không biết\n\nLuồng chính:\n\n- Customer:\n    \n\n\\+ Auth: customerSignup => customerLogin => get Token(save to localStorage), save customer info to redux\n\n\\+ RentBike: getStoreByProvince(tức là chọn từ cái select ra quận huyện nào, thì call Api getStoren này, nó sẽ trả về list các manager có province như vậy, nếu list trả về khác rỗng, thì lấy cái địa chỉ làm data cho thẻ select chọn địa chỉ cửa hàng) => getAllBike(dựa vào địa chỉ cửa hàng ví dụ nhé, thẻ option mình cho value=_id, và hiển thị là address, sau đó ấn tiếp theo thì nó sẽ call api getAllBike với params là cái value của option được chọn(tức là id của tk manager ấy) => rentBike => (manager: getPendingOrders => acceptOrder - customer đến cửa hàng, nhận xe và manager chấp nhận đơn => completeOrder - khách trả xe, manager giải phóng xe để có thể được thuê tiếp )\n\n\\+ ReportBike: rentBike(not complete Order) => getYourRentedBike => reportBike\n\n- manager\n    \n\n\\+ Auth: managerSignup => (admin: getAllManagerSR => createManager) => managerLogin => getToken(save to localStorage), save managerInfo to redux\n\n\\+ crud bike\n\n\\+ RentBike: (customer: getStoreByProvince => getAllBike => rentBike) => getPendingOrders => acceptOrder - customer đến cửa hàng, nhận xe và manager chấp nhận đơn => completeOrder - khách trả xe, manager giải phóng xe để có thể được thuê tiếp )\n\n\\+ report customer: getAllLatestIncompleteOrder(tìm order mà serverTime - endTime >3h) => requestBanCustomer\n\n\\+ yêu cầu mở khóa xe: getBlockedBike => sendUBRequest\n\n- admin\n    \n\n\\+ createManager: (manager: managerSignup) => getAllManagerSR => createManager\n\n\\+ banCustomer: getAllBCRequest => banCustomer\n\n\\+ blockBike: getReportedBike => blockBike\n\n- auth: này khỏi nói có gì đâu",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "31988316"
 	},
@@ -36,7 +36,8 @@
 								"customer",
 								"getAllCustomers"
 							]
-						}
+						},
+						"description": "này để t test thôi chắc chả dùng đâu"
 					},
 					"response": []
 				},
@@ -63,7 +64,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"Duyệt\",\r\n    \"phone\": \"0122345678\",\r\n    \"address\": \"Số 2 Hải Phòng\"\r\n}",
+							"raw": "{\r\n    \"name\": \"Duyệt\",\r\n    \"phone\": \"0122345678\",\r\n    \"address\": \"Số 2 Hải Phòng\",\r\n    \"passWord\": \"123456\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -82,7 +83,8 @@
 								"updateInfo",
 								"65912f98d4899781b4883228"
 							]
-						}
+						},
+						"description": "này là truyền _id của tk customer vào params nè, nhớ là cái này update xong mình nên có cái reducers xử lí trong redux nhé, không biết làm cứ copy nguyên cái file customerSlice của t vô chatgpt xong hỏi h t call api update xong thì t muốn update thông tin của nó trong redux thì làm ntn nó trả lời cho"
 					},
 					"response": []
 				},
@@ -94,7 +96,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NTkxMmY5OGQ0ODk5NzgxYjQ4ODMyMjgiLCJpYXQiOjE3MDQwMTc1ODIsImV4cCI6MTcwNDAyMTE4Mn0.9_gg6rdUws5FHXDdc7Uq-zHakQb3zRrWpy6mXKS6VU4",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NTkxMmY5OGQ0ODk5NzgxYjQ4ODMyMjgiLCJpYXQiOjE3MDUxNDQ4MzUsImV4cCI6MTcwNTE0ODQzNX0.vqDKMJCA--z3FeU21BzkiiboZVsWgc4b1Bz7ExE2ios",
 									"type": "string"
 								}
 							]
@@ -103,7 +105,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"bike_id\": \"65912a4fbbc8a3e73ebdff56\",\r\n  \"price\": 100, // Assuming the rental price is 100 (change as needed)\r\n  \"startTime\": \"2023-12-31T10:00:00.000Z\", // Set to the desired start time\r\n  \"endTime\": \"2024-01-01T10:00:00.000Z\", // Set to the desired end time\r\n  \"customer_id\": \"65912f98d4899781b4883228\",\r\n  \"orderTime\": \"2023-12-31T09:30:00.000Z\" // Set to the order creation time\r\n}\r\n",
+							"raw": "{\r\n  \"bike_id\": \"65912a4fbbc8a3e73ebdff56\",\r\n  \"price\": 100,\r\n  \"startTime\": \"2024-01-13T19:00:00.000Z\",\r\n  \"endTime\": \"2024-01-13T20:00:00.000Z\",\r\n  \"customer_id\": \"65912f98d4899781b4883228\"\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -121,11 +123,130 @@
 								"customer",
 								"rentBike"
 							]
-						}
+						},
+						"description": "này cho mấy cái trường bên dưới vào body thôi"
+					},
+					"response": []
+				},
+				{
+					"name": "getYourRentedBike",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NTkxMmY5OGQ0ODk5NzgxYjQ4ODMyMjgiLCJpYXQiOjE3MDUxNDQ4MzUsImV4cCI6MTcwNTE0ODQzNX0.vqDKMJCA--z3FeU21BzkiiboZVsWgc4b1Bz7ExE2ios",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"customer_id\": \"65912f98d4899781b4883228\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/customer/getYourRentedBike",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"customer",
+								"getYourRentedBike"
+							]
+						},
+						"description": "này đúng hơn là cho _id của tk customer vào params nhé cái này ví dụ bị lỗi đấy ấn vào chi tiết xem t để khác"
+					},
+					"response": []
+				},
+				{
+					"name": "reportBike",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NTkxMmY5OGQ0ODk5NzgxYjQ4ODMyMjgiLCJpYXQiOjE3MDUxNDk5ODMsImV4cCI6MTcwNTE1MzU4M30.OzPwnOKqesXAujJCqMCVpYrzFwzzIu3H0bQU-M6vkZM",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/customer/requestBanBike/65912f98d4899781b4883228/65a275f01160fe329d238983",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"customer",
+								"requestBanBike",
+								"65912f98d4899781b4883228",
+								"65a275f01160fe329d238983"
+							]
+						},
+						"description": "này truyền 2 params nhé, cái thứ nhất là customer_id(lấy từ redux khi mà mình đăng nhập mình có lưu đấy), cái thứ 2 là bike_id thì getYourRentedBike nó sẽ trả về cái xe, trong đó có _id lấy ra cho vào params thôi"
+					},
+					"response": []
+				},
+				{
+					"name": "getStoreByProvince",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"description": "này cũng bị lỗi này ấn vào open Request nó vào trong đó t để khác đấy, đại loại là mình chọn Province xong thì mình call api này với params là cái quận mà mình select"
+					},
+					"response": []
+				},
+				{
+					"name": "getAllBike",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NTkxMmY5OGQ0ODk5NzgxYjQ4ODMyMjgiLCJpYXQiOjE3MDUxNDk5ODMsImV4cCI6MTcwNTE1MzU4M30.OzPwnOKqesXAujJCqMCVpYrzFwzzIu3H0bQU-M6vkZM",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/customer/getBikes/65a27039c089180b474336a4",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"customer",
+								"getBikes",
+								"65a27039c089180b474336a4"
+							]
+						},
+						"description": "ở api trên nó sẽ trả về các manager mà có province như thế nào đấy, thì mình sẽ lấy các address trả về từ api trên, nhét nó vào làm option của cái select thứ 2, nếu rỗng thì select có option là không có hay gì đó thì tùy, trong đó mình sẽ gán value là cái manager_id, và cái hiển thị là address, thì khi chọn cái nào và submit thì nó sẽ call api với params là cái value(manager_id) ứng với cái option được chọn"
 					},
 					"response": []
 				}
-			]
+			],
+			"description": "- Lấy token từ localStorage ra rồi dùng nhé\n    \n- getAllCustomer(tester)\n    \n- updateInfo/:id(id là id của customer)\n- rentBike\n- getYourRentedBike/:customer_id(id khách)\n- reportBike(requestBanBike)/:customer_id/:bike_id\n- getStoreByProvince/:province(lấy cửa hàng - manager theo quận)\n- getAllBike(getBikes)/:id(id là id của manager lấy được từ api trên)"
 		},
 		{
 			"name": "manager",
@@ -165,7 +286,8 @@
 								"manager",
 								"createBike"
 							]
-						}
+						},
+						"description": "làm hết rồi thì thôi k hướng dẫn nữa"
 					},
 					"response": []
 				},
@@ -174,7 +296,7 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"description": "##### Nhớ cho id manager cần lấy tất cả xe ra, ví dụ:\n\n[http://localhost:8080/manager/getBikes/659125f35a52a38537c2c998](http://localhost:8080/manager/getBikes/659125f35a52a38537c2c998)\n\n##### Ở đây \"659125f35a52a38537c2c998\" chính là manager_id"
+						"description": "làm hết rồi thì thôi k hướng dẫn nữa còn không thì cho params là cái manager_id ở trên t để api như nào thì call đúng như thế, ví dụ ở trên cái getBikes t để là _id thì lúc call truyền params y như vật không đến lúc be lấy params sai còn t ns manager_id ở đây cho dễ hiểu thôi_"
 					},
 					"response": []
 				},
@@ -215,7 +337,7 @@
 								"65912a4fbbc8a3e73ebdff56"
 							]
 						},
-						"description": "##### Nhớ cho id của bike cần update thông tin, ví dụ:\n\n[http://localhost:8080/manager/updateBikeInfo/65912a4fbbc8a3e73ebdff56<br>](http://localhost:8080/manager/getBikes/659125f35a52a38537c2c998)\n\n##### Ở đây \"[65912a4fbbc8a3e73ebdff56](http://localhost:8080/manager/getBikes/659125f35a52a38537c2c998)\" chính là bike_id"
+						"description": "làm hết rồi thì thôi k hướng dẫn nữa còn chưa thì nhớ đọc cái trên trước hẵng đọc cái này\n\nkhông thì cho params là cái id của bike vào,\n\nsau đó body là các trường dưới"
 					},
 					"response": []
 				},
@@ -246,7 +368,8 @@
 								"deleteBike",
 								"65913e249f1736e061e0c95b"
 							]
-						}
+						},
+						"description": "đọc cái trên,\n\ntruyền id của bike vào params"
 					},
 					"response": []
 				},
@@ -277,7 +400,8 @@
 								"getOrdersBy",
 								"659125f35a52a38537c2c998"
 							]
-						}
+						},
+						"description": "đọc cái trên, truyền id của tk manager vào params"
 					},
 					"response": []
 				},
@@ -285,7 +409,8 @@
 					"name": "getPendingOrders",
 					"request": {
 						"method": "GET",
-						"header": []
+						"header": [],
+						"description": "đọc cái trên, truyền id của tk manager vào params"
 					},
 					"response": []
 				},
@@ -316,7 +441,8 @@
 								"acceptOrder",
 								"65913f9d74b733fd3bc8f8d6"
 							]
-						}
+						},
+						"description": "đọc cái trên, truyền id của order vào"
 					},
 					"response": []
 				},
@@ -324,7 +450,8 @@
 					"name": "getAcceptedOrders",
 					"request": {
 						"method": "GET",
-						"header": []
+						"header": [],
+						"description": "đọc cái trên, truyền id của tk manager vào"
 					},
 					"response": []
 				},
@@ -332,12 +459,112 @@
 					"name": "completeOrder",
 					"request": {
 						"method": "GET",
-						"header": []
+						"header": [],
+						"description": "đọc cái trên, truyền id của order vào"
+					},
+					"response": []
+				},
+				{
+					"name": "getAllLatestIncompleteOrder",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"description": "đọc cái trên, truyền id của tk manager vào"
+					},
+					"response": []
+				},
+				{
+					"name": "requestBanCustomer",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWEyNzAzOWMwODkxODBiNDc0MzM2YTQiLCJpYXQiOjE3MDUxNDU2OTIsImV4cCI6MTcwNTE0OTI5Mn0.d54HBO_283hPofBK1WHOc3KVqGq_IR6gHos3W_sMwFM",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/manager/requestBanCustomer/65912f98d4899781b4883228",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"manager",
+								"requestBanCustomer",
+								"65912f98d4899781b4883228"
+							]
+						},
+						"description": "truyền id của tk customer vào"
+					},
+					"response": []
+				},
+				{
+					"name": "getBlockedBikes",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"description": "đọc cái trên, truyền id của tk manager vào"
+					},
+					"response": []
+				},
+				{
+					"name": "sendUBRequest",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWEyNzAzOWMwODkxODBiNDc0MzM2YTQiLCJpYXQiOjE3MDUzMDMxNDksImV4cCI6MTcwNTMwNjc0OX0.MClMSZujj6nrPTIBfkU4IXffcypMEkwaK0w_13_GfvY",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"bike_id\": \"65a275f01160fe329d238983\",\r\n    \"reason\": \"Xe lúc trước có vấn đề giờ đã sửa lại\",\r\n    \"image\": \"image\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/manager/sendUBRequest",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"manager",
+								"sendUBRequest"
+							]
+						},
+						"description": "này cho body như dưới nhé"
 					},
 					"response": []
 				}
 			],
-			"description": "- Test for api related to manager\n- Note for param in url will include model_id for example : [http://localhost:8080/manager/getBikes/659125f35a52a38537c2c998](http://localhost:8080/manager/getBikes/659125f35a52a38537c2c998)"
+			"description": "- createBike\n- updateBikeInfo/:id(id của bike)\n- deleteBike/:id(id của bike)\n- getOrders(getOrderBy)/:manager_id: id manager => tester\n- getPendingOrders(getPendingOrdersBy/:manager_id\n- acceptOrder/:id(id của order)\n- getAcceptedOrder(getAcceptedOrderBy)/:manager_id\n- completeOrder/:id(id của order)\n- getAllLatestIncompleteOrders(getAllLatestIncompleteOrdersBy)/:manager_id\n- requestBanCustomer/:customer_id\n- getBlockedBikes/:manager_id\n    \n- sendUBRequest"
 		},
 		{
 			"name": "admin",
@@ -367,11 +594,165 @@
 								"admin",
 								"createManager"
 							]
-						}
+						},
+						"description": "này truyền request_id vào params nhé k phải body đâu lỗi đấy, ấn open request nó ra"
+					},
+					"response": []
+				},
+				{
+					"name": "getAllManagerSR",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "getAllBCRequest",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "banCustomer",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWEyMTQyYjM0M2ZkYTMwYjE5OTc2NjYiLCJpYXQiOjE3MDUxNTEwMTYsImV4cCI6MTcwNTE1NDYxNn0.6S4JcBrGS2Sx4RIlt7JYkCTx2_moj9PJeboj50xaCNw",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/admin/banCustomer/65a27a72598f7920d26992e2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"admin",
+								"banCustomer",
+								"65a27a72598f7920d26992e2"
+							]
+						},
+						"description": "truyền cái bcrequest_id vào params"
+					},
+					"response": []
+				},
+				{
+					"name": "getReportedBike",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "blockBike",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWEyMTQyYjM0M2ZkYTMwYjE5OTc2NjYiLCJpYXQiOjE3MDUxNTEwMTYsImV4cCI6MTcwNTE1NDYxNn0.6S4JcBrGS2Sx4RIlt7JYkCTx2_moj9PJeboj50xaCNw",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/admin/blockBike/65a275f01160fe329d238983",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"admin",
+								"blockBike",
+								"65a275f01160fe329d238983"
+							]
+						},
+						"description": "truyền cái id của bike vô params"
+					},
+					"response": []
+				},
+				{
+					"name": "getUBRequests",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWEyNzAzOWMwODkxODBiNDc0MzM2YTQiLCJpYXQiOjE3MDUzMDMxNDksImV4cCI6MTcwNTMwNjc0OX0.MClMSZujj6nrPTIBfkU4IXffcypMEkwaK0w_13_GfvY",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/admin/getUBRequests",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"admin",
+								"getUBRequests"
+							]
+						},
+						"description": "chả có gì"
+					},
+					"response": []
+				},
+				{
+					"name": "unlockBike",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWEyMTQyYjM0M2ZkYTMwYjE5OTc2NjYiLCJpYXQiOjE3MDUzMDMzOTcsImV4cCI6MTcwNTMwNjk5N30.qTkifStFfjtFle-Cp_bQ6Duw9tDpfGZxL0IUzIBtvbc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/admin/unlockBike/65a4dd2608b1e1583cc768ef/65a275f01160fe329d238983",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"admin",
+								"unlockBike",
+								"65a4dd2608b1e1583cc768ef",
+								"65a275f01160fe329d238983"
+							]
+						},
+						"description": "truyền cái thứ nhất là request_id để xóa request đó, cái thứ 2 là bike_id để unblock nó"
 					},
 					"response": []
 				}
-			]
+			],
+			"description": "- createManager/:request_id\n- getAllManagerSR\n- getAllBCRequest\n- banCustomer/:bcrequest_id\n- getReportedBikes\n- getUBRequest\n- unlockBike/:request_id/:bike_id (get UB request trả về lấy danh sách ra, trong đó tứng request đã có thông tin _id(request_id)_ và bike_id, khi click vào mở khóa thì gọi 2 api với tham số kia truyền vào là param(không phải body)"
 		},
 		{
 			"name": "auth",
@@ -441,7 +822,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"userName\": \"manager3\",\r\n    \"passWord\": \"123456\",\r\n    \"province\": \"Phương Mai\",\r\n    \"address\": \"Số 3 Phương Mai, Đống Đa, Hà Nội\",\r\n    \"phone\": \"0124522219\",\r\n    \"identify_code\":\"identfy_coe\",\r\n    \"license\": \"lice1nse\"\r\n}",
+							"raw": "{\r\n    \"userName\": \"manager3\",\r\n    \"passWord\": \"123456\",\r\n    \"province\": \"Phương Mai\",\r\n    \"address\": \"Số 3 Phương Mai, Đống Đa, Hà Nội\",\r\n    \"phone\": \"0124522219\",\r\n    \"identify_code\":\"identfy_coe\",\r\n    \"license\": \"lice1nse\",\r\n    \"gmail\": \"nguyenduyethphocit2002@gmail.com\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -487,6 +868,35 @@
 							"path": [
 								"auth",
 								"managerLogin"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "adminLogin",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"gmail\": \"nguyenduyethphocit2002@gmail.com\",\r\n    \"password\": \"123456789\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/auth/adminLogin",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"auth",
+								"adminLogin"
 							]
 						}
 					},
