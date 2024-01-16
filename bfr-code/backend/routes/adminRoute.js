@@ -8,6 +8,8 @@ import {
   getReportedBikes,
   blockBike,
   getAllBCRequest,
+  getUBRequests,
+  unlockBike,
 } from "../controller/adminApi.js";
 
 const adminRouter = express.Router();
@@ -18,4 +20,6 @@ adminRouter.get("/getAllBCRequest", getAllBCRequest);
 adminRouter.post("/banCustomer/:bcrequest_id", banCustomer);
 adminRouter.get("/getReportedBikes", getReportedBikes);
 adminRouter.post("/blockBike/:bike_id", blockBike);
+adminRouter.get("/getUBRequests", getUBRequests);
+adminRouter.post("/unlockBike/:request_id/:bike_id", unlockBike);
 export default adminRouter;

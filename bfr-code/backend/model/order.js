@@ -6,6 +6,10 @@ const orderSchema = mongoose.Schema({
     ref: "bike",
     required: true,
   },
+  bike_name: {
+    type: String,
+    required: true,
+  },
   price: Number, // Changed to Number for numerical operations
   startTime: {
     type: Date,
@@ -19,6 +23,9 @@ const orderSchema = mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "customer",
     required: true,
+  },
+  customer_name: {
+    type: String,
   },
   status: {
     type: String,

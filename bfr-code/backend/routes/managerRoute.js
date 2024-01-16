@@ -11,6 +11,8 @@ import {
   getAllAcceptedOrdersByManagerId,
   getAllLatestIncompleteOrders,
   requestBanCustomer,
+  getBlockedBikes,
+  sendUBRequest,
 } from "../controller/managerApi.js";
 
 const managerRouter = express.Router();
@@ -54,5 +56,6 @@ managerRouter.get(
 );
 
 managerRouter.post("/requestBanCustomer/:customer_id", requestBanCustomer);
-
+managerRouter.get("/getBlockedBikes/:manager_id", getBlockedBikes);
+managerRouter.post("/sendUBRequest", sendUBRequest);
 export default managerRouter;

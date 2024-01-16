@@ -9,23 +9,26 @@ import {
   Route,
   RouterProvider,
 } from "react-router-dom";
+
+import { store, persistor } from "./redux/index.js";
+import { Provider } from "react-redux";
+import { PersistGate } from "redux-persist/integration/react";
+
 import List from "./pages/admin/pages/list/List";
 import Single from "./pages/admin/pages/single/Single";
 import New from "./pages/admin/pages/new/New";
 import { userInputs } from "./pages/admin/formSource.js";
-import Homepage from "./pages/Homepage.jsx";
+import Homepage from "./pages/spalshpage/Homepage.jsx";
 
 import HomePageAdmin from "./pages/admin/pages/home/Home.jsx";
 import Login from "./pages/auth/Login/Login.jsx";
-import CustomerLogin from "./pages/auth/Login/CustomerLogin.jsx";
-import AdminLogin from "./pages/auth/Login/AdminLogin.jsx";
-import ManagerLogin from "./pages/auth/Login/ManagerLogin.jsx";
+
 import Signup from "./pages/auth/Signup/Signup.jsx";
-import CustomerSignup from "./pages/auth/Signup/CustomerSignup";
-import ManagerSignup from "./pages/auth/Signup/ManagerSignup";
 
 import ManagerHomepage from "./pages/manager/homepage/Homepage.js";
 import ManagerAddbike from "./pages/manager/addbike/Addbike.js";
+import ManagerEditbike from "./pages/manager/editbike/Editbike.js";
+import ManagerOrders from "./pages/manager/order/Orderspage.js";
 
 import ListBanningBike from "./pages/admin/pages/list/ListBanningBike.jsx";
 import ListBanningUsers from "./pages/admin/pages/list/ListBanningUsers.jsx";
@@ -42,14 +45,9 @@ const router = createBrowserRouter(
       <Route index element={<Homepage />} />
       <Route path="/auth/login">
         <Route index element={<Login />} />
-        <Route path="customer" element={<CustomerLogin />} />
-        <Route path="admin" element={<AdminLogin />} />
-        <Route path="manager" element={<ManagerLogin />} />
       </Route>
       <Route path="/auth/signup">
         <Route index element={<Signup />} />
-        <Route path="customer" element={<CustomerSignup />} />
-        <Route path="manager" element={<ManagerSignup />} />
       </Route>
       <Route path="/admin">
         <Route path="homepage" element={<HomePageAdmin />} />
@@ -90,6 +88,8 @@ const router = createBrowserRouter(
       <Route path="manager">
         <Route path="homepage" element={<ManagerHomepage />} />
         <Route path="addbike" element={<ManagerAddbike />} />
+        <Route path="editbike" element={<ManagerEditbike />} />
+        <Route path="orders" element={<ManagerOrders />} />
       </Route>
       <Route path="customer">
         <Route path="homepage" element={<HomePageCustomer />} />
@@ -103,11 +103,12 @@ const router = createBrowserRouter(
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  // <React.StrictMode>
-  <RouterProvider router={router} />
-  // </React.StrictMode>
+  <Provider store={store}>
+    <PersistGate loading={null} persistor={persistor}>
+      <RouterProvider router={router} />
+    </PersistGate>
+  </Provider>
 );
-
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
