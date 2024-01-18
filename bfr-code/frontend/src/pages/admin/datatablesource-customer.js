@@ -2,7 +2,7 @@ export const userColumns = [
   { field: "id", headerName: "ID", width: 70 },
   {
     field: "user",
-    headerName: "Name",
+    headerName: "User Name",
     width: 230,
     renderCell: (params) => {
       return (
@@ -14,32 +14,21 @@ export const userColumns = [
     },
   },
   {
-    field: "type",
-    headerName: "Type",
+    field: "address",
+    headerName: "Address",
     width: 230,
     renderCell: (params) => {
       return (
-        <div className="cellWithImg">
-          {params.row.username}
+        <div className="address">
+          {params.row.email}
         </div>
       );
     },
   },
-{
-    field: "amount_ban",
-    headerName: "Ban Amount",
-    width: 230,
-    renderCell: (params) => {
-      return (
-        <div className="cellWithImg">
-          {params.row.username}
-        </div>
-      );
-    },
-  },
+
   {
-    field: "price",
-    headerName: "Price",
+    field: "phone",
+    headerName: "Phone",
     width: 100,
     renderCell: (params) => {
       return (
@@ -49,6 +38,7 @@ export const userColumns = [
       );
     },
   },
+  
 ];
 
 //temporary data
@@ -134,5 +124,3 @@ export const userRows = [
     age: 65,
   },
 ];
-
-

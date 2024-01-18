@@ -1,6 +1,6 @@
 import "./datatable.scss";
 import { DataGrid } from "@mui/x-data-grid";
-import { userColumns, userRows } from "../../datatablesource";
+import { userColumns, userRows } from "../../datatablesource-bike";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 
@@ -37,9 +37,6 @@ const DatatableOpenningUsers = () => {
     <div className="datatable">
       <div className="datatableTitle">
         Openning Bike
-        <Link to="/admin/acceptmanager/new" className="link">
-          Add New
-        </Link>
       </div>
       <DataGrid
         className="datagrid"
