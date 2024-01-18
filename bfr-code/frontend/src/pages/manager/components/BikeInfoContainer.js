@@ -38,23 +38,23 @@ const BikeInfoContainer = ({bikeInfo, deleteBike}) => {
                             <td>{bikeInfo.name}</td>
                         </tr>
                         <tr>
-                            <td>Type: {bikeInfo.type}</td>
+                            <td>Loại xe: {bikeInfo.type}</td>
 
                         </tr>
                         <tr>
-                            <td>Status: {bikeInfo.status}</td>
+                            <td>Trạng thái: {bikeInfo.status}</td>
                         </tr>
                         <tr>
-                            <td>Rent price: {bikeInfo.price}.000 VND</td>
+                            <td>Giá thuê(VND): {bikeInfo.price}.000</td>
                         </tr>
                         <tr>
-                            <td>Description: {bikeInfo.description}</td>
+                            <td>Mô tả: {bikeInfo.description}</td>
                         </tr>
                         <tr>
                             <td>Rented by: </td>
                         </tr>
                         <tr>
-                            <td>Ban Report: {bikeInfo.banRequestAmount}</td>
+                            <td>Số lượng báo cáo xe: {bikeInfo.banRequestAmount}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -82,10 +82,10 @@ const BikeInfoContainer = ({bikeInfo, deleteBike}) => {
             </div>
             <div className='flex flex-row'>
                 <button className='w-full h-10 bg-red-300 hover:bg-red-500 rounded-bl-lg text-lg font-medium' onClick={handleClickOpen}>
-                    Delete
+                    Xóa
                 </button>
                 <button className='w-full h-10 bg-yellow-300 hover:bg-yellow-500 rounded-br-lg text-lg font-medium' onClick={handleEditClick}>
-                    Edit
+                    Chỉnh sửa
                 </button>
             </div>
         </div>

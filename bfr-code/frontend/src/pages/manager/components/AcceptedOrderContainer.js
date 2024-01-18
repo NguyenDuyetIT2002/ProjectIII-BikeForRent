@@ -89,7 +89,7 @@ const AcceptedOrderContainer = ({orderInfo, handelOnClick}) => {
                 </tbody>
             </table>
             <button className='h-10 bg-green-300 hover:bg-green-500 rounded-b-lg text-lg font-medium' onClick={() => handelOnClick(orderInfo._id)}>
-                Complete
+                Hoàn thành
             </button>
         </div>
     );

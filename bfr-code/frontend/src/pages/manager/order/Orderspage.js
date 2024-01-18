@@ -122,10 +122,10 @@ const Orderspage = () => {
           <h1 className="text-5xl mb-10">
             {
               orderType == 1 
-              ? "Pending Orders"
+              ? "Đơn chờ duyệt"
               : orderType == 2
-                ? "Accepted Orders"
-                : "Expired Orders"
+                ? "Đơn chờ hoàn thành"
+                : "Đơn quá hạn"
             }
           </h1>
           <div className="flex flex-row space-x-10">
@@ -134,21 +134,21 @@ const Orderspage = () => {
                 getPendingOrders();
               }}
             >
-              Pending orders
+              Đơn chờ duyệt
             </button>
             <button className="px-5 py-1 hover:bg-violet-200"
               onClick={() => {
                 getAcceptedOrders();
               }}
             >
-              On-going orders
+              Đơn chờ hoàn thành
             </button>
             <button className="px-5 py-1 hover:bg-violet-200"
               onClick={() => {
                 getAllLatestIncompleteOrder();
               }}
             >
-              Expired orders
+              Đơn quá hạn
             </button>
           </div>
           <div>

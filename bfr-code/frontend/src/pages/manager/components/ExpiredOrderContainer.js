@@ -89,7 +89,7 @@ const ExpiredOrderContainer = ({orderInfo, handelOnClick}) => {
                 </tbody>
             </table>
             <button className='h-10 bg-red-300 hover:bg-red-500 rounded-b-lg text-lg font-medium' onClick={() => handelOnClick(orderInfo.customer_id)}>
-                Report
+                Báo cáo
             </button>
         </div>
     );
