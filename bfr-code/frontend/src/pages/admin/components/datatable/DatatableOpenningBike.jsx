@@ -1,6 +1,6 @@
 import "./datatable.scss";
 import { DataGrid } from "@mui/x-data-grid";
-import { userColumns, userRows } from "../../datatablesource";
+import { userColumns, userRows } from "../../datatablesource-bike";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 
@@ -20,13 +20,13 @@ const DatatableOpenningUsers = () => {
         return (
           <div className="cellAction">
             <Link to="/users/test" style={{ textDecoration: "none" }}>
-              <div className="viewButton">View</div>
+              <div className="viewButton">Decline</div>
             </Link>
             <div
               className="deleteButton"
               onClick={() => handleDelete(params.row.id)}
             >
-              Delete
+              Ban
             </div>
           </div>
         );
@@ -37,9 +37,6 @@ const DatatableOpenningUsers = () => {
     <div className="datatable">
       <div className="datatableTitle">
         Openning Bike
-        <Link to="/admin/acceptmanager/new" className="link">
-          Add New
-        </Link>
       </div>
       <DataGrid
         className="datagrid"

@@ -14,13 +14,9 @@ import { store, persistor } from "./redux/index.js";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 
-import List from "./pages/admin/pages/list/List";
-import Single from "./pages/admin/pages/single/Single";
-import New from "./pages/admin/pages/new/New";
-import { userInputs } from "./pages/admin/formSource.js";
+
 import Homepage from "./pages/spalshpage/Homepage.jsx";
 
-import HomePageAdmin from "./pages/admin/pages/home/Home.jsx";
 import Login from "./pages/auth/Login/Login.jsx";
 
 import Signup from "./pages/auth/Signup/Signup.jsx";
@@ -30,9 +26,11 @@ import ManagerAddbike from "./pages/manager/addbike/Addbike.js";
 import ManagerEditbike from "./pages/manager/editbike/Editbike.js";
 import ManagerOrders from "./pages/manager/order/Orderspage.js";
 
-import ListBanningBike from "./pages/admin/pages/list/ListBanningBike.jsx";
-import ListBanningUsers from "./pages/admin/pages/list/ListBanningUsers.jsx";
-import ListOpenningBike from "./pages/admin/pages/list/ListOpenningBike.jsx";
+import AdminHomePage from "./pages/admin/homepage/HomePage.js"
+import AcceptManager from "./pages/admin/acceptmanager/AcceptManager.js";
+import BanningBike from "./pages/admin/banningbike/BanningBike.js";
+import BanningUsers from "./pages/admin/banninguser/BanningUser.js";
+import OpenningBike from "./pages/admin/openbike/OpenBike.js";
 
 import HomePageCustomer from "./pages/customer/pages/Homepage/home.jsx";
 import CustomerProfile from "./pages/customer/pages/Profile/profile.jsx";
@@ -50,38 +48,18 @@ const router = createBrowserRouter(
         <Route index element={<Signup />} />
       </Route>
       <Route path="/admin">
-        <Route path="homepage" element={<HomePageAdmin />} />
+        <Route path="homepage" element={<AdminHomePage />} />
         <Route path="acceptmanager">
-          <Route index element={<List />} />
-          <Route path=":userId" element={<Single />} />
-          <Route
-            path="new"
-            element={<New inputs={userInputs} title="Accept Manager Account" />}
-          />
+          <Route index element={<AcceptManager />} />
         </Route>
         <Route path="banningbike">
-          <Route index element={<ListBanningBike />} />
-          <Route path=":userId" element={<Single />} />
-          <Route
-            path="new"
-            element={<New inputs={userInputs} title="Banning Bike" />}
-          />
+          <Route index element={<BanningBike />} />
         </Route>
         <Route path="banningusers">
-          <Route index element={<ListBanningUsers />} />
-          <Route path=":userId" element={<Single />} />
-          <Route
-            path="new"
-            element={<New inputs={userInputs} title="Banning Users" />}
-          />
+          <Route index element={<BanningUsers />} />
         </Route>
         <Route path="openningbike">
-          <Route index element={<ListOpenningBike />} />
-          <Route path=":userId" element={<Single />} />
-          <Route
-            path="new"
-            element={<New inputs={userInputs} title="Openning Bike" />}
-          />
+          <Route index element={<OpenningBike />} />
         </Route>
       </Route>
 

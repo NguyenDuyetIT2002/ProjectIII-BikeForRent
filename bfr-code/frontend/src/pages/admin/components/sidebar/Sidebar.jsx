@@ -8,8 +8,27 @@ import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import { Link } from "react-router-dom";
 
+import { useDispatch } from "react-redux";
+import { logout } from "../../../../redux/managerSlice"
+
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { clearAdminToken, getAdminToken } from '../../../../utils/localStorage';
+
 
 const Sidebar = () => {
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (getAdminToken() == null){
+      navigate('/auth/login?form="admin"');
+    }
+  })
+  const dispatch = useDispatch();
+
+  const handleLogout = () => {
+    dispatch(logout());
+    clearAdminToken()
+  };
   return (
     <div className="sidebar">
       <div className="top">
@@ -54,10 +73,13 @@ const Sidebar = () => {
             <AccountCircleOutlinedIcon className="icon" />
             <span>Profile</span>
           </li>
-          <li>
-            <ExitToAppIcon className="icon" />
-            <span>Logout</span>
-          </li>
+          <Link to="/" style={{ textDecoration: "none" }} onClick={handleLogout} >
+            <li>
+              <ExitToAppIcon className="icon"/>
+              <span>Logout</span>
+              
+            </li>
+          </Link>
         </ul>
       </div>
     </div>
