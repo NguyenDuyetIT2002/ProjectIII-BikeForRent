@@ -20,7 +20,7 @@ const Addbike = () => {
       <Box sx={{display: "flex"}}>
         <SideNavbar />
         <div className='flex flex-col flex-wrap pl-20 pt-20'>
-          <h1 className='text-5xl mb-10'>Add bike</h1>
+          <h1 className='text-5xl mb-10'>Thêm xe</h1>
           <div>
           {
             AddBikeForm()

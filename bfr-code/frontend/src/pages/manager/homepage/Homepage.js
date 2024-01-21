@@ -50,7 +50,7 @@ const Homepage = () => {
       <Box sx={{ display: "flex" }}>
         <SideNavbar />
         <div className="flex flex-col flex-wrap pl-20 pt-20">
-          <h1 className="text-5xl mb-10">Home</h1>
+          <h1 className="text-5xl mb-10">Danh sách xe</h1>
           <div>
             {bikesList.map((bike) => (
               <BikeInfoContainer

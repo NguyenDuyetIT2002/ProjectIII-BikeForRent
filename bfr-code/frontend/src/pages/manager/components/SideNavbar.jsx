@@ -29,25 +29,25 @@ const SideNavbar = () => {
           <Link to="/manager/homepage" style={{ textDecoration: "none" }}>
             <li>
               <DashboardIcon className="icon" />
-              <span>Home</span>
+              <span>Quản lý xe</span>
             </li>
           </Link>
           <Link to="/manager/addbike" style={{ textDecoration: "none" }}>
             <li>
               <AddIcon className="icon" />
-              <span>Add bike</span>
+              <span>Thêm xe</span>
             </li>
           </Link>
           <Link to="/manager/orders" style={{ textDecoration: "none" }}>
             <li>
               <ListAltIcon className="icon" />
-              <span>Orders</span>
+              <span>Đơn thuê xe</span>
             </li>
           </Link>
           <Link to="/" style={{ textDecoration: "none" }} onClick={handleLogout}>
             <li>
               <ExitToAppIcon className="icon"/>
-              <span>Logout</span>
+              <span>Đăng xuất</span>
             </li>
           </Link>
         </ul>

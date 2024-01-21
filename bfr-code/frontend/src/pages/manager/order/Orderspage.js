@@ -4,10 +4,12 @@ import { Box } from "@mui/material";
 import axiosConfig from "../axiosConfig";
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import OrderInfoContainer from "../components/OrderInfoContainer";
 import { showToast } from "../../../utils/toast";
 import { useNavigate } from "react-router-dom";
 import { getManagerToken } from "../../../utils/localStorage";
+import PendingOrderContainer from "../components/PendingOrderContainer";
+import AcceptedOrderContainer from "../components/AcceptedOrderContainer";
+import ExpiredOrderContainer from "../components/ExpiredOrderContainer";
 
 const Orderspage = () => {
   const [orderList, setOrderList] = useState([]);
@@ -56,6 +58,18 @@ const Orderspage = () => {
     }
   }
 
+  async function getAllLatestIncompleteOrder() {
+    try {
+      const response = await axiosConfig.get(
+        `/getAllLatestIncompleteOrdersBy/${manager_id}`
+      );
+      setOrderType(3);
+      setOrderList(response.data.data);
+    } catch (error) {
+      console.log("Get incomplete orders failed: ", error);
+    }
+  }
+
   const acceptOrder = async (orderID) => {
     try {
       const response = await axiosConfig.post(`/acceptOrder/${orderID}`);
@@ -84,11 +98,20 @@ const Orderspage = () => {
     }
   };
 
+  const banCustomer = async (customerID) => {
+    try {
+      const response = await axiosConfig.post(`/requestBanCustomer/${customerID}`);
+      showToast("success", "Báo cáo người dùng thành công");
+    } catch (error) {
+      showToast("error", "Báo cáo người dùng thất bại");
+    }
+  };
+
   useEffect(() => {
     if (getManagerToken() == null) {
       navigate('/auth/login?form="manager"');
     }
-    getOrders();
+    getPendingOrders();
   }, []);
 
   return (
@@ -96,44 +119,54 @@ const Orderspage = () => {
       <Box sx={{ display: "flex" }}>
         <SideNavbar />
         <div className="flex flex-col flex-wrap pl-20 pt-20">
-          <h1 className="text-5xl mb-10">Orders</h1>
+          <h1 className="text-5xl mb-10">
+            {
+              orderType == 1 
+              ? "Đơn chờ duyệt"
+              : orderType == 2
+                ? "Đơn chờ hoàn thành"
+                : "Đơn quá hạn"
+            }
+          </h1>
           <div className="flex flex-row space-x-10">
-            <button
-              onClick={() => {
-                getOrders();
-              }}
-            >
-              All orders
-            </button>
-            <button
+            <button className="px-5 py-1 hover:bg-violet-200"
               onClick={() => {
                 getPendingOrders();
               }}
             >
-              Pending orders
+              Đơn chờ duyệt
             </button>
-            <button
+            <button className="px-5 py-1 hover:bg-violet-200"
               onClick={() => {
                 getAcceptedOrders();
               }}
             >
-              On-going orders
+              Đơn chờ hoàn thành
             </button>
-            <button onClick={() => {}}>Expired orders</button>
+            <button className="px-5 py-1 hover:bg-violet-200"
+              onClick={() => {
+                getAllLatestIncompleteOrder();
+              }}
+            >
+              Đơn quá hạn
+            </button>
           </div>
           <div>
             {orderList.map((order) =>
-              order.status == "pending" ? (
-                <OrderInfoContainer
+              orderType == 1 ? (
+                <PendingOrderContainer
                   orderInfo={order}
                   handelOnClick={acceptOrder}
-                ></OrderInfoContainer>
-              ) : order.status == "accepted" ? (
-                <OrderInfoContainer
+                ></PendingOrderContainer>
+              ) : orderType == 2 ? (
+                <AcceptedOrderContainer
                   orderInfo={order}
                   handelOnClick={completeOrder}
-                ></OrderInfoContainer>
-              ) : null
+                ></AcceptedOrderContainer>
+              ) : <ExpiredOrderContainer
+                    orderInfo={order}
+                    handelOnClick={banCustomer}
+                  ></ExpiredOrderContainer>
             )}
           </div>
         </div>

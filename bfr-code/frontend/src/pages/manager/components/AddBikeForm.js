@@ -55,39 +55,42 @@ function AddBikeForm() {
     }
 
     return (
-        <div className='w-96'>
-            <form className='w-full mx-auto space-y-5' onSubmit={submitForm}>
-                <div>
-                    <label htmlFor='bikeName'>Bike name</label>
-                    <input type='text' name='bikeName' className='block w-full p-2 border border-black rounded-lg' onChange={handleChange}/>
+        <div className='w-100%'>
+            <form className='flex flex-wrap -mx-3' onSubmit={submitForm}>
+                <div className='w-full md:w-1/2 px-2 mb-6 md:mb-0'>
+                    <div className='mb-4'>
+                        <label htmlFor='bikeName' className='block text-gray-700 text-sm font-bold mb-2'>Tên xe</label>
+                        <input type='text' name='bikeName' placeholder='Nhập tên xe' required className="border rounded-md py-2 px-3 w-full" onChange={handleChange}/>
+                    </div>
+
+                    <div className='mb-4'>
+                        <label htmlFor='bikeType' className='block text-gray-700 text-sm font-bold mb-2'>Loại xe</label>
+                        <input type='text' name='bikeType' placeholder='Nhập loại xe' required className="border rounded-md py-2 px-3 w-full" onChange={handleChange}/>
+                    </div>
+
+                    <div>
+                        <label htmlFor='bikePrice' className='block text-gray-700 text-sm font-bold mb-2'>Giá thuê(VND)</label>
+                        <input type='text' name='bikePrice' placeholder='Nhập giá thuê xe' required className="border rounded-md py-2 px-3 w-full" onChange={handleChange}/>
+                    </div>
                 </div>
 
-                <div>
-                    <label htmlFor='bikeType'>Bike type</label>
-                    <input type='text' name='bikeType' className='block w-full p-2 border border-black rounded-lg' onChange={handleChange}/>
-                </div>
+                <div className='w-full md:w-1/2 mb-6 md:mb-0'>
+                    <div className='mb-4'>
+                        <label htmlFor='bikeImage' className="block text-gray-700 text-sm font-bold">Hình ảnh xe</label>
+                        {inputs.bikeImage ? (
+                            <img src={inputs.bikeImage} alt={"none"} className="h-full" />
+                        ) : (
+                            <span className="text-5xl"></span>
+                        )}
+                        <input type="file" name='bikeImage' onChange={uploadImage}/>
+                    </div>
 
-                <div>
-                    <label htmlFor='bikePrice'>Rent price(VND)</label>
-                    <input type='text' name='bikePrice' className='block w-full p-2 border border-black rounded-lg' onChange={handleChange}/>
+                    <div>
+                        <label htmlFor='bikeDescription' className="block text-gray-700 text-sm font-bold mb-2">Mô tả</label>
+                        <input type='text' name='bikeDescription' className="border rounded-md py-2 px-3 w-full" onChange={handleChange}/>
+                    </div>
                 </div>
-
-                <div>
-                    <label htmlFor='bikeImage'>Bike image</label>
-                    {inputs.bikeImage ? (
-                        <img src={inputs.bikeImage} alt={"none"} className="h-full" />
-                    ) : (
-                        <span className="text-5xl"></span>
-                    )}
-                    <input type="file" name='bikeImage' /*className='block w-full p-2 border border-black rounded-lg'*/ onChange={uploadImage}/>
-                </div>
-
-                <div>
-                    <label htmlFor='bikeDescription'>Description</label>
-                    <input type='text' name='bikeDescription' className='block w-full p-2 border border-black rounded-lg' onChange={handleChange}/>
-                </div>
-
-                <button type='submit' className='px-2 py-1 border border-black rounded-lg'>Submit</button>
+                <button type='submit' className="bg-blue-500 text-white rounded-md py-4 px-8 mt-5 mx-auto block hover:bg-blue-600 transition duration-300">Thêm xe</button>
             </form>
         </div>
     )

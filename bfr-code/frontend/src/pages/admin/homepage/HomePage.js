@@ -1,9 +1,9 @@
-import Sidebar from "../../components/sidebar/Sidebar";
-import "./home.scss";
-import Widget from "../../components/widget/Widget";
-import Chart from "../../components/chart/Chart";
+import Sidebar from "../components/sidebar/Sidebar";
+import "./HomePage.scss";
+import Widget from "../components/widget/Widget";
+import Chart from "../components/chart/Chart";
 
-const HomePageAdmin = () => {
+const AdminHomePage = () => {
   return (
     <div className="home">
       <Sidebar />
@@ -22,4 +22,4 @@ const HomePageAdmin = () => {
   );
 };
 
-export default HomePageAdmin;
+export default AdminHomePage;
