@@ -1,14 +1,14 @@
 // ChooseLocation.jsx
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import Navbar from '../../components/Navbar/Navbar';
-import Background from '../../components/Background/Background';
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import Navbar from "../../components/Navbar/Navbar";
+import Background from "../../components/Background/Background";
 import HanoiProvince from "../../../../assets/HaNoiProvince.json";
 import { useNavigate } from "react-router-dom";
 import axiosConfig from "../../axiosConfig";
 
 const ChooseLocation = () => {
-  const [chosenBike, setChosenBike] = useState(null);
+  const [chosenBike, setChosenBike] = useState(false);
   const [formData, setFormData] = useState({
     address: "",
     province: "",
@@ -17,44 +17,56 @@ const ChooseLocation = () => {
   const [selectedStore, setSelectedStore] = useState("");
   const navigate = useNavigate();
 
+  const useEffect = () => {};
   const handleChange = async (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
       ...prevData,
       [name]: value,
     }));
-  
-    // Call API to get the list of stores when the district changes
+
     try {
-      const response = await fetch(`http://localhost:8080/customer/getStoreByProvince/${value}`);
-      const data = await response.json();
-      if (response.ok) {
-        setStores(data);
-        setSelectedStore("");
+      const response = await axiosConfig.get(`/getStoreByProvince/${value}`);
+      if (response.status === 200) {
+        console.log(response.data.data);
+        setStores(response.data.data);
       } else {
-        console.error("Error fetching stores:", data.message);
+        console.error("Error fetching stores:", response.statusText);
       }
     } catch (error) {
-      console.error("Error:", error);
+      console.error("Error:", error.response ? error.response.data : error);
+    }
+  };
+
+  const handleStoreChange = (e) => {
+    console.log(e.target.value);
+    const selectedStoreValue = e.target.value;
+    setSelectedStore(selectedStoreValue);
+    console.log(selectedStore);
+
+    // Check if a store is selected (not the placeholder option)
+    if (selectedStoreValue) {
+      setChosenBike(true); // Enable the "Tiếp Theo" button
+    } else {
+      setChosenBike(false); // Disable the "Tiếp Theo" button
     }
   };
 
   const handleContinueClick = async () => {
     if (selectedStore) {
       try {
-        // Call API getAllBike with the selected manager's _id
-        const response = await fetch(`http://localhost:8080/customer/getBikes/${selectedStore._id}`);
-        const data = await response.json();
-        if (response.ok) {
-          // Handle the data as needed
+        // Call API getAllBike with the selected manager's
+        const response = await axiosConfig.get(`/getBikes/${selectedStore}`);
+        if (response.status === 200) {
+          console.log(response.data.data);
         } else {
-          console.error("Error fetching bikes:", data.message);
+          console.error("Error fetching bikes:", response.data.message);
         }
       } catch (error) {
         console.error("Error:", error);
       }
     } else {
-      alert('Vui lòng chọn cửa hàng trước khi tiếp tục.');
+      alert("Vui lòng chọn cửa hàng trước khi tiếp tục.");
     }
   };
 
@@ -99,13 +111,13 @@ const ChooseLocation = () => {
             id="store"
             name="store"
             value={selectedStore}
-            onChange={(e) => setSelectedStore(e.target.value)}
+            onChange={handleStoreChange}
             required
             className="border rounded-md py-2 px-3 w-full"
           >
             <option value="">Chọn cửa hàng</option>
             {stores.map((store) => (
-              <option key={store._id} value={store.address}>
+              <option key={store._id} value={store._id}>
                 {store.address}
               </option>
             ))}
