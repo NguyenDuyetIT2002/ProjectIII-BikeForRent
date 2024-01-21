@@ -39,10 +39,6 @@ const ChooseLocation = () => {
     }
   };
 
-  const handleStoreChange = (selectedOption) => {
-    setChosenBike(selectedOption);
-  };
-
   const handleContinueClick = async () => {
     if (selectedStore) {
       try {
