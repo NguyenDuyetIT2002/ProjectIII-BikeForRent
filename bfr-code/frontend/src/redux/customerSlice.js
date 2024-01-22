@@ -17,9 +17,16 @@ export const customerSlice = createSlice({
       state.customerInfo = null;
       clearCustomerToken();
     },
+    updateInfo: (state, action) => {
+      state.customerInfo = { ...state.customerInfo, ...action.payload };
+    },
   },
 });
 
 export const { login, logout } = customerSlice.actions;
+
+export const updateInfo = (updatedInfo) => (dispatch) => {
+  dispatch(customerSlice.actions.updateInfo(updatedInfo));
+};
 
 export default customerSlice.reducer;
