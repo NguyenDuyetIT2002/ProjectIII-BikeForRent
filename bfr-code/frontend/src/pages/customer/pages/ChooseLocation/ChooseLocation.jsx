@@ -54,17 +54,8 @@ const ChooseLocation = () => {
 
   const handleContinueClick = async () => {
     if (selectedStore) {
-      try {
-        // Call API getAllBike with the selected manager's
-        const response = await axiosConfig.get(`/getBikes/${selectedStore}`);
-        if (response.status === 200) {
-          console.log(response.data.data);
-        } else {
-          console.error("Error fetching bikes:", response.data.message);
-        }
-      } catch (error) {
-        console.error("Error:", error);
-      }
+      // Chuyển hướng với tham số trên URL
+      navigate(`/customer/rentbike`, { state: { selectedStore } });
     } else {
       alert("Vui lòng chọn cửa hàng trước khi tiếp tục.");
     }

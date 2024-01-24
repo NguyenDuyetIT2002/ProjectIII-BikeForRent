@@ -1,19 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import Sidebar from '../../components/Sidebar/Sidebar';
 import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { updateInfo } from '../../../../redux/customerSlice';
+import axiosConfig from '../../axiosConfig';
+import { toast } from 'react-toastify';
 
 const CustomerProfile = () => {
-  const userInfo = useSelector((state) => state.user);
+  const userInfo = useSelector((state) => state.customer.customerInfo); // Sử dụng useSelector để lấy thông tin từ Redux store
+  const dispatch = useDispatch();
   const [formData, setFormData] = useState({
-    // name: userInfo.name,
-    // phone: userInfo.phone,
-    // address: userInfo.address,
-    // passWord: userInfo.passWord,
-    "name": "Duyệt",
-    "phone": "0122345678",
-    "address": "Số 2 Hải Phòng",
-    "passWord": "123456"
+    _id: userInfo?._id || "",
+    name: userInfo?.name || "", // Tránh lỗi khi userInfo không có giá trị
+    phone: userInfo?.phone || "",
+    address: userInfo?.address || "",
+    passWord: userInfo?.passWord || "",
   });
 
   const handleChange = (e) => {
@@ -26,10 +27,32 @@ const CustomerProfile = () => {
 
   useEffect(() => {
     console.log("User Info from Redux:", userInfo);
+    // Update formData khi userInfo thay đổi (nếu có)
+    setFormData({
+      _id: userInfo?._id || "",
+      name: userInfo?.name || "",
+      phone: userInfo?.phone || "",
+      address: userInfo?.address || "",
+      passWord: userInfo?.passWord || "",
+    });
   }, [userInfo]);
 
-  const handleUpdate = () => {
-    console.log("Update user info:", formData);
+  const handleUpdate = async () => {
+    try {
+      // Thực hiện gọi API để cập nhật thông tin trên server
+      const response = await axiosConfig.put(`http://localhost:8080/customer/updateInfo/${formData._id}`, formData);
+
+      if (response.status === 200) {
+        // Nếu cập nhật thành công, cập nhật thông tin trong Redux store
+        dispatch(updateInfo(formData));
+
+        toast.success('Thông tin đã được cập nhật thành công!', { position: toast.POSITION.TOP_CENTER });
+      } else {
+        toast.error('Có lỗi xảy ra khi cập nhật thông tin!', { position: toast.POSITION.TOP_CENTER });
+      }
+    } catch (error) {
+      toast.error('Có lỗi xảy ra khi cập nhật thông tin!', { position: toast.POSITION.TOP_CENTER });
+    }
   };
 
   return (

@@ -24,13 +24,13 @@ const Sidebar = () => {
               <span>Dashboard</span>
             </li>
           </Link>
-          <Link to="/customer/profile" className="text-black no-underline">
-            <li className="flex items-center p-4 hover:bg-gray-200">
+          <Link to="/customer/features" className="text-black no-underline">
+            <li className="flex items-center p-4 hover:bg-gray-200">''
               <BlockIcon className="icon" />
               <span>Report Rented Bike</span>
             </li>
           </Link>
-          <Link to="/customer/profile" className="text-black no-underline">
+          <Link to="/customer/rentedbike" className="text-black no-underline">
             <li className="flex items-center p-4 hover:bg-gray-200">
               <DirectionsBikeIcon className="icon" />
               <span>List of Rented Bike</span>
