@@ -14,6 +14,12 @@ export const showToast = (type, message) => {
         autoClose: 2500,
       });
       break;
+    case "warning":
+      toast.warn(message, {
+        position: toast.POSITION.TOP_CENTER,
+        autoClose: 2500,
+      });
+      break;
     default:
       toast(message, {
         position: toast.POSITION.TOP_CENTER,

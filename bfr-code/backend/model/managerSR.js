@@ -31,6 +31,7 @@ const managerSRSchema = mongoose.Schema({
     type: String,
     required: true,
   },
+  name: String,
 });
 
 export const managerSRModel = mongoose.model("managerSR", managerSRSchema);

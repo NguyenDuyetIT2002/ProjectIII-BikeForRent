@@ -10,8 +10,9 @@ export const customerSlice = createSlice({
   initialState,
   reducers: {
     login: (state, action) => {
-      const { _id, name, phone, address, passWord } = action.payload;
-      state.customerInfo = { _id, name, phone, address, passWord };
+      const { _id, name, phone, address, passWord, did_rented } =
+        action.payload;
+      state.customerInfo = { _id, name, phone, address, passWord, did_rented };
     },
     logout: (state) => {
       state.customerInfo = null;
