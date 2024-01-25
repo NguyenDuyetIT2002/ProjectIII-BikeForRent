@@ -1,33 +1,32 @@
 import "./sidebar.scss";
 import DashboardIcon from "@mui/icons-material/Dashboard";
-import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
-import PersonAddDisabledIcon from '@mui/icons-material/PersonAddDisabled';
-import DirectionsBikeIcon from '@mui/icons-material/DirectionsBike';
-import BlockIcon from '@mui/icons-material/Block';
+import PersonAddAltIcon from "@mui/icons-material/PersonAddAlt";
+import PersonAddDisabledIcon from "@mui/icons-material/PersonAddDisabled";
+import DirectionsBikeIcon from "@mui/icons-material/DirectionsBike";
+import BlockIcon from "@mui/icons-material/Block";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import { Link } from "react-router-dom";
 
 import { useDispatch } from "react-redux";
-import { logout } from "../../../../redux/managerSlice"
+import { logout } from "../../../../redux/managerSlice";
 
-import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { clearAdminToken, getAdminToken } from '../../../../utils/localStorage';
-
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { clearAdminToken, getAdminToken } from "../../../../utils/localStorage";
 
 const Sidebar = () => {
   const navigate = useNavigate();
   useEffect(() => {
-    if (getAdminToken() == null){
+    if (getAdminToken() == null) {
       navigate('/auth/login?form="admin"');
     }
-  })
+  });
   const dispatch = useDispatch();
 
   const handleLogout = () => {
     dispatch(logout());
-    clearAdminToken()
+    clearAdminToken();
   };
   return (
     <div className="sidebar">
@@ -48,36 +47,35 @@ const Sidebar = () => {
           <Link to="/admin/acceptmanager" style={{ textDecoration: "none" }}>
             <li>
               <PersonAddAltIcon className="icon" />
-              <span>Accept Manager</span>
+              <span>Phê duyệt tài khoản chủ cửa hàng</span>
             </li>
           </Link>
           <Link to="/admin/banningusers" style={{ textDecoration: "none" }}>
             <li>
               <PersonAddDisabledIcon className="icon" />
-              <span>Banning User</span>
+              <span>Khóa tài khoản khách hàng</span>
             </li>
           </Link>
           <Link to="/admin/banningbike" style={{ textDecoration: "none" }}>
             <li>
               <BlockIcon className="icon" />
-              <span>Banning Bike</span>
+              <span>Khóa xe</span>
             </li>
           </Link>
           <Link to="/admin/openningbike" style={{ textDecoration: "none" }}>
             <li>
               <DirectionsBikeIcon className="icon" />
-              <span>Openning Bike</span>
+              <span>Mở khóa xe</span>
             </li>
           </Link>
-          <li>
-            <AccountCircleOutlinedIcon className="icon" />
-            <span>Profile</span>
-          </li>
-          <Link to="/" style={{ textDecoration: "none" }} onClick={handleLogout} >
+          <Link
+            to="/"
+            style={{ textDecoration: "none" }}
+            onClick={handleLogout}
+          >
             <li>
-              <ExitToAppIcon className="icon"/>
+              <ExitToAppIcon className="icon" />
               <span>Logout</span>
-              
             </li>
           </Link>
         </ul>

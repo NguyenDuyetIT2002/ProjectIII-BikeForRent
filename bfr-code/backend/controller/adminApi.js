@@ -48,6 +48,7 @@ export const createManager = async (req, res) => {
       identify_code: managerSR.identify_code,
       license: managerSR.license,
       gmail: managerSR.gmail,
+      name: managerSR.name,
     });
 
     // Lưu manager mới
@@ -63,6 +64,17 @@ export const createManager = async (req, res) => {
     );
   } catch (error) {
     console.error(error);
+    return handleServerError(res);
+  }
+};
+
+export const declineSR = async (req, res) => {
+  try {
+    const { request_id } = req.params;
+    await managerSRModel.findByIdAndDelete(request_id);
+    return handleSuccess(res, "Đã từ chối yêu cầu tạo tài khoản chủ cửa hàng");
+  } catch (error) {
+    console.log(error);
     return handleServerError(res);
   }
 };

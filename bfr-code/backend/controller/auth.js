@@ -98,6 +98,7 @@ export const managerSignup = async (req, res) => {
       identify_code,
       license,
       gmail,
+      name,
     } = req.body;
 
     const duplicateFields = await Promise.all([
@@ -127,6 +128,7 @@ export const managerSignup = async (req, res) => {
       identify_code,
       license,
       gmail,
+      name,
     });
 
     const savingManagerSR = await newManagerSR.save();

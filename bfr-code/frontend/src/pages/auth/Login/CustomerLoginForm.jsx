@@ -49,7 +49,7 @@ const CustomerLoginForm = () => {
         showToast("success", data.message);
 
         setTimeout(() => {
-          navigate("/customer/homepage");
+          navigate("/customer/chooselocation");
         }, 3000); // 3-second delay
       } else {
         showToast("error", data.message || "Đăng nhập thất bại!");

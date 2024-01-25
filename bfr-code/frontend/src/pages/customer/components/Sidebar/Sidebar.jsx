@@ -1,13 +1,21 @@
 // Sidebar.jsx
 import React from "react";
-import DashboardIcon from "@mui/icons-material/Dashboard";
-import BlockIcon from "@mui/icons-material/Block";
+
 import DirectionsBikeIcon from "@mui/icons-material/DirectionsBike";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { logout } from "../../../../redux/customerSlice";
+import { useNavigate } from "react-router-dom";
 
 const Sidebar = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const handleLogout = () => {
+    dispatch(logout());
+    navigate("/");
+  };
   return (
     <div className="bg-white w-64 h-screen flex flex-col">
       <div className="text-center p-4">
@@ -18,33 +26,33 @@ const Sidebar = () => {
       <hr className="border-t border-white" />
       <div className="flex-1">
         <ul className="list-none p-0">
-          <Link to="/customer/homepage" className="text-black no-underline">
+          <Link
+            to="/customer/chooselocation"
+            className="text-black no-underline"
+          >
             <li className="flex items-center p-4 hover:bg-gray-200">
-              <DashboardIcon className="icon" />
-              <span>Dashboard</span>
-            </li>
-          </Link>
-          <Link to="/customer/features" className="text-black no-underline">
-            <li className="flex items-center p-4 hover:bg-gray-200">''
-              <BlockIcon className="icon" />
-              <span>Report Rented Bike</span>
+              <DirectionsBikeIcon className="icon" />
+              <span>Thuê xe</span>
             </li>
           </Link>
           <Link to="/customer/rentedbike" className="text-black no-underline">
             <li className="flex items-center p-4 hover:bg-gray-200">
               <DirectionsBikeIcon className="icon" />
-              <span>List of Rented Bike</span>
+              <span>Xe bạn đã thuê</span>
             </li>
           </Link>
           <Link to="/customer/profile" className="text-black no-underline">
             <li className="flex items-center p-4 hover:bg-gray-200">
               <AccountCircleOutlinedIcon className="icon" />
-              <span>Profile</span>
+              <span>Tài khoản</span>
             </li>
           </Link>
-          <li className="flex items-center p-4 hover:bg-gray-200">
+          <li
+            className="flex items-center p-4 hover:bg-gray-200"
+            onClick={handleLogout}
+          >
             <ExitToAppIcon className="icon" />
-            <span>Logout</span>
+            <span>Đăng xuất</span>
           </li>
         </ul>
       </div>
