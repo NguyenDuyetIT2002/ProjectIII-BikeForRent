@@ -2,7 +2,6 @@ import mongoose from "mongoose";
 
 const managerSRSchema = mongoose.Schema({
   userName: {
-    unique: true,
     type: String,
     required: true,
   },
@@ -27,7 +26,6 @@ const managerSRSchema = mongoose.Schema({
     type: String,
     required: true,
   },
-  name: String,
   gmail: {
     unique: true,
     type: String,
