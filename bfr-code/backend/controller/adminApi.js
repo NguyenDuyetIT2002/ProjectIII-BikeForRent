@@ -48,6 +48,7 @@ export const createManager = async (req, res) => {
       identify_code: managerSR.identify_code,
       license: managerSR.license,
       gmail: managerSR.gmail,
+      name: managerSR.name,
     });
 
     // Lưu manager mới

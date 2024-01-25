@@ -14,7 +14,6 @@ import { store, persistor } from "./redux/index.js";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 
-
 import Homepage from "./pages/spalshpage/Homepage.jsx";
 
 import Login from "./pages/auth/Login/Login.jsx";
@@ -26,16 +25,14 @@ import ManagerAddbike from "./pages/manager/addbike/Addbike.js";
 import ManagerEditbike from "./pages/manager/editbike/Editbike.js";
 import ManagerOrders from "./pages/manager/order/Orderspage.js";
 
-import AdminHomePage from "./pages/admin/homepage/HomePage.js"
+import AdminHomePage from "./pages/admin/homepage/HomePage.js";
 import AcceptManager from "./pages/admin/acceptmanager/AcceptManager.js";
 import BanningBike from "./pages/admin/banningbike/BanningBike.js";
 import BanningUsers from "./pages/admin/banninguser/BanningUser.js";
 import OpenningBike from "./pages/admin/openbike/OpenBike.js";
 
-import HomePageCustomer from "./pages/customer/pages/Homepage/home.jsx";
 import CustomerProfile from "./pages/customer/pages/Profile/profile.jsx";
 import ChooseLocation from "./pages/customer/pages/ChooseLocation/ChooseLocation.jsx";
-import FeaturesCustomer from "./pages/customer/pages/Features/Features.jsx";
 import RentBike from "./pages/customer/pages/RentBike/RentBike.jsx";
 import CustomerRentedBike from "./pages/customer/pages/RentedBike/RentedBike.jsx";
 
@@ -72,10 +69,8 @@ const router = createBrowserRouter(
         <Route path="orders" element={<ManagerOrders />} />
       </Route>
       <Route path="customer">
-        <Route path="homepage" element={<HomePageCustomer />} />
         <Route path="profile" element={<CustomerProfile />} />
         <Route path="chooselocation" element={<ChooseLocation />} />
-        <Route path="features" element={<FeaturesCustomer />} />
         <Route path="rentbike" element={<RentBike />} />
         <Route path="rentedbike" element={<CustomerRentedBike />} />
       </Route>

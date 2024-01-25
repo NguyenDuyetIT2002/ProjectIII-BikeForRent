@@ -1,11 +1,12 @@
 // ChooseLocation.jsx
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import Navbar from "../../components/Navbar/Navbar";
-import Background from "../../components/Background/Background";
 import HanoiProvince from "../../../../assets/HaNoiProvince.json";
 import { useNavigate } from "react-router-dom";
 import axiosConfig from "../../axiosConfig";
+import Sidebar from "../../components/Sidebar/Sidebar";
+import { useSelector } from "react-redux";
+import { showToast } from "../../../../utils/toast";
 
 const ChooseLocation = () => {
   const [chosenBike, setChosenBike] = useState(false);
@@ -16,8 +17,22 @@ const ChooseLocation = () => {
   const [stores, setStores] = useState([]);
   const [selectedStore, setSelectedStore] = useState("");
   const navigate = useNavigate();
+  const didRented = useSelector(
+    (state) => state.customer.customerInfo.did_rented
+  );
+  console.log(didRented);
 
-  const useEffect = () => {};
+  useEffect(() => {
+    if (didRented) {
+      showToast(
+        "warning",
+        "Bạn đã thuê xe rồi, vui lòng trả xe trước khi thuê xe mới."
+      );
+      setTimeout(() => {
+        navigate("/customer/rentedbike");
+      }, 3000);
+    }
+  }, [didRented, navigate]);
   const handleChange = async (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
@@ -62,9 +77,8 @@ const ChooseLocation = () => {
   };
 
   return (
-    <>
-      <Navbar />
-      <Background />
+    <div className="flex h-screen">
+      <Sidebar />
       <div className="container mx-auto flex flex-col items-center justify-center h-screen">
         <div className="mb-4">
           <label
@@ -133,7 +147,7 @@ const ChooseLocation = () => {
           </button>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

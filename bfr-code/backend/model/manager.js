@@ -30,6 +30,7 @@ const managerSchema = mongoose.Schema({
     type: String,
     required: true,
   },
+  name: String,
 });
 
 export const managerModel = mongoose.model("manager", managerSchema);

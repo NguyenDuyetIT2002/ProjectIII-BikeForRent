@@ -6,7 +6,15 @@ const orderSchema = mongoose.Schema({
     ref: "bike",
     required: true,
   },
+  store_name: {
+    type: String,
+    required: true,
+  },
   bike_name: {
+    type: String,
+    required: true,
+  },
+  bike_image: {
     type: String,
     required: true,
   },
