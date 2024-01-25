@@ -67,6 +67,17 @@ export const createManager = async (req, res) => {
   }
 };
 
+export const declineSR = async (req, res) => {
+  try {
+    const { request_id } = req.params;
+    await managerSRModel.findByIdAndDelete(request_id);
+    return handleSuccess(res, "Đã từ chối yêu cầu tạo tài khoản chủ cửa hàng");
+  } catch (error) {
+    console.log(error);
+    return handleServerError(res);
+  }
+};
+
 export const getAllBCRequest = async (req, res) => {
   try {
     const bcRequests = await bcRequestModel.find();
