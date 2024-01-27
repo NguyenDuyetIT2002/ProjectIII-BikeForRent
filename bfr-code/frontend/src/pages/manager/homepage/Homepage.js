@@ -43,7 +43,7 @@ const Homepage = () => {
     //   navigate("/auth/login?form=manager");
     // }
     getBikes();
-  }, []);
+  }, [bikesList]);
 
   return (
     <div>

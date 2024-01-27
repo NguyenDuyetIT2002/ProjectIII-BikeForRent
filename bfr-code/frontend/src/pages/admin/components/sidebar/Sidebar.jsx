@@ -38,13 +38,7 @@ const Sidebar = () => {
       <hr />
       <div className="center">
         <ul>
-          <Link to="/admin/homepage" style={{ textDecoration: "none" }}>
-            <li>
-              <DashboardIcon className="icon" />
-              <span>Dashboard</span>
-            </li>
-          </Link>
-          <Link to="/admin/acceptmanager" style={{ textDecoration: "none" }}>
+          <Link to="/admin/acceptmanager" className="mt-8">
             <li>
               <PersonAddAltIcon className="icon" />
               <span>Phê duyệt tài khoản chủ cửa hàng</span>
@@ -75,7 +69,7 @@ const Sidebar = () => {
           >
             <li>
               <ExitToAppIcon className="icon" />
-              <span>Logout</span>
+              <span>Đăng xuất</span>
             </li>
           </Link>
         </ul>

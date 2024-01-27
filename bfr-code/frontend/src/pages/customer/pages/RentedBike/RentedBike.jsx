@@ -3,10 +3,15 @@ import Sidebar from "../../components/Sidebar/Sidebar";
 import { useSelector } from "react-redux";
 import axiosConfig from "../../axiosConfig";
 import dayjs from "dayjs";
+import { showToast } from "../../../../utils/toast";
+import { useNavigate } from "react-router-dom";
 
 const CustomerRentedBike = () => {
   const userInfo = useSelector((state) => state.customer.customerInfo);
   const [orders, setOrders] = useState([]);
+  const [toastShown, setToastShown] = useState(false);
+  const customerInfo = useSelector((state) => state.customer.customerInfo);
+  const navigate = useNavigate();
 
   const fetchData = async () => {
     try {
@@ -15,11 +20,32 @@ const CustomerRentedBike = () => {
       );
       if (response.status === 200) {
         setOrders(response.data.data);
-      } else {
-        console.error("Error fetching rented bikes:", response.data.message);
       }
     } catch (error) {
-      console.error("Error:", error);
+      if (error.response) {
+        showToast("error", error.response.data.message);
+      } else {
+        showToast("error", "Có lỗi khi xảy ra, vui lòng thử lại sau");
+      }
+    }
+  };
+  const reportBike = async (bike_id) => {
+    try {
+      console.log(customerInfo._id, bike_id);
+      const response = await axiosConfig.post(
+        `/requestBanBike/${customerInfo._id}/${bike_id}`
+      );
+      if (response.status === 200) {
+        showToast("success", response.data.message);
+      } else {
+        showToast("error", response.data.message);
+      }
+    } catch (error) {
+      if (error.response) {
+        showToast("error", error.response.data.message);
+      } else {
+        showToast("error", "Có lỗi khi xảy ra, vui lòng thử lại sau");
+      }
     }
   };
 
@@ -27,7 +53,7 @@ const CustomerRentedBike = () => {
     if (userInfo && userInfo._id) {
       fetchData();
     }
-  }, [userInfo]);
+  }, [orders]);
 
   return (
     <div className="flex h-screen">
@@ -68,7 +94,10 @@ const CustomerRentedBike = () => {
                 </div>
                 <img src={order.bike_image} alt="bike" />
               </div>
-              <button className="bg-blue-500 text-white px-2 py-1 rounded flex justify-between">
+              <button
+                className="bg-blue-500 text-white px-2 py-1 rounded flex justify-between"
+                onClick={() => reportBike(order.bike_id)}
+              >
                 Report
               </button>
             </li>

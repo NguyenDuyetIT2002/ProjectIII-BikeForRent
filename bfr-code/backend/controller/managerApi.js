@@ -8,6 +8,7 @@ import {
   handleServerError,
   handleSuccess,
   handleNotFound,
+  handleBadRequest,
 } from "../utils/handleResponse.js";
 
 // Create Bike
@@ -48,7 +49,6 @@ export const getAllBike = async (req, res) => {
 
     const bikes = await bikeModel.find({
       owner_id: id,
-      status: { $ne: "block" },
     }); // Add status condition
     if (bikes == null || bikes.length === 0) {
       return handleNotFound(res, "Rất tiếc, bạn chưa có xe nào");
@@ -191,7 +191,6 @@ export const getAllAcceptedOrdersByManagerId = async (req, res) => {
     // Find all bike IDs owned by the manager
     const bikes = await bikeModel.find({ owner_id: manager_id });
 
-    // Extract bike IDs
     const bikeIds = bikes.map((bike) => bike._id);
 
     // Find pending orders for these bike IDs
@@ -243,17 +242,21 @@ export const completeOrderProcess = async (req, res) => {
 // Get All Latest Incomplete Orders
 export const getAllLatestIncompleteOrders = async (req, res) => {
   try {
-    const { managerId } = req.params; // Assuming managerId is passed as a parameter
+    const { manager_id } = req.params; // Assuming managerId is passed as a parameter
 
     const serverTime = new Date();
     const endTimeThreshold = new Date(
       serverTime.getTime() - 3 * 60 * 60 * 1000
     );
 
+    const bikes = await bikeModel.find({ owner_id: manager_id });
+
+    const bikeIds = bikes.map((bike) => bike._id);
+
     const orders = await orderModel.find({
       endTime: { $lt: endTimeThreshold },
       status: "accepted",
-      manager_id: managerId, // Add manager_id field to filter by manager ID
+      bike_id: { $in: bikeIds },
     });
 
     return handleSuccess(res, "Lấy nhưng đơn hàng quá giờ thành công", orders);
@@ -267,6 +270,21 @@ export const getAllLatestIncompleteOrders = async (req, res) => {
 export const requestBanCustomer = async (req, res) => {
   try {
     const { customer_id } = req.params;
+
+    // Check if there's already a request with the same customer_id
+    const existingRequest = await bcRequestModel.findOne({
+      customer_id: customer_id,
+    });
+
+    if (existingRequest) {
+      // If a request already exists, handle it as a bad request
+      return handleBadRequest(
+        res,
+        "Bạn đã gửi yêu cầu khóa tài khoản người dùng này rồi."
+      );
+    }
+
+    // If no existing request is found, proceed to create a new one
     const bcRequest = await bcRequestModel.create({
       customer_id: customer_id,
       time: new Date(),
@@ -302,6 +320,19 @@ export const getBlockedBikes = async (req, res) => {
 export const sendUBRequest = async (req, res) => {
   try {
     const { bike_id, reason, image } = req.body;
+
+    // Check if there's already a request with the same bike_id
+    const existingRequest = await ubRequestModel.findOne({ bike_id: bike_id });
+
+    if (existingRequest) {
+      // If a request already exists, handle it as a bad request
+      return handleBadRequest(
+        res,
+        "Bạn đã gửi yêu cầu mở khóa xe này rồi. Hãy đợi quản trị viên phê duyệt nhé"
+      );
+    }
+
+    // If no existing request is found, proceed to create a new one
     const ubrequest = await ubRequestModel.create({
       bike_id,
       reason,

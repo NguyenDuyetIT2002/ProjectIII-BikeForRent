@@ -50,9 +50,6 @@ const BikeInfoContainer = ({ bikeInfo, deleteBike }) => {
               <td>Mô tả: {bikeInfo.description}</td>
             </tr>
             <tr>
-              <td>Rented by: </td>
-            </tr>
-            <tr>
               <td>Số lượng báo cáo xe: {bikeInfo.banRequestAmount}</td>
             </tr>
           </tbody>

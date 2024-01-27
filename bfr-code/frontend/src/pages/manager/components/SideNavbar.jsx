@@ -1,13 +1,13 @@
 import "./sidebar.scss";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
+import BlockIcon from "@mui/icons-material/Block";
 import AddIcon from "@mui/icons-material/Add";
 import ListAltIcon from "@mui/icons-material/ListAlt";
 import { Link } from "react-router-dom";
 
 import { useDispatch } from "react-redux";
-import { logout } from "../../../redux/managerSlice"
-
+import { logout } from "../../../redux/managerSlice";
 
 const SideNavbar = () => {
   const dispatch = useDispatch();
@@ -44,9 +44,19 @@ const SideNavbar = () => {
               <span>Đơn thuê xe</span>
             </li>
           </Link>
-          <Link to="/" style={{ textDecoration: "none" }} onClick={handleLogout}>
+          <Link to="/manager/unlockbike" style={{ textDecoration: "none" }}>
             <li>
-              <ExitToAppIcon className="icon"/>
+              <BlockIcon className="icon" />
+              <span>Xe đang bị khóa</span>
+            </li>
+          </Link>
+          <Link
+            to="/"
+            style={{ textDecoration: "none" }}
+            onClick={handleLogout}
+          >
+            <li>
+              <ExitToAppIcon className="icon" />
               <span>Đăng xuất</span>
             </li>
           </Link>

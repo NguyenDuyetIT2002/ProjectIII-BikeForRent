@@ -14,12 +14,12 @@ const style = {
   bgcolor: "background.paper",
   border: "2px solid #000",
   boxShadow: 24,
-  p: 4,
+  p: 6,
 };
 const Datatable = () => {
   const [data, setData] = useState([]);
   const [open, setOpen] = useState(false);
-  const [modalImage, setModalImage] = useState("");
+  const [modalData, setModalData] = useState(null);
   const fetchData = async () => {
     try {
       const response = await axiosConfig.get("/getAllManagerSR");
@@ -68,8 +68,8 @@ const Datatable = () => {
     }
   };
 
-  const handleOpen = (imageUrl) => {
-    setModalImage(imageUrl);
+  const handleOpen = (rowData) => {
+    setModalData(rowData);
     setOpen(true);
   };
 
@@ -77,19 +77,11 @@ const Datatable = () => {
 
   const actionColumn = [
     {
-      field: "id",
-      headerName: "ID",
-      width: 230,
+      field: "storename",
+      headerName: "Tên cửa hàng",
+      width: 250,
       renderCell: (params) => {
-        return <div className="cellWithImg">{params.row._id}</div>;
-      },
-    },
-    {
-      field: "user",
-      headerName: "Tên đăng nhập",
-      width: 130,
-      renderCell: (params) => {
-        return <div className="cellWithImg">{params.row.userName}</div>;
+        return <div className="cellWithImg">{params.row.name}</div>;
       },
     },
     {
@@ -98,10 +90,7 @@ const Datatable = () => {
       width: 160,
       renderCell: (params) => {
         return (
-          <div
-            className="cellWithImg"
-            onClick={() => handleOpen(params.row.license)}
-          >
+          <div className="cellWithImg" onClick={() => handleOpen(params.row)}>
             <img
               className="cellImg"
               src={params.row.license}
@@ -127,7 +116,7 @@ const Datatable = () => {
     {
       field: "address",
       headerName: "Địa chỉ",
-      width: 160,
+      width: 300,
       renderCell: (params) => {
         return <div className="address">{params.row.address}</div>;
       },
@@ -186,7 +175,25 @@ const Datatable = () => {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <img src={modalImage} alt="License" style={{ width: "100%" }} />
+          {modalData && (
+            <>
+              <h1 className="font-bold text-xl my-4 items-center">
+                Thông tin chi tiết:
+              </h1>
+              <p>Tên cửa hàng: {modalData.name}</p>
+              <p>Quận: {modalData.province}</p>
+              <p>Địa chỉ: {modalData.address}</p>
+              <p>
+                Giấy phép kinh doanh:{" "}
+                <img
+                  src={modalData.license}
+                  alt="License"
+                  style={{ width: "100%" }}
+                />
+              </p>
+              <p>Số điện thoại: {modalData.phone}</p>
+            </>
+          )}
         </Box>
       </Modal>
     </div>
