@@ -24,8 +24,8 @@ import ManagerHomepage from "./pages/manager/homepage/Homepage.js";
 import ManagerAddbike from "./pages/manager/addbike/Addbike.js";
 import ManagerEditbike from "./pages/manager/editbike/Editbike.js";
 import ManagerOrders from "./pages/manager/order/Orderspage.js";
+import UnlockBike from "./pages/manager/unlockbike/UnlockBike.js";
 
-import AdminHomePage from "./pages/admin/homepage/HomePage.js";
 import AcceptManager from "./pages/admin/acceptmanager/AcceptManager.js";
 import BanningBike from "./pages/admin/banningbike/BanningBike.js";
 import BanningUsers from "./pages/admin/banninguser/BanningUser.js";
@@ -47,7 +47,6 @@ const router = createBrowserRouter(
         <Route index element={<Signup />} />
       </Route>
       <Route path="/admin">
-        <Route path="homepage" element={<AdminHomePage />} />
         <Route path="acceptmanager">
           <Route index element={<AcceptManager />} />
         </Route>
@@ -67,6 +66,7 @@ const router = createBrowserRouter(
         <Route path="addbike" element={<ManagerAddbike />} />
         <Route path="editbike" element={<ManagerEditbike />} />
         <Route path="orders" element={<ManagerOrders />} />
+        <Route path="unlockbike" element={<UnlockBike />} />
       </Route>
       <Route path="customer">
         <Route path="profile" element={<CustomerProfile />} />

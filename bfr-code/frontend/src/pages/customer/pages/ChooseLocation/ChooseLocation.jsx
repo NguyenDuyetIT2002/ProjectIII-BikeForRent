@@ -39,17 +39,20 @@ const ChooseLocation = () => {
       ...prevData,
       [name]: value,
     }));
+    setStores([]);
 
     try {
       const response = await axiosConfig.get(`/getStoreByProvince/${value}`);
       if (response.status === 200) {
         console.log(response.data.data);
         setStores(response.data.data);
-      } else {
-        console.error("Error fetching stores:", response.statusText);
       }
     } catch (error) {
-      console.error("Error:", error.response ? error.response.data : error);
+      if (error.response) {
+        showToast("warning", error.response.data.message);
+      } else {
+        showToast("error", "Có lỗi khi xảy ra, vui lòng thử lại sau");
+      }
     }
   };
 

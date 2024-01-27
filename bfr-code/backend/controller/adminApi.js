@@ -9,6 +9,7 @@ import {
   handleServerError,
   handleSuccess,
   handleNotFound,
+  handleBadRequest,
 } from "../utils/handleResponse.js";
 
 export const getAllManagerSR = async (req, res) => {
@@ -150,9 +151,16 @@ export const blockBike = async (req, res) => {
       return handleNotFound(res, "Bike");
     }
 
-    await bikeModel.findByIdAndUpdate(bike_id, { status: "block" });
-
-    return handleSuccess(res, "Đã khóa xe thành công");
+    if (bike.status === "active") {
+      await bikeModel.findByIdAndUpdate(bike_id, {
+        status: "block",
+        banRequestAmount: 0,
+        report_By: [],
+      });
+      return handleSuccess(res, "Đã khóa xe thành công");
+    } else {
+      return handleBadRequest(res, "Xe này hiện không thể khóa");
+    }
   } catch (error) {
     console.error(error);
     return handleServerError(res);
@@ -176,23 +184,18 @@ export const getUBRequests = async (req, res) => {
 
 export const unlockBike = async (req, res) => {
   try {
-    const { request_id, bike_id } = req.params;
-    const bike = await bikeModel.findById(bike_id);
+    const { request_id } = req.params;
 
-    if (!bike) {
-      return handleNotFound(res, "Không tìm thấy xe");
-    }
     const request = await ubRequestModel.findById(request_id);
     if (!request) {
       return handleNotFound(res, "Không tìm thấy yêu cầu mở khóa xe");
     }
-    await ubRequestModel.findByIdAndDelete(request_id);
-
-    await bikeModel.findByIdAndUpdate(bike_id, {
+    await bikeModel.findByIdAndUpdate(request.bike_id, {
       status: "active",
       banRequestAmount: 0,
       report_By: [],
     });
+    await ubRequestModel.findByIdAndDelete(request_id);
 
     return handleSuccess(res, "Đã mở khóa xe thành công");
   } catch (error) {

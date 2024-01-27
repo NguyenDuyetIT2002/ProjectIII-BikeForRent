@@ -49,7 +49,7 @@ const AdminLoginForm = () => {
         localStorage.setItem("admin_token", data.data.token);
         showToast("success", data.message);
         setTimeout(() => {
-          navigate("/admin/homepage");
+          navigate("/admin/acceptmanager");
         }, 3000);
       } else {
         showToast("error", data.message || "Đăng nhập thất bại!");

@@ -14,6 +14,7 @@ const ManagerSignupForm = () => {
     identify_code: "",
     license: "",
     gmail: "",
+    name: "",
   });
   const navigate = useNavigate();
 
@@ -60,6 +61,7 @@ const ManagerSignupForm = () => {
           identify_code: formData.identify_code,
           license: formData.license,
           gmail: formData.gmail,
+          name: formData.name,
         }),
       });
       const data = await response.json();
@@ -122,47 +124,25 @@ const ManagerSignupForm = () => {
               />
             </div>
 
-            {/* Address Field */}
             <div className="mb-4">
               <label
-                htmlFor="address"
+                htmlFor="name"
                 className="block text-gray-700 text-sm font-bold mb-2"
               >
-                Địa chỉ
+                Tên cửa hàng
               </label>
               <input
                 type="text"
-                id="address"
-                name="address"
-                placeholder="Nhập địa chỉ của bạn"
-                value={formData.address}
+                id="name"
+                name="name"
+                placeholder="Nhập tên tài khoản của bạn"
+                value={formData.name}
                 onChange={handleChange}
                 required
                 className="border rounded-md py-2 px-3 w-full"
               />
             </div>
 
-            {/* Phone Field */}
-            <div className="mb-4">
-              <label
-                htmlFor="phone"
-                className="block text-gray-700 text-sm font-bold mb-2"
-              >
-                Số điện thoại
-              </label>
-              <input
-                type="tel"
-                id="phone"
-                name="phone"
-                placeholder="Nhập số điện thoại của bạn"
-                value={formData.phone}
-                onChange={handleChange}
-                required
-                className="border rounded-md py-2 px-3 w-full"
-              />
-            </div>
-          </div>
-          <div className="w-full md:w-1/2 mb-6 md:mb-0">
             <div className="mb-4">
               <label
                 htmlFor="province"
@@ -187,6 +167,46 @@ const ManagerSignupForm = () => {
               </select>
             </div>
 
+            {/* Address Field */}
+            <div className="mb-4">
+              <label
+                htmlFor="address"
+                className="block text-gray-700 text-sm font-bold mb-2"
+              >
+                Địa chỉ
+              </label>
+              <input
+                type="text"
+                id="address"
+                name="address"
+                placeholder="Nhập địa chỉ của bạn"
+                value={formData.address}
+                onChange={handleChange}
+                required
+                className="border rounded-md py-2 px-3 w-full"
+              />
+            </div>
+          </div>
+          <div className="w-full md:w-1/2 mb-6 md:mb-0">
+            {/* Phone Field */}
+            <div className="mb-4">
+              <label
+                htmlFor="phone"
+                className="block text-gray-700 text-sm font-bold mb-2"
+              >
+                Số điện thoại
+              </label>
+              <input
+                type="tel"
+                id="phone"
+                name="phone"
+                placeholder="Nhập số điện thoại của bạn"
+                value={formData.phone}
+                onChange={handleChange}
+                required
+                className="border rounded-md py-2 px-3 w-full"
+              />
+            </div>
             <div className="mb-4">
               <label
                 htmlFor="identify_code"

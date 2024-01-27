@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import axiosConfig from "../../axiosConfig";
-import Navbar from "../../components/Navbar/Navbar";
-import Background from "../../components/Background/Background";
 import { Modal, Box } from "@mui/material";
 import dayjs from "dayjs";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
@@ -14,9 +12,11 @@ import utc from "dayjs/plugin/utc";
 import { showToast } from "../../../../utils/toast";
 import { useSelector } from "react-redux";
 import Sidebar from "../../components/Sidebar/Sidebar";
+import { useNavigate } from "react-router-dom";
 dayjs.extend(utc);
 
 const RentBike = () => {
+  const navigate = useNavigate();
   const location = useLocation();
   const selectedStore = location.state?.selectedStore;
   const [bikes, setBikes] = useState([]);
@@ -126,6 +126,7 @@ const RentBike = () => {
         if (response.data.code === 200) {
           showToast("success", response.data.message);
           handleRentModalClose();
+          navigate("/customer/rentedBike");
         }
       } catch (error) {
         showToast("error", error.response.data.message);
