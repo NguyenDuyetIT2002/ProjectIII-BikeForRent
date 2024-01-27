@@ -23,5 +23,5 @@ adminRouter.post("/banCustomer/:bcrequest_id", banCustomer);
 adminRouter.get("/getReportedBikes", getReportedBikes);
 adminRouter.post("/blockBike/:bike_id", blockBike);
 adminRouter.get("/getUBRequests", getUBRequests);
-adminRouter.post("/unlockBike/:request_id/:bike_id", unlockBike);
+adminRouter.post("/unlockBike/:request_id", unlockBike);
 export default adminRouter;

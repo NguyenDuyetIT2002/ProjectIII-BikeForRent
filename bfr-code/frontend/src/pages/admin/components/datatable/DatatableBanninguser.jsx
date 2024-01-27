@@ -1,116 +1,74 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 import { DataGrid } from "@mui/x-data-grid";
-import { Link } from "react-router-dom";
+import axiosConfig from "../../axiosConfig";
+import dayjs from "dayjs";
+import { showToast } from "../../../../utils/toast";
 
 const DatatableBanningUsers = () => {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-  const fetchData = async () => {
-    try {
-      const response = await fetch('http://localhost:8080/customer/getAllCustomers', {
-        method: 'GET',
-        headers: {
-          'Authorization': `Bearer ${'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NTkxMmY5OGQ0ODk5NzgxYjQ4ODMyMjgiLCJpYXQiOjE3MDU1OTgxMDAsImV4cCI6MTcwNTYwMTcwMH0.Rs9GrQTzPovRJcwJRgsjdso0LxD8rwUBT3Y4OTjnuN8'}` // Bao gồm token trong tiêu đề Authorization
+    const fetchData = async () => {
+      try {
+        const response = await axiosConfig.get("/getAllBCRequest");
+        if (response.status === 200) {
+          const formattedData = response.data.data.map((item, index) => {
+            const formattedTime = dayjs(item.time).format(
+              "HH:mm:ss DD/MM/YYYY"
+            );
+
+            return {
+              s_id: index + 1,
+              time: formattedTime,
+              customer_id: item.customer_id,
+              _id: item._id,
+            };
+          });
+
+          setData(formattedData);
         }
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to fetch data');
+      } catch (error) {
+        console.error("Error fetching data:", error.message);
       }
+    };
 
-      const result = await response.json();
+    fetchData();
+  }, [data]);
 
-      // Thêm thuộc tính `id` vào mỗi dòng
-      const dataWithIds = result.data.map((row, index) => ({ ...row, id: index }));
-
-      setData(dataWithIds);
-      console.log('kết quả là', dataWithIds);
+  const handleBan = async (id) => {
+    try {
+      const response = await axiosConfig.post(`/banCustomer/${id}`);
+      if (response.status === 200) {
+        console.log(response);
+        showToast("success", response.data.message);
+      }
     } catch (error) {
-      console.error('Error fetching data:', error.message);
+      showToast("error", error.response.data.message);
     }
   };
 
-  fetchData();
-}, []); // Chạy một lần khi component được render
- // Chạy một lần khi component được render
-
-  const handleDelete = (id) => {
-    setData(data.filter((item) => item.id !== id));
-  };
-
   const actionColumn = [
-      {
-      field: "id",
+    {
+      field: "s_id",
       headerName: "ID",
-      width: 230,
-      renderCell: (params) => {
-        return (
-          <div className="cellWithImg">
-            {params.row._id}
-          </div>
-        );
-      },
+      width: 100,
     },
     {
-      field: "user",
-      headerName: "Name",
-      width: 230,
-      renderCell: (params) => {
-        return (
-          <div className="cellWithImg">
-            {params.row.name}
-          </div>
-        );
-      },
-    },
-    {
-      field: "address",
-      headerName: "Address",
-      width: 260,
-      renderCell: (params) => {
-        return (
-          <div className="address">
-            {params.row.address}
-          </div>
-        );
-      },
+      field: "time",
+      headerName: "Thời gian",
+      width: 500,
     },
 
-    {
-      field: "phone",
-      headerName: "Phone",
-      width: 160,
-      renderCell: (params) => {
-        return (
-          <div className="phone">
-            {params.row.phone}
-          </div>
-        );
-      },
-    },
-    {
-      field: "status",
-      headerName: "Status",
-      width: 160,
-      renderCell: (params) => {
-        return (
-          <div className="phone">
-            {params.row.status}
-          </div>
-        );
-      },
-    },
     {
       field: "action",
-      headerName: "Action",
-      width: 200,
+      headerName: "Hành động",
+      width: 400,
       renderCell: (params) => {
         return (
           <div className="cellAction">
             <div
               className="deleteButton"
-              onClick={() => handleDelete(params.row.id)}
+              onClick={() => handleBan(params.row._id)}
             >
               Ban
             </div>
@@ -122,16 +80,15 @@ const DatatableBanningUsers = () => {
 
   return (
     <div className="datatable">
-      <div className="datatableTitle">
-        Banning Customer
-      </div>
+      <div className="datatableTitle">Banning Customer</div>
       <DataGrid
         className="datagrid"
         rows={data}
-        columns={(actionColumn)}
+        columns={actionColumn}
         pageSize={9}
         rowsPerPageOptions={[10]}
         checkboxSelection
+        getRowId={(row) => row._id} // Specify the unique identifier property
       />
     </div>
   );

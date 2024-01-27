@@ -17,42 +17,57 @@ const Sidebar = () => {
     navigate("/");
   };
   return (
-    <div className="bg-white w-64 h-screen flex flex-col">
-      <div className="text-center p-4">
-        <Link to="/" className="text-2xl font-bold text-black no-underline">
+    <div className="bg-white w-64 h-screen flex flex-col border-r border-gray-300">
+      <div className="text-center p-4 border-b border-gray-300">
+        <Link
+          to="/"
+          className="text-2xl font-bold"
+          style={{ color: "#6439ff" }}
+        >
           Bike For Rent
         </Link>
       </div>
-      <hr className="border-t border-white" />
-      <div className="flex-1">
-        <ul className="list-none p-0">
+      <div className="flex-1 ">
+        <ul className="list-none p-0 ">
           <Link
             to="/customer/chooselocation"
             className="text-black no-underline"
           >
-            <li className="flex items-center p-4 hover:bg-gray-200">
-              <DirectionsBikeIcon className="icon" />
-              <span>Thuê xe</span>
+            <li className="flex items-center p-4 hover:bg-gray-200 mb-1">
+              <DirectionsBikeIcon
+                className="font-bold mr-3 text-xl"
+                style={{ color: "#6439ff" }}
+              />
+              <span className="font-semibold text-xl">Thuê xe</span>
             </li>
           </Link>
           <Link to="/customer/rentedbike" className="text-black no-underline">
-            <li className="flex items-center p-4 hover:bg-gray-200">
-              <DirectionsBikeIcon className="icon" />
-              <span>Xe bạn đã thuê</span>
+            <li className="flex items-center p-4 hover:bg-gray-200 mb-1">
+              <DirectionsBikeIcon
+                className="font-bold mr-3 text-xl"
+                style={{ color: "#6439ff" }}
+              />
+              <span className="font-semibold text-xl">Xe bạn đã thuê</span>
             </li>
           </Link>
           <Link to="/customer/profile" className="text-black no-underline">
             <li className="flex items-center p-4 hover:bg-gray-200">
-              <AccountCircleOutlinedIcon className="icon" />
-              <span>Tài khoản</span>
+              <AccountCircleOutlinedIcon
+                className="font-bold mr-3 text-xl"
+                style={{ color: "#6439ff" }}
+              />
+              <span className="font-semibold text-xl">Thông tin tài khoản</span>
             </li>
           </Link>
           <li
             className="flex items-center p-4 hover:bg-gray-200"
             onClick={handleLogout}
           >
-            <ExitToAppIcon className="icon" />
-            <span>Đăng xuất</span>
+            <ExitToAppIcon
+              className="font-bold mr-3 text-xl"
+              style={{ color: "#6439ff" }}
+            />
+            <span className="font-semibold text-xl">Đăng xuất</span>
           </li>
         </ul>
       </div>
