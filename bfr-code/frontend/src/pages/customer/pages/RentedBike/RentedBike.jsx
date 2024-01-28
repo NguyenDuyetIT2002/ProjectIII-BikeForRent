@@ -4,14 +4,11 @@ import { useSelector } from "react-redux";
 import axiosConfig from "../../axiosConfig";
 import dayjs from "dayjs";
 import { showToast } from "../../../../utils/toast";
-import { useNavigate } from "react-router-dom";
 
 const CustomerRentedBike = () => {
   const userInfo = useSelector((state) => state.customer.customerInfo);
   const [orders, setOrders] = useState([]);
-  const [toastShown, setToastShown] = useState(false);
   const customerInfo = useSelector((state) => state.customer.customerInfo);
-  const navigate = useNavigate();
 
   const fetchData = async () => {
     try {
@@ -56,7 +53,10 @@ const CustomerRentedBike = () => {
   }, [orders]);
 
   return (
-    <div className="flex h-screen">
+    <div
+      className="flex h-screen "
+      style={{ background: "linear-gradient(to right, #f2e2e2, #f0f0f0)" }}
+    >
       <Sidebar />
       <div className="flex-1 p-8">
         <h1 className="text-2xl font-bold mb-4">Đơn Đặt Xe Đã Thuê</h1>
@@ -78,11 +78,11 @@ const CustomerRentedBike = () => {
                   </h3>
                   <p className="text-xl mt-4 mb-4">
                     <span className="font-bold">Thời Gian Bắt Đầu:</span>{" "}
-                    {dayjs(order.startTime).format("DD/MM/YYYY HH:mm")}
+                    {dayjs(order.startTime).format("HH:mm DD/MM/YYYY")}
                   </p>
                   <p className="text-xl mt-4 mb-4">
                     <span className="font-bold">Thời Gian Kết Thúc:</span>{" "}
-                    {dayjs(order.endTime).format("DD/MM/YYYY HH:mm")}
+                    {dayjs(order.endTime).format("HH:mm DD/MM/YYYY")}
                   </p>
                   <p className="text-xl mt-4 mb-4">
                     <span className="font-bold">Giá Thuê:</span>{" "}

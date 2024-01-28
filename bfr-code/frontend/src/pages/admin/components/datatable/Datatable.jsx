@@ -20,7 +20,10 @@ const Datatable = () => {
   const [data, setData] = useState([]);
   const [open, setOpen] = useState(false);
   const [modalData, setModalData] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+
   const fetchData = async () => {
+    setIsLoading(true);
     try {
       const response = await axiosConfig.get("/getAllManagerSR");
       console.log(response.data);
@@ -32,15 +35,17 @@ const Datatable = () => {
           id: index,
         }));
         setData(dataWithIds);
+        setIsLoading(false);
         // console.log("kết quả là", dataWithIds);
       }
     } catch (error) {
       showToast("error", "Có lỗi khi lấy dữ liệu");
+      setIsLoading(false);
     }
   };
   useEffect(() => {
     fetchData();
-  }, [data]);
+  }, []);
 
   const handleDelete = async (id) => {
     try {
@@ -48,7 +53,7 @@ const Datatable = () => {
       console.log(response.data);
       if (response.data.code === 200) {
         showToast("success", response.data.message);
-        setData((prevData) => prevData.filter((row) => row.id !== id));
+        setData((prevData) => prevData.filter((row) => row._id !== id));
       }
     } catch (error) {
       showToast("error", "Từ chối thất bại");
@@ -61,7 +66,7 @@ const Datatable = () => {
       console.log(response.data);
       if (response.data.code === 200) {
         showToast("success", response.data.message);
-        setData((prevData) => prevData.filter((row) => row.id !== id));
+        setData((prevData) => prevData.filter((row) => row._id !== id));
       }
     } catch (error) {
       showToast("error", "Phê duyệt thất bại");
@@ -133,7 +138,7 @@ const Datatable = () => {
     {
       field: "action",
       headerName: "Hành động",
-      width: 200,
+      width: 170,
       renderCell: (params) => {
         return (
           <div className="cellAction">
@@ -164,8 +169,12 @@ const Datatable = () => {
         className="datagrid"
         rows={data}
         columns={actionColumn}
-        pageSize={9}
-        rowsPerPageOptions={[10]}
+        initialState={{
+          ...data.initialState,
+          pagination: { paginationModel: { pageSize: 5 } },
+        }}
+        pageSizeOptions={[5, 10, 25]}
+        loading={isLoading}
         checkboxSelection
       />
       <Modal

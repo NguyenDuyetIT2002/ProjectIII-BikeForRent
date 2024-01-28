@@ -6,12 +6,14 @@ import { showToast } from "../../../../utils/toast";
 
 const DatatableBanningUsers = () => {
   const [data, setData] = useState([]);
-
+  const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
     const fetchData = async () => {
       try {
+        setIsLoading(true);
         const response = await axiosConfig.get("/getAllBCRequest");
         if (response.status === 200) {
+          setIsLoading(false);
           const formattedData = response.data.data.map((item, index) => {
             const formattedTime = dayjs(item.time).format(
               "HH:mm:ss DD/MM/YYYY"
@@ -28,12 +30,13 @@ const DatatableBanningUsers = () => {
           setData(formattedData);
         }
       } catch (error) {
-        console.error("Error fetching data:", error.message);
+        showToast("error", error.response.data.message);
+        setIsLoading(false);
       }
     };
 
     fetchData();
-  }, [data]);
+  }, []);
 
   const handleBan = async (id) => {
     try {
@@ -85,10 +88,14 @@ const DatatableBanningUsers = () => {
         className="datagrid"
         rows={data}
         columns={actionColumn}
-        pageSize={9}
-        rowsPerPageOptions={[10]}
+        initialState={{
+          ...data.initialState,
+          pagination: { paginationModel: { pageSize: 5 } },
+        }}
+        pageSizeOptions={[5, 10, 25]}
         checkboxSelection
-        getRowId={(row) => row._id} // Specify the unique identifier property
+        getRowId={(row) => row._id}
+        loading={isLoading}
       />
     </div>
   );

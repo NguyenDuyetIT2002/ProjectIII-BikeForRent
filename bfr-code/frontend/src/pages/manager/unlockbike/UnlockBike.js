@@ -8,12 +8,15 @@ import Modal from "@mui/material/Modal";
 import Fade from "@mui/material/Fade";
 import { ImagetoBase64 } from "../ultility/ImagetoBase64";
 import { showToast } from "../../../utils/toast";
+import { DataGrid } from "@mui/x-data-grid";
+import { Button } from "@mui/material";
 
 const UnlockBike = () => {
   const [bikes, setBikes] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedBike, setSelectedBike] = useState(null);
   const managerInfo = useSelector((state) => state.manager.managerInfo);
+  const [isLoading, setIsLoading] = useState(false);
   const [inputs, setInputs] = useState({
     bikeImage: "",
     reason: "",
@@ -32,16 +35,19 @@ const UnlockBike = () => {
     }
   };
   const fetchData = async () => {
+    setIsLoading(true);
     try {
       const response = await axiosConfig.get(
         `/getBlockedBikes/${managerInfo._id}`
       );
       if (response.status === 200) {
         setBikes(response.data.data);
+        setIsLoading(false);
       }
     } catch (error) {
       if (error.response) {
         showToast("error", error.response.data.message);
+        setIsLoading(false);
       }
     }
   };
@@ -80,54 +86,53 @@ const UnlockBike = () => {
     handleCloseModal();
   };
 
+  const columns = [
+    { field: "name", headerName: "Tên xe", width: 400 },
+    {
+      field: "image",
+      headerName: "Hình ảnh",
+      width: 150,
+      renderCell: (params) => (
+        <img src={params.value} alt={params.row.name} className="w-20" />
+      ),
+    },
+    {
+      field: "action",
+      headerName: "Hành động",
+      width: 200,
+      renderCell: (params) => (
+        <Button
+          onClick={() => handleUnlockRequest(params.row)}
+          variant="contained"
+          color="primary"
+        >
+          Yêu cầu mở khóa xe
+        </Button>
+      ),
+    },
+  ];
+
   return (
     <div>
-      <Box sx={{ display: "flex" }}>
+      <Box
+        sx={{ display: "flex" }}
+        style={{ background: "linear-gradient(to right, #f2e2e2, #f0f0f0)" }}
+      >
         <SideNavbar />
         <div className="flex flex-col flex-wrap pl-20 pt-20 w-full">
           <h1 className="text-5xl mb-10">Danh sách xe bị khóa</h1>
-          <div className="overflow-x-auto">
-            <table className="min-w-full text-sm text-left text-gray-500">
-              <thead className="text-xs text-gray-700 uppercase bg-gray-50">
-                <tr>
-                  <th scope="col" className="px-6 py-3">
-                    STT
-                  </th>
-                  <th scope="col" className="px-6 py-3">
-                    Tên xe
-                  </th>
-                  <th scope="col" className="px-6 py-3">
-                    Hình ảnh
-                  </th>
-                  <th scope="col" className="px-6 py-3">
-                    Hành động
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {bikes.map((bike, index) => (
-                  <tr key={bike._id} className="bg-white border-b">
-                    <td className="px-6 py-4">{index + 1}</td>
-                    <td className="px-6 py-4">{bike.name}</td>
-                    <td className="px-6 py-4">
-                      <img
-                        src={bike.image}
-                        alt={bike.name}
-                        className="w-40 h-25 object-cover"
-                      />
-                    </td>
-                    <td className="px-6 py-4">
-                      <button
-                        onClick={() => handleUnlockRequest(bike)}
-                        className="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
-                      >
-                        Yêu cầu mở khóa xe
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+          <div className=" height: 500">
+            <DataGrid
+              rows={bikes}
+              columns={columns}
+              initialState={{
+                ...bikes.initialState,
+                pagination: { paginationModel: { pageSize: 7 } },
+              }}
+              pageSizeOptions={[10, 15, 20]}
+              getRowId={(row) => row._id}
+              loading={isLoading}
+            />
           </div>
         </div>
       </Box>

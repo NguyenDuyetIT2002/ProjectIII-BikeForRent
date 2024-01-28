@@ -20,7 +20,6 @@ const ChooseLocation = () => {
   const didRented = useSelector(
     (state) => state.customer.customerInfo.did_rented
   );
-  console.log(didRented);
 
   useEffect(() => {
     if (didRented) {
@@ -44,7 +43,7 @@ const ChooseLocation = () => {
     try {
       const response = await axiosConfig.get(`/getStoreByProvince/${value}`);
       if (response.status === 200) {
-        console.log(response.data.data);
+        showToast("success", response.data.message);
         setStores(response.data.data);
       }
     } catch (error) {
@@ -80,13 +79,16 @@ const ChooseLocation = () => {
   };
 
   return (
-    <div className="flex h-screen">
+    <div
+      className="flex h-screen"
+      style={{ background: "linear-gradient(to right, #f2e2e2, #f0f0f0)" }}
+    >
       <Sidebar />
       <div className="container mx-auto flex flex-col items-center justify-center h-screen">
         <div className="mb-4">
           <label
             htmlFor="province"
-            className="block text-gray-700 text-sm font-bold mb-2"
+            className="block text-gray-700 text-sm font-bold mb-2 text-xl"
           >
             Quận/Huyện
           </label>
@@ -96,7 +98,7 @@ const ChooseLocation = () => {
             value={formData.province}
             onChange={handleChange}
             required
-            className="border rounded-md py-2 px-3 w-full"
+            className="border rounded-md py-2 px-3 w-full min-w-[400px]"
           >
             <option value="">Chọn quận/huyện</option>
             {HanoiProvince.map((province, index) => (
@@ -111,7 +113,7 @@ const ChooseLocation = () => {
         <div className="mb-4">
           <label
             htmlFor="store"
-            className="block text-gray-700 text-sm font-bold mb-2"
+            className="block text-gray-700 text-sm font-bold mb-2 text-xl"
           >
             Cửa hàng
           </label>
@@ -121,7 +123,7 @@ const ChooseLocation = () => {
             value={selectedStore}
             onChange={handleStoreChange}
             required
-            className="border rounded-md py-2 px-3 w-full"
+            className="border rounded-md py-2 px-3 w-full min-w-[600px]"
           >
             <option value="">Chọn cửa hàng</option>
             {stores.map((store) => (

@@ -17,7 +17,10 @@ const Sidebar = () => {
     navigate("/");
   };
   return (
-    <div className="bg-white w-64 h-screen flex flex-col border-r border-gray-300">
+    <div
+      className="w-80 h-screen flex flex-col border-r border-gray-300"
+      style={{ background: "linear-gradient(to right, #f2e2e2, #f0f0f0)" }}
+    >
       <div className="text-center p-4 border-b border-gray-300">
         <Link
           to="/"
