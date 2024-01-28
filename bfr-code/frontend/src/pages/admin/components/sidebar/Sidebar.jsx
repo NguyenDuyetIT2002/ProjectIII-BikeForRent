@@ -29,7 +29,10 @@ const Sidebar = () => {
     clearAdminToken();
   };
   return (
-    <div className="sidebar">
+    <div
+      className="sidebar"
+      style={{ background: "linear-gradient(to right, #f2e2e2, #f0f0f0)" }}
+    >
       <div className="top">
         <Link to="/admin/homepage" style={{ textDecoration: "none" }}>
           <span className="logo">Bike For Rent</span>

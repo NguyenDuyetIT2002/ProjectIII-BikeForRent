@@ -23,12 +23,15 @@ const DatatableOpenningUsers = () => {
   const [selectedRow, setSelectedRow] = useState(null);
   const [open, setOpen] = useState(false);
   const [modalData, setModalData] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
+      setIsLoading(true);
       try {
         const response = await axiosConfig.get("/getUBRequests");
         if (response.status === 200) {
+          setIsLoading(false);
           const newData = response.data.data.map((item, index) => ({
             _id: item._id,
             id: index + 1,
@@ -39,12 +42,13 @@ const DatatableOpenningUsers = () => {
           setData(newData);
         }
       } catch (error) {
-        console.error("Error fetching data:", error);
+        showToast("error", error.response.data.message);
+        setIsLoading(false);
       }
     };
 
     fetchData();
-  }, [data]);
+  }, []);
 
   const handleOpenBike = async (id) => {
     try {
@@ -108,12 +112,16 @@ const DatatableOpenningUsers = () => {
         className="datagrid"
         rows={data}
         columns={columns}
-        pageSize={9}
-        rowsPerPageOptions={[10]}
+        initialState={{
+          ...data.initialState,
+          pagination: { paginationModel: { pageSize: 5 } },
+        }}
+        pageSizeOptions={[5, 10, 25]}
         checkboxSelection
         onSelectionModelChange={(newSelection) => {
           setSelectedRow(newSelection[0]);
         }}
+        loading={isLoading}
       />
       <Modal
         open={open}

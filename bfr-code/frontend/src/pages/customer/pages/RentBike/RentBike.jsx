@@ -13,6 +13,9 @@ import { showToast } from "../../../../utils/toast";
 import { useSelector } from "react-redux";
 import Sidebar from "../../components/Sidebar/Sidebar";
 import { useNavigate } from "react-router-dom";
+import { DataGrid } from "@mui/x-data-grid";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
 dayjs.extend(utc);
 
 const RentBike = () => {
@@ -22,10 +25,11 @@ const RentBike = () => {
   const [bikes, setBikes] = useState([]);
   const [selectedBike, setSelectedBike] = useState(null);
   const [open, setOpen] = useState(false);
-  const [modalImage, setModalImage] = useState("");
-
   const [startTime, setStartTime] = useState(dayjs());
   const [endTime, setEndTime] = useState(dayjs());
+  const [selectedType, setSelectedType] = useState("");
+  const [filteredBikes, setFilteredBikes] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const [rentModalOpen, setRentModalOpen] = useState(false);
   const handleRentModalOpen = () => {
@@ -58,8 +62,8 @@ const RentBike = () => {
     boxShadow: 24,
     p: 4,
   };
-  const handleOpen = (imageUrl) => {
-    setModalImage(imageUrl);
+  const handleOpen = (bike) => {
+    setSelectedBike(bike);
     setOpen(true);
   };
   const customerInfo = useSelector((state) => state.customer.customerInfo);
@@ -68,22 +72,27 @@ const RentBike = () => {
 
   useEffect(() => {
     const fetchData = async () => {
+      setIsLoading(true);
       try {
         const response = await axiosConfig.get(`/getBikes/${selectedStore}`);
         if (response.status === 200) {
           setBikes(response.data.data);
+          setFilteredBikes(response.data.data);
+          setIsLoading(false);
         } else {
           console.error("Error fetching bikes:", response.data.message);
+          setIsLoading(false);
         }
       } catch (error) {
         console.error("Error:", error);
+        setIsLoading(false);
       }
     };
 
     if (selectedStore) {
       fetchData();
     }
-  }, [selectedStore]);
+  }, []);
 
   const handleRentClick = (bike) => {
     setSelectedBike(bike);
@@ -123,7 +132,7 @@ const RentBike = () => {
           customer_id: customerInfo._id,
         });
 
-        if (response.data.code === 200) {
+        if (response.status === 200) {
           showToast("success", response.data.message);
           handleRentModalClose();
           navigate("/customer/rentedBike");
@@ -134,44 +143,119 @@ const RentBike = () => {
     }
   };
 
+  const handleTypeChange = (type) => {
+    setSelectedType(type);
+
+    if (type === "") {
+      // If no type selected, show all bikes
+      setFilteredBikes(bikes);
+    } else if (type === "Khác") {
+      // If "Khác" selected, filter out bikes with known types
+      const filtered = bikes.filter(
+        (bike) =>
+          bike.type !== "Xe thể thao" &&
+          bike.type !== "Xe đạp đua" &&
+          bike.type !== "Xe đường phố"
+      );
+      setFilteredBikes(filtered);
+    } else {
+      // Filter bikes based on selected type
+      const filtered = bikes.filter((bike) => bike.type === type);
+      setFilteredBikes(filtered);
+    }
+  };
+
+  const columns = [
+    { field: "name", headerName: "Tên Xe", flex: 1 },
+    {
+      field: "image",
+      headerName: "Hình Ảnh",
+      flex: 1,
+      renderCell: (params) => (
+        <img src={params.value} alt="bike" className="w-20" />
+      ),
+    },
+    { field: "type", headerName: "Loại Xe", flex: 1 },
+    { field: "description", headerName: "Mô Tả", flex: 1 },
+    {
+      field: "price",
+      headerName: "Giá Thuê",
+      flex: 1,
+      renderCell: (params) => `${params.value} đồng`,
+    },
+    {
+      field: "viewDetails",
+      headerName: "Xem Chi Tiết",
+      flex: 1,
+      renderCell: (params) => (
+        <button
+          className="bg-green-500 text-white px-2 py-1 rounded"
+          onClick={() => handleOpen(params.row)}
+        >
+          Xem Chi Tiết
+        </button>
+      ),
+    },
+    {
+      field: "action",
+      headerName: "Thuê Xe",
+      flex: 1,
+      renderCell: (params) => (
+        <button
+          className="bg-blue-500 text-white px-2 py-1 rounded"
+          onClick={() => handleRentClick(params.row)}
+        >
+          Thuê Xe
+        </button>
+      ),
+    },
+  ];
+
   return (
-    <div className="flex h-screen">
+    <div
+      className="flex h-screen"
+      style={{ background: "linear-gradient(to right, #f2e2e2, #f0f0f0)" }}
+    >
       <Sidebar />
-      <div className="container mx-auto p-14">
+      <div className="container p-8">
         <h2 className="text-3xl font-bold mb-4">Thông tin các xe</h2>
-        <table className="w-full bg-white border border-gray-300">
-          <thead>
-            <tr>
-              <th className="py-2 px-4 border-b">Tên Xe</th>
-              <th className="py-2 px-4 border-b">Hình Ảnh</th>
-              <th className="py-2 px-4 border-b">Loại Xe</th>
-              <th className="py-2 px-4 border-b">Mô Tả</th>
-              <th className="py-2 px-4 border-b">Giá Thuê</th>
-              <th className="py-2 px-4 border-b">Thuê Xe</th>
-            </tr>
-          </thead>
-          <tbody>
-            {bikes.map((bike) => (
-              <tr key={bike._id} onClick={() => handleOpen(bike.image)}>
-                <td className="py-2 px-4 border-b">{bike.name}</td>
-                <td className="py-2 px-4 border-b">
-                  <img src={bike.image} alt="bike" className="w-20" />
-                </td>
-                <td className="py-2 px-4 border-b">{bike.type}</td>
-                <td className="py-2 px-4 border-b">{bike.description}</td>
-                <td className="py-2 px-4 border-b">{bike.price} đồng</td>
-                <td className="py-2 px-4 border-b">
-                  <button
-                    className="bg-blue-500 text-white px-2 py-1 rounded"
-                    onClick={() => handleRentClick(bike)}
-                  >
-                    Thuê Xe
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <div className="mb-4 flex items-center">
+          <h1 className="text-xl mr-4">Lọc</h1>
+          <Select
+            value={selectedType}
+            onChange={(e) => handleTypeChange(e.target.value)}
+            displayEmpty
+            inputProps={{ "aria-label": "Select type" }}
+          >
+            <MenuItem value="" disabled>
+              Lọc theo loại
+            </MenuItem>
+            <MenuItem value="">Tất cả</MenuItem>
+            <MenuItem value="Xe thể thao">Xe thể thao</MenuItem>
+            <MenuItem value="Xe đạp đua">Xe đạp đua</MenuItem>
+            <MenuItem value="Xe đường phố">Xe đường phố</MenuItem>
+            <MenuItem value="Khác">Khác</MenuItem>
+          </Select>
+        </div>
+        <div style={{ height: 500, width: "100%" }}>
+          <DataGrid
+            rows={filteredBikes}
+            columns={columns}
+            pageSize={5}
+            checkboxSelection
+            getRowId={(row) => row._id}
+            initialState={{
+              ...filteredBikes.initialState,
+              pagination: { paginationModel: { pageSize: 7 } },
+            }}
+            pageSizeOptions={[10, 15, 20]}
+            loading={isLoading}
+            sx={{
+              border: "1px solid #000000", // Adjust the border color as needed
+              borderRadius: "4px", // Adjust the border radius as needed
+            }}
+          />
+        </div>
         <Modal
           open={open}
           onClose={handleClose}
@@ -179,7 +263,36 @@ const RentBike = () => {
           aria-describedby="modal-modal-description"
         >
           <Box sx={style_image}>
-            <img src={modalImage} alt="License" style={{ width: "100%" }} />
+            {selectedBike && (
+              <>
+                <img
+                  src={selectedBike.image}
+                  alt={selectedBike.name}
+                  style={{ width: "100%" }}
+                />
+                <h3 className="font-semibold text-xl mt-4">
+                  {selectedBike.name}
+                </h3>
+                <p className="font-semibold text-xl mt-4">
+                  Loại xe:{" "}
+                  <span className="font-normal text-l ml-4">
+                    {selectedBike.type}
+                  </span>
+                </p>
+                <p className="font-semibold text-xl mt-4">
+                  Mô tả:{" "}
+                  <span className="font-normal text-l ml-4">
+                    {selectedBike.description}
+                  </span>
+                </p>
+                <p className="font-semibold text-xl mt-4">
+                  Giá thuê:{" "}
+                  <span className="font-normal text-l ml-4">
+                    {selectedBike.price} đồng/h
+                  </span>
+                </p>
+              </>
+            )}
           </Box>
         </Modal>
 
