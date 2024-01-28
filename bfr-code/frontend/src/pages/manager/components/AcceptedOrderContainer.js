@@ -9,7 +9,7 @@ const AcceptedOrderContainer = ({ orderInfo, handelOnClick }) => {
             <td>Người thuê: {orderInfo.customer_name}</td>
           </tr>
           <tr>
-            <td>Xe thuê: {orderInfo.bike_id}</td>
+            <td>Xe thuê: {orderInfo.bike_name}</td>
           </tr>
           <tr>
             <td>

@@ -7,13 +7,20 @@ import { useSelector } from "react-redux";
 import { showToast } from "../../../utils/toast";
 import { useNavigate } from "react-router-dom";
 import { getManagerToken } from "../../../utils/localStorage";
-import PendingOrderContainer from "../components/PendingOrderContainer";
-import AcceptedOrderContainer from "../components/AcceptedOrderContainer";
-import ExpiredOrderContainer from "../components/ExpiredOrderContainer";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
+import { DataGrid } from "@mui/x-data-grid";
+import dayjs from "dayjs";
 
 const Orderspage = () => {
   const [orderList, setOrderList] = useState([]);
-  const [orderType, setOrderType] = useState(0);
+  const [pendingOrderList, setPendingOrderList] = useState([]);
+  const [acceptedOrderList, setAcceptedOrderList] = useState([]);
+  const [expiredOrderList, setExpiredOrderList] = useState([]);
+  const [filteredOrders, setFilteredOrders] = useState(orderList);
+
+  const [selectedType, setSelectedType] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const manager_id = useSelector((state) => {
     if (state.manager.managerInfo) return state.manager.managerInfo._id;
@@ -22,11 +29,13 @@ const Orderspage = () => {
   const navigate = useNavigate();
 
   async function getOrders() {
+    setIsLoading(true);
     try {
       const response = await axiosConfig.get(`/getOrdersBy/${manager_id}`);
-      console.log(response.data.data);
-      setOrderType(0);
+
       setOrderList(response.data.data);
+      setFilteredOrders(response.data.data);
+      setIsLoading(false);
     } catch (error) {
       console.log("Get all orders failed: ", error);
     }
@@ -37,9 +46,7 @@ const Orderspage = () => {
       const response = await axiosConfig.get(
         `/getPendingOrdersBy/${manager_id}`
       );
-      console.log(response.data.data);
-      setOrderType(1);
-      setOrderList(response.data.data);
+      setPendingOrderList(response.data.data);
     } catch (error) {
       console.log("Get pending orders failed: ", error);
     }
@@ -50,9 +57,7 @@ const Orderspage = () => {
       const response = await axiosConfig.get(
         `/getAcceptedOrdersBy/${manager_id}`
       );
-      console.log(response.data.data);
-      setOrderType(2);
-      setOrderList(response.data.data);
+      setAcceptedOrderList(response.data.data);
     } catch (error) {
       console.log("Get accepted orders failed: ", error);
     }
@@ -63,8 +68,7 @@ const Orderspage = () => {
       const response = await axiosConfig.get(
         `/getAllLatestIncompleteOrdersBy/${manager_id}`
       );
-      setOrderType(3);
-      setOrderList(response.data.data);
+      setExpiredOrderList(response.data.data);
     } catch (error) {
       console.log("Get incomplete orders failed: ", error);
     }
@@ -73,28 +77,36 @@ const Orderspage = () => {
   const acceptOrder = async (orderID) => {
     try {
       const response = await axiosConfig.post(`/acceptOrder/${orderID}`);
-      showToast("success", "Cho thuê xe thành công");
-      if (orderType === 0) {
-        getOrders();
-      } else if (orderType === 1) {
-        getPendingOrders();
+      if (response.status === 200) {
+        showToast("success", response.data.message);
+        const updatedPendingOrders = pendingOrderList.filter(
+          (order) => order._id !== orderID
+        );
+        setPendingOrderList(updatedPendingOrders);
+        if (selectedType === "Pending Order") {
+          setFilteredOrders(updatedPendingOrders);
+        }
       }
     } catch (error) {
-      showToast("error", "Cho thuê xe thất bại");
+      showToast("error", error.response.data.message);
     }
   };
 
   const completeOrder = async (orderID) => {
     try {
       const response = await axiosConfig.post(`/completeOrder/${orderID}`);
-      showToast("success", "Hoàn thành thuê xe thành công");
-      if (orderType === 0) {
-        getOrders();
-      } else if (orderType === 2) {
-        getAcceptedOrders();
+      if (response.status === 200) {
+        showToast("success", response.data.message);
+        const updatedAcceptedOrders = acceptedOrderList.filter(
+          (order) => order._id !== orderID
+        );
+        setAcceptedOrderList(updatedAcceptedOrders);
+        if (selectedType === "Accepted Order") {
+          setFilteredOrders(updatedAcceptedOrders);
+        }
       }
     } catch (error) {
-      showToast("error", "Hoàn thành thuê xe không thành công");
+      showToast("error", error.response.data.message);
     }
   };
 
@@ -111,70 +123,147 @@ const Orderspage = () => {
     }
   };
 
+  const handleTypeChange = (type) => {
+    setSelectedType(type);
+
+    if (type === "") {
+      // If no type selected, show all bikes
+      setFilteredOrders(orderList);
+    }
+    if (type === "Pending Order") {
+      // If no type selected, show all bikes
+      setFilteredOrders(pendingOrderList);
+    }
+    if (type === "Accepted Order") {
+      // If no type selected, show all bikes
+      setFilteredOrders(acceptedOrderList);
+    }
+    if (type === "Expired Order") {
+      // If no type selected, show all bikes
+      setFilteredOrders(expiredOrderList);
+    }
+    console.log(filteredOrders);
+  };
+
   useEffect(() => {
     if (getManagerToken() == null) {
       navigate('/auth/login?form="manager"');
     }
+    getOrders();
+    getAcceptedOrders();
     getPendingOrders();
+    getAllLatestIncompleteOrder();
   }, []);
 
+  const columns = [
+    { field: "customer_name", headerName: "Tên khách hàng", width: 130 },
+    { field: "bike_name", headerName: "Tên xe", width: 130 },
+    {
+      field: "bike_image",
+      headerName: "Hình Ảnh",
+      width: 100,
+      renderCell: (params) => (
+        <img src={params.value} alt="bike" className="w-20" />
+      ),
+    },
+    { field: "price", headerName: "Giá", width: 80 },
+    { field: "status", headerName: "Trạng thái", width: 80 },
+    {
+      field: "startTime",
+      headerName: "Thời gian bắt đầu",
+      width: 180,
+      valueGetter: (params) =>
+        dayjs(params.row.startTime).format("HH:mm:ss DD/MM/YYYY"),
+    },
+    {
+      field: "endTime",
+      headerName: "Thời gian trả",
+      width: 180,
+      valueGetter: (params) =>
+        dayjs(params.row.endTime).format("HH:mm:ss DD/MM/YYYY"),
+    },
+    {
+      field: "orderTime",
+      headerName: "Thời gian đặt",
+      width: 180,
+      valueGetter: (params) =>
+        dayjs(params.row.orderTime).format("HH:mm:ss DD/MM/YYYY"),
+    },
+    {
+      field: "actions",
+      headerName: "Hành động",
+      sortable: false,
+      width: 150,
+      renderCell: (params) => {
+        if (selectedType === "Pending Order") {
+          return (
+            <button
+              onClick={() => acceptOrder(params.row._id)}
+              className="bg-blue-500 text-white px-2 py-1 rounded"
+            >
+              Chấp nhận
+            </button>
+          );
+        }
+        if (selectedType === "Accepted Order") {
+          return (
+            <button
+              onClick={() => completeOrder(params.row._id)}
+              className="bg-blue-500 text-white px-2 py-1 rounded"
+            >
+              Hoàn thành
+            </button>
+          );
+        }
+        if (selectedType === "Expired Order") {
+          return (
+            <button
+              onClick={() => banCustomer(params.row.customer_id)}
+              className="bg-blue-500 text-white px-2 py-1 rounded"
+            >
+              Yêu cầu khóa
+            </button>
+          );
+        }
+        return null;
+      },
+    },
+  ];
+
   return (
-    <div>
-      <Box sx={{ display: "flex" }}>
+    <div style={{ background: "linear-gradient(to right, #f2e2e2, #f0f0f0)" }}>
+      <Box sx={{ display: "flex h-screen" }}>
         <SideNavbar />
-        <div className="flex flex-col flex-wrap pl-20 pt-20">
-          <h1 className="text-5xl mb-10">
-            {orderType == 1
-              ? "Đơn chờ duyệt"
-              : orderType == 2
-              ? "Đơn chờ hoàn thành"
-              : "Đơn quá hạn"}
-          </h1>
-          <div className="flex flex-row space-x-10">
-            <button
-              className="px-5 py-1 hover:bg-violet-200"
-              onClick={() => {
-                getPendingOrders();
+        <div className="container p-8">
+          <h1 className="text-5xl mb-10">Danh sách xe</h1>
+          <Select
+            value={selectedType}
+            onChange={(e) => handleTypeChange(e.target.value)}
+            displayEmpty
+            inputProps={{ "aria-label": "Select type" }}
+          >
+            <MenuItem value="" disabled>
+              Lọc theo loại
+            </MenuItem>
+            <MenuItem value="">Tất cả</MenuItem>
+            <MenuItem value="Pending Order">Đơn chờ duyệt</MenuItem>
+            <MenuItem value="Accepted Order">Đơn chờ hoàn thành</MenuItem>
+            <MenuItem value="Expired Order">Đơn quá hạn</MenuItem>
+          </Select>
+
+          <div style={{ height: 400, width: "84%" }}>
+            <DataGrid
+              rows={filteredOrders}
+              columns={columns}
+              pageSize={5}
+              getRowId={(row) => row._id}
+              initialState={{
+                ...filteredOrders.initialState,
+                pagination: { paginationModel: { pageSize: 7 } },
               }}
-            >
-              Đơn chờ duyệt
-            </button>
-            <button
-              className="px-5 py-1 hover:bg-violet-200"
-              onClick={() => {
-                getAcceptedOrders();
-              }}
-            >
-              Đơn chờ hoàn thành
-            </button>
-            <button
-              className="px-5 py-1 hover:bg-violet-200"
-              onClick={() => {
-                getAllLatestIncompleteOrder();
-              }}
-            >
-              Đơn quá hạn
-            </button>
-          </div>
-          <div>
-            {orderList.map((order) =>
-              orderType == 1 ? (
-                <PendingOrderContainer
-                  orderInfo={order}
-                  handelOnClick={acceptOrder}
-                ></PendingOrderContainer>
-              ) : orderType == 2 ? (
-                <AcceptedOrderContainer
-                  orderInfo={order}
-                  handelOnClick={completeOrder}
-                ></AcceptedOrderContainer>
-              ) : (
-                <ExpiredOrderContainer
-                  orderInfo={order}
-                  handelOnClick={banCustomer}
-                ></ExpiredOrderContainer>
-              )
-            )}
+              pageSizeOptions={[10, 15, 20]}
+              loading={isLoading}
+            />
           </div>
         </div>
       </Box>

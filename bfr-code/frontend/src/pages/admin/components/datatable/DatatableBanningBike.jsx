@@ -10,21 +10,29 @@ const DatatableBanningBike = () => {
   const [data, setData] = useState([]);
   const [open, setOpen] = useState(false);
   const [modalImage, setModalImage] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const fetchData = async () => {
+    setIsLoading(true);
     const response = await axiosConfig.get("/getReportedBikes");
-    if (response.data.code === 200) {
-      const result = response.data.data;
-      console.log(result);
-      const dataWithIds = result.map((row, index) => ({
-        ...row,
-        id: index,
-      }));
-      setData(dataWithIds);
+    try {
+      if (response.data.code === 200) {
+        setIsLoading(false);
+        const result = response.data.data;
+        console.log(result);
+        const dataWithIds = result.map((row, index) => ({
+          ...row,
+          id: index,
+        }));
+        setData(dataWithIds);
+      }
+    } catch (error) {
+      showToast("error", error.response.data.message);
+      setIsLoading(false);
     }
   };
   useEffect(() => {
     fetchData();
-  }, [data]);
+  }, []);
 
   const style = {
     position: "absolute",
@@ -121,9 +129,13 @@ const DatatableBanningBike = () => {
         className="datagrid"
         rows={data}
         columns={actionColumn}
-        pageSize={9}
-        rowsPerPageOptions={[10]}
+        initialState={{
+          ...data.initialState,
+          pagination: { paginationModel: { pageSize: 5 } },
+        }}
+        pageSizeOptions={[5, 10, 25]}
         checkboxSelection
+        loading={isLoading}
       />
       <Modal
         open={open}
