@@ -9,6 +9,12 @@ import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import Modal from "@mui/material/Modal";
 import SideNavbar from "../components/SideNavbar";
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
 
 const Homepage = () => {
   const [bikesList, setBikesList] = useState([]);
@@ -18,6 +24,15 @@ const Homepage = () => {
   const [filteredBikes, setFilteredBikes] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const [openDelConfirmation, setOpenDelConfirmation] = React.useState(false);
+
+  const handleClickOpenDelConfirmation = () => {
+    setOpenDelConfirmation(true);
+  };
+
+  const handleCloseDelConfirmation = () => {
+    setOpenDelConfirmation(false);
+  };
 
   const manager_id = useSelector(
     (state) => state.manager.managerInfo?._id || "none"
@@ -131,12 +146,35 @@ const Homepage = () => {
       headerName: "Xóa",
       width: 70,
       renderCell: (params) => (
-        <button
-          className="bg-red-400 text-white px-2 py-1 rounded"
-          onClick={() => deleteBike(params.row._id)}
-        >
-          Xóa
-        </button>
+        <>
+          <button
+            className="bg-red-400 text-white px-2 py-1 rounded"
+            onClick={handleClickOpenDelConfirmation}
+          >
+            Xóa
+          </button>
+          <Dialog
+            open={openDelConfirmation}
+            onClose={handleCloseDelConfirmation}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+          >
+            <DialogTitle id="alert-dialog-title">
+              Xác nhận yêu cầu xóa xe
+            </DialogTitle>
+            <DialogContent>
+              <DialogContentText id="alert-dialog-description">
+                Bạn muốn xóa xe {params.row.name} khỏi danh sách xe của cửa hàng?
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={() => deleteBike(params.row._id)}>Xác nhận</Button>
+              <Button onClick={handleCloseDelConfirmation} autoFocus>
+                Hủy
+              </Button>
+            </DialogActions>
+          </Dialog>
+        </>
       ),
     },
   ];
