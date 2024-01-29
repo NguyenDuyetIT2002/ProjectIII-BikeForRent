@@ -235,7 +235,7 @@ const Orderspage = () => {
       <Box sx={{ display: "flex h-screen" }}>
         <SideNavbar />
         <div className="container p-8">
-          <h1 className="text-5xl mb-10">Danh sách xe</h1>
+          <h1 className="text-5xl mb-10">Danh sách đơn thuê xe</h1>
           <Select
             value={selectedType}
             onChange={(e) => handleTypeChange(e.target.value)}
